@@ -1,0 +1,39 @@
+{
+  "name": "inspect-ph-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  },
+  "scripts": {
+    "predev": "node -e \"require('node:fs').rmSync('.next/dev', { recursive: true, force: true })\"",
+    "dev": "next dev --webpack -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.21",
+    "antd": "^6.3.3",
+    "axios": "^1.13.6",
+    "next": "16.1.7",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.7",
+    "jsdom": "^29.0.1",
+    "typescript": "^5",
+    "vitest": "^4.1.0"
+  }
+}

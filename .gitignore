@@ -1,0 +1,10 @@
+.vscode/
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.log
+.env*
+*.tsbuildinfo
+next-env.d.ts
