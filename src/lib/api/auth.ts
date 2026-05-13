@@ -2,7 +2,9 @@ import type {
   ApiListResponse,
   ApiResponse,
   AuthTokens,
+  OfficeRecord,
   User,
+  UserOfficeAssignmentRecord,
 } from "@shared/types/api";
 
 import { createApiClient, getApiOrigin } from "./http";
@@ -65,4 +67,44 @@ export async function listUsers(input: {
   );
 
   return response.data;
+}
+
+export async function listUserOfficeAssignments(input: {
+  accessToken: string;
+  userId: string;
+}): Promise<UserOfficeAssignmentRecord[]> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<ApiResponse<UserOfficeAssignmentRecord[]>>(
+    `${API_V1}/auth/users/${input.userId}/office-assignments`,
+  );
+
+  return response.data.data;
+}
+
+export async function createUserOfficeAssignment(input: {
+  accessToken: string;
+  officeId: OfficeRecord["id"];
+  userId: string;
+}): Promise<UserOfficeAssignmentRecord> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.post<ApiResponse<UserOfficeAssignmentRecord>>(
+    `${API_V1}/auth/users/${input.userId}/office-assignments`,
+    {
+      officeId: input.officeId,
+    },
+  );
+
+  return response.data.data;
+}
+
+export async function deleteUserOfficeAssignment(input: {
+  accessToken: string;
+  assignmentId: string;
+  userId: string;
+}): Promise<void> {
+  const client = createApiClient(input.accessToken);
+
+  await client.delete(
+    `${API_V1}/auth/users/${input.userId}/office-assignments/${input.assignmentId}`,
+  );
 }

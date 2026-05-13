@@ -2,9 +2,13 @@
 
 import {
   AppstoreOutlined,
+  ApartmentOutlined,
   AuditOutlined,
   BankOutlined,
+  BarChartOutlined,
+  BellOutlined,
   FileTextOutlined,
+  GlobalOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ShopOutlined,
@@ -24,7 +28,12 @@ const PROTECTED_PREFIXES = [
   "/audit-logs",
   "/businesses",
   "/inspections",
+  "/lgus",
+  "/notifications",
+  "/offices",
   "/permits",
+  "/reports",
+  "/users",
 ] as const;
 
 const navigationItems: NonNullable<MenuProps["items"]> = [
@@ -39,9 +48,34 @@ const navigationItems: NonNullable<MenuProps["items"]> = [
     label: "Businesses",
   },
   {
+    icon: <GlobalOutlined />,
+    key: "/lgus",
+    label: "LGUs",
+  },
+  {
     icon: <AuditOutlined />,
     key: "/audit-logs",
     label: "Audit log",
+  },
+  {
+    icon: <BellOutlined />,
+    key: "/notifications",
+    label: "Notifications",
+  },
+  {
+    icon: <ApartmentOutlined />,
+    key: "/offices",
+    label: "Offices",
+  },
+  {
+    icon: <UserOutlined />,
+    key: "/users",
+    label: "Users",
+  },
+  {
+    icon: <BarChartOutlined />,
+    key: "/reports",
+    label: "Reports",
   },
   {
     icon: <FileTextOutlined />,

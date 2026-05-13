@@ -21,7 +21,8 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({
     replace: vi.fn(),
   }),
-  useSearchParams: () => new URLSearchParams("action=inspection.created&entityType=inspection"),
+  useSearchParams: () =>
+    new URLSearchParams("action=inspection.created&entityType=inspection"),
 }));
 
 function renderWithProviders(ui: ReactNode) {
@@ -44,7 +45,11 @@ describe("AuditLogBrowser", () => {
       },
       logout: vi.fn(),
       session: {
-        tokens: { accessToken: "token", expiresIn: 900, refreshToken: "refresh" },
+        tokens: {
+          accessToken: "token",
+          expiresIn: 900,
+          refreshToken: "refresh",
+        },
         user: {
           createdAt: "2026-05-13T08:00:00.000Z",
           email: "admin@example.com",
@@ -87,7 +92,9 @@ describe("AuditLogBrowser", () => {
 
     expect(screen.getByText("Audit log")).toBeInTheDocument();
     expect(screen.getByText("Activity stream")).toBeInTheDocument();
-    expect(screen.getByText("Scheduled inspection for Acme Foods")).toBeInTheDocument();
+    expect(
+      screen.getByText("Scheduled inspection for Acme Foods"),
+    ).toBeInTheDocument();
     expect(screen.getByText("System Admin")).toBeInTheDocument();
     expect(screen.getByText("Action: Inspection created")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "inspection-1" })).toHaveAttribute(
@@ -95,7 +102,9 @@ describe("AuditLogBrowser", () => {
       "/inspections/inspection-1",
     );
     expect(
-      screen.getByPlaceholderText("Search summary, detail, actor, or entity ID"),
+      screen.getByPlaceholderText(
+        "Search summary, detail, actor, or entity ID",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -115,6 +124,8 @@ describe("AuditLogBrowser", () => {
     renderWithProviders(<AuditLogBrowser />);
 
     expect(screen.getByText("Dashboard session")).toBeInTheDocument();
-    expect(screen.getByText("Inspection queries stay idle until you sign in.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Inspection queries stay idle until you sign in."),
+    ).toBeInTheDocument();
   });
 });

@@ -23,7 +23,10 @@ import { useAuditLogBrowser } from "@/hooks/use-audit-log-browser";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { getApiErrorMessage } from "@/lib/api/http";
 
-const actionOptions: { label: string; value: AuditLogRecord["action"] | "all" }[] = [
+const actionOptions: {
+  label: string;
+  value: AuditLogRecord["action"] | "all";
+}[] = [
   { label: "All actions", value: "all" },
   { label: "Inspection created", value: "inspection.created" },
   { label: "Inspection assigned", value: "inspection.assigned" },
@@ -87,11 +90,18 @@ function getInspectionEntityHref(record: AuditLogRecord) {
 }
 
 export default function AuditLogBrowser() {
-  const { activeCount, clearValues, page, setPage, setValue, setValues, values } =
-    useBrowserQueryParams({
-      defaults: { action: "all", entityType: "all" },
-      keys: ["action", "entityType", "search"] as const,
-    });
+  const {
+    activeCount,
+    clearValues,
+    page,
+    setPage,
+    setValue,
+    setValues,
+    values,
+  } = useBrowserQueryParams({
+    defaults: { action: "all", entityType: "all" },
+    keys: ["action", "entityType", "search"] as const,
+  });
   const { accessToken, session } = useAuthSession();
   const isAdmin = session?.user.role === "admin";
   const action = values.action as AuditLogRecord["action"] | "all";
@@ -145,7 +155,9 @@ export default function AuditLogBrowser() {
         record.actor ? (
           <Space direction="vertical" size={0}>
             <Typography.Text>{record.actor.name}</Typography.Text>
-            <Typography.Text type="secondary">{record.actor.email}</Typography.Text>
+            <Typography.Text type="secondary">
+              {record.actor.email}
+            </Typography.Text>
           </Space>
         ) : (
           <Typography.Text type="secondary">System</Typography.Text>
@@ -171,7 +183,9 @@ export default function AuditLogBrowser() {
               inspectionHref ? (
                 <Link href={inspectionHref}>{record.entityId}</Link>
               ) : (
-                <Typography.Text type="secondary">{record.entityId}</Typography.Text>
+                <Typography.Text type="secondary">
+                  {record.entityId}
+                </Typography.Text>
               )
             ) : null}
           </Space>
@@ -200,7 +214,9 @@ export default function AuditLogBrowser() {
                 <Tag color="gold">Action: {formatActionLabel(action)}</Tag>
               ) : null}
               {entityType !== "all" ? (
-                <Tag color="blue">Entity: {formatEntityTypeLabel(entityType)}</Tag>
+                <Tag color="blue">
+                  Entity: {formatEntityTypeLabel(entityType)}
+                </Tag>
               ) : null}
               {search ? <Tag color="cyan">Search: {search}</Tag> : null}
             </DashboardFilterStrip>
@@ -234,11 +250,18 @@ export default function AuditLogBrowser() {
               />
             ) : null}
 
-            <Card title="Activity stream" className="glass-card dashboard-data-card">
+            <Card
+              title="Activity stream"
+              className="glass-card dashboard-data-card"
+            >
               <Space
                 align="start"
                 size={12}
-                style={{ justifyContent: "space-between", marginBottom: 20, width: "100%" }}
+                style={{
+                  justifyContent: "space-between",
+                  marginBottom: 20,
+                  width: "100%",
+                }}
                 wrap
               >
                 <Space direction="vertical" size={4}>

@@ -1,54 +1,7 @@
 
 [1m[30m[46m RUN [49m[39m[22m [36mv4.1.6 [39m[90m/home/nhad/inspect-ph/inspect-ph-dashboard[39m
 
-[90mstderr[2m | src/components/inspection-workspace.test.tsx[2m > [22m[2mInspectionWorkspace[2m > [22m[2mrenders the login prompt before data is loaded
-[22m[39mWarning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: List] The `List` component is deprecated. And will be removed in next major version.
-Warning: [antd: List] The `List` component is deprecated. And will be removed in next major version.
-Warning: [antd: List] The `List` component is deprecated. And will be removed in next major version.
-
-Not implemented: Window's getComputedStyle() method: with pseudo-elements
-[90mstderr[2m | src/components/inspection-browser.test.tsx[2m > [22m[2mInspectionBrowser[2m > [22m[2mrenders the login prompt and queue heading
-[22m[39mWarning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-
-[90mstderr[2m | src/components/inspection-workspace.test.tsx[2m > [22m[2mInspectionWorkspace[2m > [22m[2mrenders activity history and preview controls when inspection data is loaded
-[22m[39mWarning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: List] The `List` component is deprecated. And will be removed in next major version.
-Warning: [antd: List] The `List` component is deprecated. And will be removed in next major version.
-Warning: [antd: List] The `List` component is deprecated. And will be removed in next major version.
-
- [32m✓[39m src/components/inspection-workspace.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 3053[2mms[22m[39m
-     [33m[2m✓[22m[39m renders the login prompt before data is loaded [33m 2105[2mms[22m[39m
-     [33m[2m✓[22m[39m renders activity history and preview controls when inspection data is loaded [33m 939[2mms[22m[39m
-Not implemented: Window's getComputedStyle() method: with pseudo-elements
-[90mstderr[2m | src/components/inspection-browser.test.tsx[2m > [22m[2mInspectionBrowser[2m > [22m[2mshows friendly filter labels and the schedule form for admins
+[90mstderr[2m | src/components/user-browser.test.tsx[2m > [22m[2mUserBrowser[2m > [22m[2mrenders the user directory and selected assignment state
 [22m[39mWarning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
 Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
 Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
@@ -56,28 +9,41 @@ Warning: [antd: Space] `direction` is deprecated. Please use `orientation` inste
 Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
 Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
 
- [31m❯[39m src/components/inspection-browser.test.tsx [2m([22m[2m2 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 3657[2mms[22m[39m
-     [33m[2m✓[22m[39m renders the login prompt and queue heading [33m 2641[2mms[22m[39m
-[31m     [31m×[31m shows friendly filter labels and the schedule form for admins[39m[33m 1007[2mms[22m[39m
+[90mstderr[2m | src/components/user-browser.test.tsx[2m > [22m[2mUserBrowser[2m > [22m[2mremoves an assignment from the selected user
+[22m[39mWarning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+ [31m❯[39m src/components/user-browser.test.tsx [2m([22m[2m2 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 2112[2mms[22m[39m
+[31m     [31m×[31m renders the user directory and selected assignment state[39m[33m 1148[2mms[22m[39m
+     [33m[2m✓[22m[39m removes an assignment from the selected user [33m 960[2mms[22m[39m
 
 [31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
 
-[41m[1m FAIL [22m[49m src/components/inspection-browser.test.tsx[2m > [22mInspectionBrowser[2m > [22mshows friendly filter labels and the schedule form for admins
-[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: Schedule inspection
+[41m[1m FAIL [22m[49m src/components/user-browser.test.tsx[2m > [22mUserBrowser[2m > [22mrenders the user directory and selected assignment state
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: Field Inspector
 
 Here are the matching elements:
 
 Ignored nodes: comments, script, style
-[36m<div[39m
-  [33mclass[39m=[32m"ant-card-head-title"[39m
+[36m<h3[39m
+  [33mclass[39m=[32m"ant-typography dashboard-metric-value css-dev-only-do-not-override-tql0nm css-var-root"[39m
 [36m>[39m
-  [0mSchedule inspection[0m
-[36m</div>[39m
+  [0mField Inspector[0m
+[36m</h3>[39m
 
 Ignored nodes: comments, script, style
-[36m<span>[39m
-  [0mSchedule inspection[0m
-[36m</span>[39m
+[36m<strong>[39m
+  [0mField Inspector[0m
+[36m</strong>[39m
+
+Ignored nodes: comments, script, style
+[36m<strong>[39m
+  [0mField Inspector[0m
+[36m</strong>[39m
 
 (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
 
@@ -103,7 +69,7 @@ Ignored nodes: comments, script, style
               [36m<span[39m
                 [33mclass[39m=[32m"ant-typography eyebrow css-dev-only-do-not-override-tql0nm css-var-root"[39m
               [36m>[39m
-                [0mBPLO inspection operations[0m
+                [0mPlatform administration[0m
               [36m</span>[39m
             [36m</div>[39m
             [36m<div[39m
@@ -113,7 +79,7 @@ Ignored nodes: comments, script, style
                 [33mclass[39m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[39m
                 [33mstyle[39m=[32m"margin: 0px;"[39m
               [36m>[39m
-                [0mInspections[0m
+                [0mUsers[0m
               [36m</h1>[39m
             [36m</div>[39m
             [36m<div[39m
@@ -123,7 +89,7 @@ Ignored nodes: comments, script, style
                 [33mclass[39m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[39m
                 [33mstyle[39m=[32m"margin: 0px; max-width: 780px;"[39m
               [36m>[39m
-                [0mBrowse assigned or scoped inspections, review KPI counts, and jump directly into the inspection workspace when you already know the ID.[0m
+                [0mReview authenticated users and manage which office queues they can operate within as Phase 3 scoping comes online.[0m
               [36m</div>[39m
             [36m</div>[39m
             [36m<div[39m
@@ -230,25 +196,26 @@ Ignored nodes: comments, script, style
                   [36m</div>[39m
                 [36m</div>[39m
               [36m</div>[39m
-       ...
+            [36m</div>[39m
+        ...
 [90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
 [90m [2m❯[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
 [90m [2m❯[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
 [90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
 [90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
-[36m [2m❯[22m src/components/inspection-browser.test.tsx:[2m225:19[22m[39m
-    [90m223|[39m       )[33m,[39m
-    [90m224|[39m     )[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
-    [90m225|[39m     expect(screen.getByText("Schedule inspection")).toBeInTheDocument(…
+[36m [2m❯[22m src/components/user-browser.test.tsx:[2m132:19[22m[39m
+    [90m130|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Users"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m131|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"User directory"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m132|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Field Inspector"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
     [90m   |[39m                   [31m^[39m
-    [90m226|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Open map"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
-    [90m227|[39m   })[33m;[39m
+    [90m133|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Role: Inspector"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m134|[39m     expect(screen.getByText("BPLO Headquarters · BPLO-HQ")).toBeInTheD…
 
 [31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
 
 
-[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
-[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (4)[39m
-[2m   Start at [22m 16:08:14
-[2m   Duration [22m 10.01s[2m (transform 576ms, setup 399ms, import 7.07s, tests 6.71s, environment 4.36s)[22m
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
+[2m   Start at [22m 20:49:48
+[2m   Duration [22m 5.47s[2m (transform 230ms, setup 141ms, import 1.89s, tests 2.11s, environment 1.11s)[22m
 
