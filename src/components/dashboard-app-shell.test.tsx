@@ -3,7 +3,9 @@ import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import DashboardAppShell from "@/components/dashboard-app-shell";
+import DashboardAppShell, {
+  isProtectedDashboardPath,
+} from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 
 const push = vi.fn();
@@ -57,9 +59,29 @@ describe("DashboardAppShell", () => {
       </DashboardAppShell>,
     );
 
+    expect(screen.getByText("BuildSure")).toBeInTheDocument();
     expect(screen.getByText("Inspections")).toBeInTheDocument();
+    expect(screen.getByText("SanitaCheck")).toBeInTheDocument();
+    expect(screen.getByText("Owner support")).toBeInTheDocument();
+    expect(screen.queryByText("Payments")).not.toBeInTheDocument();
     expect(screen.queryByText("Users")).not.toBeInTheDocument();
     expect(screen.queryByText("Modules")).not.toBeInTheDocument();
+  });
+
+  it("treats support as a protected dashboard route", () => {
+    expect(isProtectedDashboardPath("/support")).toBe(true);
+  });
+
+  it("treats payments as a protected dashboard route", () => {
+    expect(isProtectedDashboardPath("/payments")).toBe(true);
+  });
+
+  it("treats sanitacheck as a protected dashboard route", () => {
+    expect(isProtectedDashboardPath("/sanitacheck")).toBe(true);
+  });
+
+  it("treats buildsure as a protected dashboard route", () => {
+    expect(isProtectedDashboardPath("/buildsure")).toBe(true);
   });
 
   it("blocks inspectors from direct admin routes", () => {

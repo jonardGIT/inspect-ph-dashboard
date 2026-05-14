@@ -1,10 +1,14 @@
+import axios from "axios";
+
 import type {
   ApiListResponse,
   ApiResponse,
+  PublicPermitFindingsLookupRecord,
+  PublicPermitLookupRecord,
   PermitRecord,
 } from "@shared/types/api";
 
-import { createApiClient } from "./http";
+import { createApiClient, getApiOrigin } from "./http";
 
 const API_V1 = "/api/v1";
 
@@ -49,6 +53,26 @@ export async function createPermit(input: {
       lineOfBusiness: input.lineOfBusiness,
       permitNumber: input.permitNumber,
     },
+  );
+
+  return response.data.data;
+}
+
+export async function getPublicPermitByNumber(input: {
+  permitNumber: string;
+}): Promise<PublicPermitLookupRecord> {
+  const response = await axios.get<ApiResponse<PublicPermitLookupRecord>>(
+    `${getApiOrigin()}${API_V1}/permits/public/${encodeURIComponent(input.permitNumber)}`,
+  );
+
+  return response.data.data;
+}
+
+export async function getPublicPermitFindingsByNumber(input: {
+  permitNumber: string;
+}): Promise<PublicPermitFindingsLookupRecord> {
+  const response = await axios.get<ApiResponse<PublicPermitFindingsLookupRecord>>(
+    `${getApiOrigin()}${API_V1}/permits/public/${encodeURIComponent(input.permitNumber)}/findings`,
   );
 
   return response.data.data;

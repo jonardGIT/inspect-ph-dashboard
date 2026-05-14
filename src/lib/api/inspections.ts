@@ -44,6 +44,7 @@ export async function getInspectionSummary(input: {
   accessToken: string;
   from?: string;
   lguId?: string;
+  officeId?: string;
   to?: string;
 }): Promise<InspectionSummary> {
   const client = createApiClient(input.accessToken);
@@ -53,6 +54,7 @@ export async function getInspectionSummary(input: {
       params: {
         ...(input.from ? { from: input.from } : {}),
         ...(input.lguId ? { lguId: input.lguId } : {}),
+        ...(input.officeId ? { officeId: input.officeId } : {}),
         ...(input.to ? { to: input.to } : {}),
       },
     },

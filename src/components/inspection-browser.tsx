@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Alert,
   Button,
@@ -61,7 +61,23 @@ function createMapLink(latitude: number, longitude: number) {
   return `https://www.google.com/maps?q=${latitude},${longitude}`;
 }
 
-export default function InspectionBrowser() {
+interface InspectionBrowserProps {
+  beforeContent?: ReactNode;
+  description?: string;
+  eyebrow?: string;
+  lockedOfficeId?: string;
+  lockedOfficeLabel?: string;
+  title?: string;
+}
+
+export default function InspectionBrowser({
+  beforeContent,
+  description = "Browse assigned or scoped inspections, review KPI counts, and jump directly into the inspection workspace when you already know the ID.",
+  eyebrow = "BPLO inspection operations",
+  lockedOfficeId,
+  lockedOfficeLabel,
+  title = "Inspections",
+}: InspectionBrowserProps = {}) {
   const [form] = Form.useForm();
   const [businessLookupSearch, setBusinessLookupSearch] = useState("");
   const [inspectionIdInput, setInspectionIdInput] = useState("");
@@ -75,7 +91,15 @@ export default function InspectionBrowser() {
   const { activeCount, clearValues, page, setPage, setValue, values } =
     useBrowserQueryParams({
       defaults: { status: "all" },
-      keys: ["status", "businessId", "lguId", "officeId", "inspectorId", "from", "to"] as const,
+      keys: [
+        "status",
+        "businessId",
+        "lguId",
+        "officeId",
+        "inspectorId",
+        "from",
+        "to",
+      ] as const,
     });
   const { accessToken, session } = useAuthSession();
   const isAdmin = session?.user.role === "admin";
@@ -84,6 +108,7 @@ export default function InspectionBrowser() {
   const inspectorId = values.inspectorId;
   const lguId = values.lguId;
   const officeId = values.officeId;
+  const effectiveOfficeId = lockedOfficeId || officeId;
   const status = values.status as (typeof statusOptions)[number]["value"];
   const to = values.to;
   const scheduleBusinessId = Form.useWatch("businessId", form) as
@@ -97,25 +122,30 @@ export default function InspectionBrowser() {
       from: from || undefined,
       inspectorId: inspectorId || undefined,
       lguId: lguId || undefined,
-      officeId: officeId || undefined,
+      officeId: effectiveOfficeId || undefined,
       page,
       status: status === "all" ? undefined : status,
       to: to || undefined,
     });
-  const { businessesQuery, inspectorsQuery, lgusQuery, officesQuery, permitsQuery } =
-    useInspectionLookups({
-      accessToken: accessToken ?? "",
-      businessSearch: businessLookupSearch,
-      canListInspectors: isAdmin,
-      inspectorSearch: inspectorLookupSearch,
-      lguSearch: lguLookupSearch,
-      officeSearch: officeLookupSearch,
-      permitBusinessId: scheduleBusinessId,
-      selectedBusinessId: businessId || undefined,
-      selectedInspectorId: inspectorId || undefined,
-      selectedLguId: lguId || undefined,
-      selectedOfficeId: officeId || undefined,
-    });
+  const {
+    businessesQuery,
+    inspectorsQuery,
+    lgusQuery,
+    officesQuery,
+    permitsQuery,
+  } = useInspectionLookups({
+    accessToken: accessToken ?? "",
+    businessSearch: businessLookupSearch,
+    canListInspectors: isAdmin,
+    inspectorSearch: inspectorLookupSearch,
+    lguSearch: lguLookupSearch,
+    officeSearch: officeLookupSearch,
+    permitBusinessId: scheduleBusinessId,
+    selectedBusinessId: businessId || undefined,
+    selectedInspectorId: inspectorId || undefined,
+    selectedLguId: lguId || undefined,
+    selectedOfficeId: effectiveOfficeId || undefined,
+  });
 
   const inspections = inspectionsQuery.data?.data ?? [];
   const businessOptions = (businessesQuery.data?.data ?? []).map(
@@ -157,16 +187,18 @@ export default function InspectionBrowser() {
     selectedLguLabel ||
     lguId;
   const activeOfficeLabel =
+    lockedOfficeLabel ||
     officeOptions.find((option) => option.value === officeId)?.label ||
-    inspections.find((item) => item.office.id === officeId)?.office.name ||
+    inspections.find((item) => item.office.id === effectiveOfficeId)?.office
+      .name ||
     selectedOfficeLabel ||
-    officeId;
+    effectiveOfficeId;
 
   return (
     <InspectionRouteShell
-      eyebrow="BPLO inspection operations"
-      title="Inspections"
-      description="Browse assigned or scoped inspections, review KPI counts, and jump directly into the inspection workspace when you already know the ID."
+      eyebrow={eyebrow}
+      title={title}
+      description={description}
       secondarySidebar={
         <Space direction="vertical" size={20} style={{ width: "100%" }}>
           <Card title="Open by ID" className="glass-card dashboard-side-card">
@@ -213,7 +245,7 @@ export default function InspectionBrowser() {
                 }}
                 onSearch={setBusinessLookupSearch}
               />
-              {isAdmin ? (
+              {isAdmin && !lockedOfficeId ? (
                 <Select
                   allowClear
                   showSearch
@@ -239,7 +271,7 @@ export default function InspectionBrowser() {
                   showSearch
                   filterOption={false}
                   placeholder="Office"
-                  value={officeId || undefined}
+                  value={effectiveOfficeId || undefined}
                   options={officeOptions}
                   loading={officesQuery.isLoading}
                   onChange={(value) => {
@@ -251,6 +283,13 @@ export default function InspectionBrowser() {
                     setValue("officeId", value || "");
                   }}
                   onSearch={setOfficeLookupSearch}
+                />
+              ) : null}
+              {lockedOfficeId ? (
+                <Alert
+                  type="info"
+                  showIcon
+                  message={`Office locked to ${activeOfficeLabel}`}
                 />
               ) : null}
               {isAdmin ? (
@@ -311,7 +350,9 @@ export default function InspectionBrowser() {
             <Tag color="green">Inspector: {activeInspectorLabel}</Tag>
           ) : null}
           {lguId ? <Tag color="purple">LGU: {activeLguLabel}</Tag> : null}
-          {officeId ? <Tag color="cyan">Office: {activeOfficeLabel}</Tag> : null}
+          {effectiveOfficeId ? (
+            <Tag color="cyan">Office: {activeOfficeLabel}</Tag>
+          ) : null}
           {from ? <Tag color="purple">From: {from}</Tag> : null}
           {status !== "all" ? (
             <Tag color="gold">Status: {status.replace("_", " ")}</Tag>
@@ -319,6 +360,8 @@ export default function InspectionBrowser() {
           {to ? <Tag color="cyan">To: {to}</Tag> : null}
         </DashboardFilterStrip>
       ) : null}
+
+      {beforeContent}
 
       <Row gutter={[16, 16]} className="dashboard-summary-row">
         <Col xs={12} md={8} lg={4}>
@@ -488,7 +531,7 @@ export default function InspectionBrowser() {
             onFinish={async (values) => {
               await createInspectionMutation.mutateAsync({
                 businessId: values.businessId,
-                officeId: values.officeId,
+                officeId: lockedOfficeId || values.officeId,
                 ...(values.inspectorId
                   ? { inspectorId: values.inspectorId }
                   : {}),
@@ -519,22 +562,33 @@ export default function InspectionBrowser() {
                   />
                 </Form.Item>
               </Col>
-              <Col xs={24} md={12}>
-                <Form.Item
-                  label="Office"
-                  name="officeId"
-                  rules={[{ required: true }]}
-                >
-                  <Select
-                    showSearch
-                    filterOption={false}
-                    placeholder="Select office"
-                    options={officeOptions}
-                    loading={officesQuery.isLoading}
-                    onSearch={setOfficeLookupSearch}
-                  />
-                </Form.Item>
-              </Col>
+              {lockedOfficeId ? (
+                <Col xs={24} md={12}>
+                  <Form.Item label="Office">
+                    <Input
+                      value={activeOfficeLabel || lockedOfficeId}
+                      disabled
+                    />
+                  </Form.Item>
+                </Col>
+              ) : (
+                <Col xs={24} md={12}>
+                  <Form.Item
+                    label="Office"
+                    name="officeId"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      showSearch
+                      filterOption={false}
+                      placeholder="Select office"
+                      options={officeOptions}
+                      loading={officesQuery.isLoading}
+                      onSearch={setOfficeLookupSearch}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
               <Col xs={24} md={12}>
                 <Form.Item
                   label="Permit"

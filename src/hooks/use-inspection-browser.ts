@@ -48,12 +48,19 @@ export function useInspectionBrowser(input: {
   });
 
   const summaryQuery = useQuery({
-    queryKey: ["inspections-summary", input.from, input.to, input.lguId],
+    queryKey: [
+      "inspections-summary",
+      input.from,
+      input.to,
+      input.lguId,
+      input.officeId,
+    ],
     queryFn: () =>
       getInspectionSummary({
         accessToken: input.accessToken,
         from: input.from,
         lguId: input.lguId,
+        officeId: input.officeId,
         to: input.to,
       }),
     enabled,

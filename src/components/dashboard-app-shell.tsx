@@ -26,16 +26,22 @@ const { Content, Header, Sider } = Layout;
 
 const PROTECTED_PREFIXES = [
   "/audit-logs",
+  "/buildsure",
   "/businesses",
+  "/fireguard",
   "/inspections",
+  "/issue-reports",
   "/lgus",
   "/modules",
   "/notifications",
   "/office-modules",
   "/offices",
+  "/payments",
   "/permits",
   "/reports",
+  "/sanitacheck",
   "/sessions",
+  "/support",
   "/users",
 ] as const;
 
@@ -46,6 +52,7 @@ const ADMIN_ONLY_PATHS = [
   "/notifications",
   "/office-modules",
   "/offices",
+  "/payments",
   "/reports",
   "/users",
 ] as const;
@@ -64,14 +71,45 @@ const navigationItems: NavigationItem[] = [
     label: "Inspections",
   },
   {
+    icon: <BankOutlined />,
+    key: "/buildsure",
+    label: "BuildSure",
+  },
+  {
+    icon: <BankOutlined />,
+    key: "/fireguard",
+    label: "FireGuard",
+  },
+  {
+    icon: <BankOutlined />,
+    key: "/sanitacheck",
+    label: "SanitaCheck",
+  },
+  {
     icon: <ShopOutlined />,
     key: "/businesses",
     label: "Businesses",
   },
   {
+    icon: <FileTextOutlined />,
+    key: "/issue-reports",
+    label: "Issue reports",
+  },
+  {
     icon: <UserOutlined />,
     key: "/sessions",
     label: "Sessions",
+  },
+  {
+    icon: <FileTextOutlined />,
+    key: "/support",
+    label: "Owner support",
+  },
+  {
+    adminOnly: true,
+    icon: <BarChartOutlined />,
+    key: "/payments",
+    label: "Payments",
   },
   {
     adminOnly: true,

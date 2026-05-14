@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { Button, Card, Col, Row, Space, Tag } from "antd";
 
+import PublicFireSafetyCertificateLookup from "@/components/public-fire-safety-certificate-lookup";
+import PublicIssueReportForm from "@/components/public-issue-report-form";
+import PublicIssueReportLookup from "@/components/public-issue-report-lookup";
+import PublicPaymentLookup from "@/components/public-payment-lookup";
+import PublicPermitLookup from "@/components/public-permit-lookup";
+
 const cards = [
   {
     description:
@@ -62,6 +68,21 @@ export default function HomePage() {
             </Card>
           </Col>
         ))}
+        <Col xs={24} lg={12}>
+          <PublicFireSafetyCertificateLookup />
+        </Col>
+        <Col xs={24} lg={12}>
+          <PublicIssueReportForm />
+        </Col>
+        <Col xs={24} lg={12}>
+          <PublicIssueReportLookup />
+        </Col>
+        <Col xs={24} lg={12}>
+          <PublicPermitLookup />
+        </Col>
+        <Col xs={24} lg={12}>
+          <PublicPaymentLookup />
+        </Col>
       </Row>
     </main>
   );
