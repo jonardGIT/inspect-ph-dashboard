@@ -7,6 +7,7 @@ import type {
   FindingRecord,
   InspectionHistoryEvent,
   InspectionChecklistResultRecord,
+  InspectionMapPoint,
   InspectionRecord,
   InspectionSummary,
 } from "@shared/types/api";
@@ -42,6 +43,7 @@ export async function getInspectionDetail(
 export async function getInspectionSummary(input: {
   accessToken: string;
   from?: string;
+  lguId?: string;
   to?: string;
 }): Promise<InspectionSummary> {
   const client = createApiClient(input.accessToken);
@@ -50,6 +52,32 @@ export async function getInspectionSummary(input: {
     {
       params: {
         ...(input.from ? { from: input.from } : {}),
+        ...(input.lguId ? { lguId: input.lguId } : {}),
+        ...(input.to ? { to: input.to } : {}),
+      },
+    },
+  );
+
+  return response.data.data;
+}
+
+export async function listInspectionMapPoints(input: {
+  accessToken: string;
+  from?: string;
+  lguId?: string;
+  officeId?: string;
+  status?: InspectionRecord["status"];
+  to?: string;
+}): Promise<InspectionMapPoint[]> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<ApiResponse<InspectionMapPoint[]>>(
+    `${API_V1}/inspections/map-points`,
+    {
+      params: {
+        ...(input.from ? { from: input.from } : {}),
+        ...(input.lguId ? { lguId: input.lguId } : {}),
+        ...(input.officeId ? { officeId: input.officeId } : {}),
+        ...(input.status ? { status: input.status } : {}),
         ...(input.to ? { to: input.to } : {}),
       },
     },
@@ -63,6 +91,8 @@ export async function listInspections(input: {
   businessId?: string;
   inspectorId?: string;
   limit?: number;
+  lguId?: string;
+  officeId?: string;
   page?: number;
   status?: InspectionRecord["status"];
 }): Promise<ApiListResponse<InspectionRecord>> {
@@ -74,6 +104,8 @@ export async function listInspections(input: {
         ...(input.businessId ? { businessId: input.businessId } : {}),
         ...(input.inspectorId ? { inspectorId: input.inspectorId } : {}),
         ...(input.limit ? { limit: input.limit } : {}),
+        ...(input.lguId ? { lguId: input.lguId } : {}),
+        ...(input.officeId ? { officeId: input.officeId } : {}),
         ...(input.page ? { page: input.page } : {}),
         ...(input.status ? { status: input.status } : {}),
       },
@@ -86,6 +118,7 @@ export async function listInspections(input: {
 export async function createInspection(input: {
   accessToken: string;
   businessId: string;
+  officeId: string;
   permitRecordId: string;
   scheduledAt: string;
   inspectorId?: string;
@@ -98,6 +131,7 @@ export async function createInspection(input: {
       businessId: input.businessId,
       ...(input.inspectorId ? { inspectorId: input.inspectorId } : {}),
       ...(input.notes ? { notes: input.notes } : {}),
+      officeId: input.officeId,
       permitRecordId: input.permitRecordId,
       scheduledAt: input.scheduledAt,
     },

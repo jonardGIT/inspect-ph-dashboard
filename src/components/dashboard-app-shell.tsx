@@ -29,14 +29,35 @@ const PROTECTED_PREFIXES = [
   "/businesses",
   "/inspections",
   "/lgus",
+  "/modules",
   "/notifications",
+  "/office-modules",
   "/offices",
   "/permits",
+  "/reports",
+  "/sessions",
+  "/users",
+] as const;
+
+const ADMIN_ONLY_PATHS = [
+  "/audit-logs",
+  "/lgus",
+  "/modules",
+  "/notifications",
+  "/office-modules",
+  "/offices",
   "/reports",
   "/users",
 ] as const;
 
-const navigationItems: NonNullable<MenuProps["items"]> = [
+interface NavigationItem {
+  adminOnly?: boolean;
+  icon: React.ReactNode;
+  key: string;
+  label: string;
+}
+
+const navigationItems: NavigationItem[] = [
   {
     icon: <AppstoreOutlined />,
     key: "/inspections",
@@ -48,31 +69,54 @@ const navigationItems: NonNullable<MenuProps["items"]> = [
     label: "Businesses",
   },
   {
+    icon: <UserOutlined />,
+    key: "/sessions",
+    label: "Sessions",
+  },
+  {
+    adminOnly: true,
     icon: <GlobalOutlined />,
     key: "/lgus",
     label: "LGUs",
   },
   {
+    adminOnly: true,
+    icon: <AppstoreOutlined />,
+    key: "/modules",
+    label: "Modules",
+  },
+  {
+    adminOnly: true,
     icon: <AuditOutlined />,
     key: "/audit-logs",
     label: "Audit log",
   },
   {
+    adminOnly: true,
     icon: <BellOutlined />,
     key: "/notifications",
     label: "Notifications",
   },
   {
+    adminOnly: true,
     icon: <ApartmentOutlined />,
     key: "/offices",
     label: "Offices",
   },
   {
+    adminOnly: true,
+    icon: <ApartmentOutlined />,
+    key: "/office-modules",
+    label: "Office modules",
+  },
+  {
+    adminOnly: true,
     icon: <UserOutlined />,
     key: "/users",
     label: "Users",
   },
   {
+    adminOnly: true,
     icon: <BarChartOutlined />,
     key: "/reports",
     label: "Reports",
@@ -88,6 +132,10 @@ export function isProtectedDashboardPath(pathname: string): boolean {
   return PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 
+export function isAdminDashboardPath(pathname: string): boolean {
+  return ADMIN_ONLY_PATHS.some((prefix) => pathname.startsWith(prefix));
+}
+
 interface DashboardAppShellProps {
   children: React.ReactNode;
 }
@@ -99,20 +147,36 @@ export default function DashboardAppShell({
   const pathname = usePathname();
   const router = useRouter();
   const { logout, session } = useAuthSession();
+  const isAdmin = session?.user.role === "admin";
+  const visibleNavigationItems = useMemo(
+    () => navigationItems.filter((item) => (item.adminOnly ? isAdmin : true)),
+    [isAdmin],
+  );
 
   const selectedKey = useMemo(() => {
-    const exact = navigationItems.find((item) => item?.key === pathname)?.key;
+    const exact = visibleNavigationItems.find(
+      (item) => item.key === pathname,
+    )?.key;
 
     if (exact) {
       return String(exact);
     }
 
-    const prefixed = navigationItems.find((item) =>
-      pathname.startsWith(String(item?.key)),
+    const prefixed = visibleNavigationItems.find((item) =>
+      pathname.startsWith(item.key),
     )?.key;
 
     return String(prefixed ?? "/inspections");
-  }, [pathname]);
+  }, [pathname, visibleNavigationItems]);
+
+  const menuItems: NonNullable<MenuProps["items"]> = visibleNavigationItems.map(
+    (item) => ({
+      icon: item.icon,
+      key: item.key,
+      label: item.label,
+    }),
+  );
+  const isBlockedAdminPath = !isAdmin && isAdminDashboardPath(pathname);
 
   const identityLabel = session?.user.email || session?.user.name || "Guest";
   const avatarInitial = identityLabel.charAt(0).toUpperCase() || "G";
@@ -144,7 +208,7 @@ export default function DashboardAppShell({
         <Menu
           mode="inline"
           selectedKeys={[selectedKey]}
-          items={navigationItems}
+          items={menuItems}
           className="dashboard-menu"
           onClick={({ key }) => router.push(String(key))}
         />
@@ -188,7 +252,30 @@ export default function DashboardAppShell({
             {session ? <Button onClick={logout}>Sign out</Button> : null}
           </Space>
         </Header>
-        <Content className="dashboard-content">{children}</Content>
+        <Content className="dashboard-content">
+          {isBlockedAdminPath ? (
+            <div className="glass-card" style={{ padding: 24 }}>
+              <Space direction="vertical" size={12}>
+                <Typography.Title level={4} style={{ margin: 0 }}>
+                  Admin access required
+                </Typography.Title>
+                <Typography.Text type="secondary">
+                  This route is reserved for administrative operations.
+                  Inspectors can continue using inspections, businesses, and
+                  permits.
+                </Typography.Text>
+                <Button
+                  type="primary"
+                  onClick={() => router.push("/inspections")}
+                >
+                  Go to inspections
+                </Button>
+              </Space>
+            </div>
+          ) : (
+            children
+          )}
+        </Content>
       </Layout>
     </Layout>
   );

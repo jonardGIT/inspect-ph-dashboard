@@ -73,10 +73,13 @@ export default function InspectionRouteShell({
               {isHydrated && session ? (
                 <>
                   <Typography.Paragraph style={{ margin: 0 }}>
-                    Signed in as {session.user.name} ({session.user.role}).
+                    Signed in as {session.user.name} ({session.user.roleProfile.label}).
                   </Typography.Paragraph>
                   <Typography.Text type="secondary">
                     {session.user.email}
+                  </Typography.Text>
+                  <Typography.Text type="secondary">
+                    Scope: {session.user.roleProfile.accessScope} · {session.user.officeIds.length} office{session.user.officeIds.length === 1 ? "" : "s"}
                   </Typography.Text>
                   <Button onClick={logout}>Sign out</Button>
                 </>

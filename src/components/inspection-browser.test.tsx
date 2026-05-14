@@ -63,7 +63,13 @@ describe("InspectionBrowser", () => {
           email: "admin@example.com",
           id: "admin-1",
           name: "System Admin",
+          officeIds: ["office-1"],
           role: "admin",
+          roleProfile: {
+            accessScope: "global",
+            label: "BPLO Admin",
+            permissions: ["inspection:read"],
+          },
         },
       },
     } as unknown as ReturnType<typeof useAuthSession>);
@@ -77,6 +83,8 @@ describe("InspectionBrowser", () => {
         businessId: "biz-1",
         from: "",
         inspectorId: "inspector-1",
+        lguId: "lgu-1",
+        officeId: "office-1",
         status: "all",
         to: "",
       },
@@ -98,6 +106,12 @@ describe("InspectionBrowser", () => {
               inspectorId: "inspector-1",
               location: { latitude: 17.6132, longitude: 121.7269 },
               notes: undefined,
+              office: {
+                code: "BPLO-HQ",
+                id: "office-1",
+                lguId: "lgu-1",
+                name: "BPLO Headquarters",
+              },
               permit: { id: "permit-1", permitNumber: "PERMIT-123" },
               scheduledAt: "2026-05-14T08:00:00.000Z",
               startedAt: undefined,
@@ -150,10 +164,50 @@ describe("InspectionBrowser", () => {
               email: "inspector@example.com",
               id: "inspector-1",
               name: "Jane Inspector",
+              officeIds: ["office-1"],
               role: "inspector",
+              roleProfile: {
+                accessScope: "assigned",
+                label: "Field Inspector",
+                permissions: ["inspection:read"],
+              },
             },
           ],
           meta: { limit: 10, page: 1, total: 1 },
+        },
+        isLoading: false,
+      },
+      lgusQuery: {
+        data: {
+          data: [
+            {
+              city: "Tuguegarao City",
+              code: "TUG-01",
+              createdAt: "2026-05-13T08:00:00.000Z",
+              id: "lgu-1",
+              name: "Tuguegarao City LGU",
+              province: "Cagayan",
+              region: "Region II",
+              updatedAt: "2026-05-13T08:00:00.000Z",
+            },
+          ],
+          meta: { limit: 25, page: 1, total: 1 },
+        },
+        isLoading: false,
+      },
+      officesQuery: {
+        data: {
+          data: [
+            {
+              code: "BPLO-HQ",
+              createdAt: "2026-05-13T08:00:00.000Z",
+              id: "office-1",
+              lguId: "lgu-1",
+              name: "BPLO Headquarters",
+              updatedAt: "2026-05-13T08:00:00.000Z",
+            },
+          ],
+          meta: { limit: 25, page: 1, total: 1 },
         },
         isLoading: false,
       },
@@ -222,9 +276,33 @@ describe("InspectionBrowser", () => {
 
         return (
           className.includes("ant-tag") &&
+          textContent.includes("LGU: Tuguegarao City LGU · TUG-01")
+        );
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText((_content, element) => {
+        const className =
+          typeof element?.className === "string" ? element.className : "";
+        const textContent = element?.textContent ?? "";
+
+        return (
+          className.includes("ant-tag") &&
           textContent.includes(
             "Inspector: Jane Inspector · inspector@example.com",
           )
+        );
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText((_content, element) => {
+        const className =
+          typeof element?.className === "string" ? element.className : "";
+        const textContent = element?.textContent ?? "";
+
+        return (
+          className.includes("ant-tag") &&
+          textContent.includes("Office: BPLO Headquarters · BPLO-HQ")
         );
       }),
     ).toBeInTheDocument();

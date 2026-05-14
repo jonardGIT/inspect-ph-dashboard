@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createInspection,
   getInspectionSummary,
+  listInspectionMapPoints,
   listInspections,
 } from "@/lib/api/inspections";
 
@@ -13,6 +14,8 @@ export function useInspectionBrowser(input: {
   businessId?: string;
   from?: string;
   inspectorId?: string;
+  lguId?: string;
+  officeId?: string;
   page: number;
   status?: "scheduled" | "in_progress" | "completed" | "overdue" | "canceled";
   to?: string;
@@ -27,6 +30,8 @@ export function useInspectionBrowser(input: {
       input.status,
       input.businessId,
       input.inspectorId,
+      input.lguId,
+      input.officeId,
     ],
     queryFn: () =>
       listInspections({
@@ -34,6 +39,8 @@ export function useInspectionBrowser(input: {
         businessId: input.businessId,
         inspectorId: input.inspectorId,
         limit: 10,
+        lguId: input.lguId,
+        officeId: input.officeId,
         page: input.page,
         status: input.status,
       }),
@@ -41,11 +48,12 @@ export function useInspectionBrowser(input: {
   });
 
   const summaryQuery = useQuery({
-    queryKey: ["inspections-summary", input.from, input.to],
+    queryKey: ["inspections-summary", input.from, input.to, input.lguId],
     queryFn: () =>
       getInspectionSummary({
         accessToken: input.accessToken,
         from: input.from,
+        lguId: input.lguId,
         to: input.to,
       }),
     enabled,
@@ -54,6 +62,7 @@ export function useInspectionBrowser(input: {
   const createInspectionMutation = useMutation({
     mutationFn: (payload: {
       businessId: string;
+      officeId: string;
       permitRecordId: string;
       scheduledAt: string;
       inspectorId?: string;
@@ -75,9 +84,31 @@ export function useInspectionBrowser(input: {
     },
   });
 
+  const mapPointsQuery = useQuery({
+    queryKey: [
+      "inspections-map-points",
+      input.from,
+      input.to,
+      input.status,
+      input.lguId,
+      input.officeId,
+    ],
+    queryFn: () =>
+      listInspectionMapPoints({
+        accessToken: input.accessToken,
+        from: input.from,
+        lguId: input.lguId,
+        officeId: input.officeId,
+        status: input.status,
+        to: input.to,
+      }),
+    enabled,
+  });
+
   return {
     createInspectionMutation,
     inspectionsQuery,
+    mapPointsQuery,
     summaryQuery,
   };
 }

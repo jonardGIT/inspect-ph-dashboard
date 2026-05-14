@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
   Alert,
   Card,
@@ -14,7 +15,7 @@ import {
   Typography,
 } from "antd";
 import type { TableProps } from "antd";
-import type { InspectionRecord } from "@shared/types/api";
+import type { InspectionMapPoint, InspectionRecord } from "@shared/types/api";
 
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
@@ -22,6 +23,7 @@ import InspectionRouteShell from "@/components/inspection-route-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useInspectionBrowser } from "@/hooks/use-inspection-browser";
+import { useInspectionLookups } from "@/hooks/use-inspection-lookups";
 import { getApiErrorMessage } from "@/lib/api/http";
 
 const statusOptions: {
@@ -67,28 +69,98 @@ function getDateLabel(value: string) {
   }).format(new Date(`${value}T00:00:00`));
 }
 
+function createMapLink(latitude: number, longitude: number) {
+  return `https://www.google.com/maps?q=${latitude},${longitude}`;
+}
+
+function renderMapPoint(
+  point: InspectionMapPoint,
+  points: InspectionMapPoint[],
+) {
+  const longitudes = points.map((item) => item.location.longitude);
+  const latitudes = points.map((item) => item.location.latitude);
+  const minLongitude = Math.min(...longitudes);
+  const maxLongitude = Math.max(...longitudes);
+  const minLatitude = Math.min(...latitudes);
+  const maxLatitude = Math.max(...latitudes);
+  const left =
+    minLongitude === maxLongitude
+      ? 50
+      : ((point.location.longitude - minLongitude) /
+          (maxLongitude - minLongitude)) *
+        100;
+  const top =
+    minLatitude === maxLatitude
+      ? 50
+      : 100 -
+        ((point.location.latitude - minLatitude) /
+          (maxLatitude - minLatitude)) *
+          100;
+
+  return {
+    left: `${Math.min(94, Math.max(6, left))}%`,
+    top: `${Math.min(94, Math.max(6, top))}%`,
+  };
+}
+
 export default function OperationsReport() {
+  const [lguLookupSearch, setLguLookupSearch] = useState("");
+  const [selectedLguLabel, setSelectedLguLabel] = useState("");
+  const [officeLookupSearch, setOfficeLookupSearch] = useState("");
+  const [selectedOfficeLabel, setSelectedOfficeLabel] = useState("");
   const { activeCount, clearValues, page, setPage, setValue, values } =
     useBrowserQueryParams({
       defaults: { status: "all" },
-      keys: ["from", "status", "to"] as const,
+      keys: ["from", "lguId", "officeId", "status", "to"] as const,
     });
   const { accessToken, session } = useAuthSession();
   const isAdmin = session?.user.role === "admin";
   const status = values.status as InspectionRecord["status"] | "all";
   const from = values.from;
+  const lguId = values.lguId;
+  const officeId = values.officeId;
   const to = values.to;
-  const { inspectionsQuery, summaryQuery } = useInspectionBrowser({
-    accessToken,
-    from: from ? new Date(`${from}T00:00:00.000Z`).toISOString() : undefined,
-    page,
-    status: status === "all" ? undefined : status,
-    to: to ? new Date(`${to}T23:59:59.999Z`).toISOString() : undefined,
+  const { inspectionsQuery, mapPointsQuery, summaryQuery } =
+    useInspectionBrowser({
+      accessToken,
+      from: from ? new Date(`${from}T00:00:00.000Z`).toISOString() : undefined,
+      lguId: lguId || undefined,
+      officeId: officeId || undefined,
+      page,
+      status: status === "all" ? undefined : status,
+      to: to ? new Date(`${to}T23:59:59.999Z`).toISOString() : undefined,
+    });
+  const { lgusQuery, officesQuery } = useInspectionLookups({
+    accessToken: accessToken ?? "",
+    lguSearch: lguLookupSearch,
+    officeSearch: officeLookupSearch,
+    selectedLguId: lguId || undefined,
+    selectedOfficeId: officeId || undefined,
   });
 
   const inspections = inspectionsQuery.data?.data ?? [];
   const inspectionsMeta = inspectionsQuery.data?.meta;
   const summary = summaryQuery.data;
+  const lguOptions = (lgusQuery.data?.data ?? []).map((lgu) => ({
+    label: `${lgu.name} · ${lgu.code}`,
+    value: lgu.id,
+  }));
+  const officeOptions = (officesQuery.data?.data ?? []).map((office) => ({
+    label: `${office.name} · ${office.code}`,
+    value: office.id,
+  }));
+  const activeLguLabel =
+    lguOptions.find((option) => option.value === lguId)?.label ||
+    inspections.find((inspection) => inspection.office.lguId === lguId)?.office
+      .lguId ||
+    selectedLguLabel ||
+    lguId;
+  const activeOfficeLabel =
+    officeOptions.find((option) => option.value === officeId)?.label ||
+    inspections.find((inspection) => inspection.office.id === officeId)?.office
+      .name ||
+    selectedOfficeLabel ||
+    officeId;
   const columns: TableProps<InspectionRecord>["columns"] = [
     {
       title: "Business",
@@ -103,6 +175,12 @@ export default function OperationsReport() {
           </Typography.Text>
         </Space>
       ),
+    },
+    {
+      title: "Office",
+      key: "office",
+      render: (_value, record) =>
+        `${record.office.name} · ${record.office.code}`,
     },
     {
       title: "Scheduled",
@@ -143,6 +221,10 @@ export default function OperationsReport() {
           {activeCount ? (
             <DashboardFilterStrip onClear={clearValues}>
               {from ? <Tag color="blue">From: {getDateLabel(from)}</Tag> : null}
+              {lguId ? <Tag color="purple">LGU: {activeLguLabel}</Tag> : null}
+              {officeId ? (
+                <Tag color="cyan">Office: {activeOfficeLabel}</Tag>
+              ) : null}
               {to ? <Tag color="blue">To: {getDateLabel(to)}</Tag> : null}
               {status !== "all" ? (
                 <Tag color="gold">Status: {formatStatusLabel(status)}</Tag>
@@ -181,6 +263,46 @@ export default function OperationsReport() {
                     type="date"
                     value={to}
                     onChange={(event) => setValue("to", event.target.value)}
+                  />
+                  <Select
+                    allowClear
+                    showSearch
+                    filterOption={false}
+                    aria-label="LGU scope filter"
+                    options={lguOptions}
+                    loading={lgusQuery.isLoading}
+                    style={{ width: 240 }}
+                    placeholder="Filter LGU"
+                    value={lguId || undefined}
+                    onChange={(value) => {
+                      const nextLabel =
+                        lguOptions.find((option) => option.value === value)
+                          ?.label || "";
+
+                      setSelectedLguLabel(nextLabel);
+                      setValue("lguId", value ?? "");
+                    }}
+                    onSearch={setLguLookupSearch}
+                  />
+                  <Select
+                    allowClear
+                    showSearch
+                    filterOption={false}
+                    aria-label="Office scope filter"
+                    options={officeOptions}
+                    loading={officesQuery.isLoading}
+                    style={{ width: 220 }}
+                    placeholder="Filter office"
+                    value={officeId || undefined}
+                    onChange={(value) => {
+                      const nextLabel =
+                        officeOptions.find((option) => option.value === value)
+                          ?.label || "";
+
+                      setSelectedOfficeLabel(nextLabel);
+                      setValue("officeId", value ?? "");
+                    }}
+                    onSearch={setOfficeLookupSearch}
                   />
                   <Select
                     allowClear
@@ -236,6 +358,97 @@ export default function OperationsReport() {
                 description="Needs supervisory attention"
               />
             </Space>
+
+            <Card
+              title="Inspection coverage map"
+              className="glass-card dashboard-data-card"
+            >
+              {mapPointsQuery.isLoading ? null : mapPointsQuery.data?.length ? (
+                <Space direction="vertical" size={16} style={{ width: "100%" }}>
+                  <div
+                    style={{
+                      background:
+                        "radial-gradient(circle at top, rgba(255,255,255,0.22), rgba(255,255,255,0.06)), linear-gradient(135deg, #f6ead5, #d9efe8)",
+                      border: "1px solid rgba(15, 23, 42, 0.08)",
+                      borderRadius: 20,
+                      height: 280,
+                      overflow: "hidden",
+                      position: "relative",
+                    }}
+                  >
+                    {mapPointsQuery.data.map((point) => {
+                      const position = renderMapPoint(
+                        point,
+                        mapPointsQuery.data ?? [],
+                      );
+
+                      return (
+                        <div
+                          key={point.id}
+                          style={{
+                            left: position.left,
+                            position: "absolute",
+                            top: position.top,
+                            transform: "translate(-50%, -50%)",
+                          }}
+                        >
+                          <div
+                            style={{
+                              background: "#155eef",
+                              border: "2px solid white",
+                              borderRadius: 999,
+                              boxShadow: "0 10px 24px rgba(21, 94, 239, 0.28)",
+                              height: 16,
+                              width: 16,
+                            }}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <Space
+                    direction="vertical"
+                    size={8}
+                    style={{ width: "100%" }}
+                  >
+                    {mapPointsQuery.data.map((point) => (
+                      <Space
+                        key={point.id}
+                        align="start"
+                        style={{
+                          justifyContent: "space-between",
+                          width: "100%",
+                        }}
+                        wrap
+                      >
+                        <Space direction="vertical" size={0}>
+                          <Typography.Text strong>
+                            {point.business.businessName}
+                          </Typography.Text>
+                          <Typography.Text type="secondary">
+                            {point.office.name} ·{" "}
+                            {point.location.latitude.toFixed(5)},{" "}
+                            {point.location.longitude.toFixed(5)}
+                          </Typography.Text>
+                        </Space>
+                        <Typography.Link
+                          href={createMapLink(
+                            point.location.latitude,
+                            point.location.longitude,
+                          )}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Open pin
+                        </Typography.Link>
+                      </Space>
+                    ))}
+                  </Space>
+                </Space>
+              ) : (
+                <Empty description="No scoped inspection coordinates available for the selected filters" />
+              )}
+            </Card>
 
             {inspectionsQuery.error ? (
               <Alert

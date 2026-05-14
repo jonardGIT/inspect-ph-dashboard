@@ -66,18 +66,24 @@ export default function InspectionBrowser() {
   const [businessLookupSearch, setBusinessLookupSearch] = useState("");
   const [inspectionIdInput, setInspectionIdInput] = useState("");
   const [inspectorLookupSearch, setInspectorLookupSearch] = useState("");
+  const [lguLookupSearch, setLguLookupSearch] = useState("");
+  const [officeLookupSearch, setOfficeLookupSearch] = useState("");
   const [selectedBusinessLabel, setSelectedBusinessLabel] = useState("");
   const [selectedInspectorLabel, setSelectedInspectorLabel] = useState("");
+  const [selectedLguLabel, setSelectedLguLabel] = useState("");
+  const [selectedOfficeLabel, setSelectedOfficeLabel] = useState("");
   const { activeCount, clearValues, page, setPage, setValue, values } =
     useBrowserQueryParams({
       defaults: { status: "all" },
-      keys: ["status", "businessId", "inspectorId", "from", "to"] as const,
+      keys: ["status", "businessId", "lguId", "officeId", "inspectorId", "from", "to"] as const,
     });
   const { accessToken, session } = useAuthSession();
   const isAdmin = session?.user.role === "admin";
   const businessId = values.businessId;
   const from = values.from;
   const inspectorId = values.inspectorId;
+  const lguId = values.lguId;
+  const officeId = values.officeId;
   const status = values.status as (typeof statusOptions)[number]["value"];
   const to = values.to;
   const scheduleBusinessId = Form.useWatch("businessId", form) as
@@ -90,19 +96,25 @@ export default function InspectionBrowser() {
       businessId: businessId || undefined,
       from: from || undefined,
       inspectorId: inspectorId || undefined,
+      lguId: lguId || undefined,
+      officeId: officeId || undefined,
       page,
       status: status === "all" ? undefined : status,
       to: to || undefined,
     });
-  const { businessesQuery, inspectorsQuery, permitsQuery } =
+  const { businessesQuery, inspectorsQuery, lgusQuery, officesQuery, permitsQuery } =
     useInspectionLookups({
       accessToken: accessToken ?? "",
       businessSearch: businessLookupSearch,
       canListInspectors: isAdmin,
       inspectorSearch: inspectorLookupSearch,
+      lguSearch: lguLookupSearch,
+      officeSearch: officeLookupSearch,
       permitBusinessId: scheduleBusinessId,
       selectedBusinessId: businessId || undefined,
       selectedInspectorId: inspectorId || undefined,
+      selectedLguId: lguId || undefined,
+      selectedOfficeId: officeId || undefined,
     });
 
   const inspections = inspectionsQuery.data?.data ?? [];
@@ -115,6 +127,14 @@ export default function InspectionBrowser() {
   const inspectorOptions = (inspectorsQuery.data?.data ?? []).map((user) => ({
     label: `${user.name} · ${user.email}`,
     value: user.id,
+  }));
+  const lguOptions = (lgusQuery.data?.data ?? []).map((lgu) => ({
+    label: `${lgu.name} · ${lgu.code}`,
+    value: lgu.id,
+  }));
+  const officeOptions = (officesQuery.data?.data ?? []).map((office) => ({
+    label: `${office.name} · ${office.code}`,
+    value: office.id,
   }));
   const meta = inspectionsQuery.data?.meta;
   const permitOptions = (permitsQuery.data?.data ?? []).map((permit) => ({
@@ -132,6 +152,15 @@ export default function InspectionBrowser() {
     inspectorOptions.find((option) => option.value === inspectorId)?.label ||
     selectedInspectorLabel ||
     inspectorId;
+  const activeLguLabel =
+    lguOptions.find((option) => option.value === lguId)?.label ||
+    selectedLguLabel ||
+    lguId;
+  const activeOfficeLabel =
+    officeOptions.find((option) => option.value === officeId)?.label ||
+    inspections.find((item) => item.office.id === officeId)?.office.name ||
+    selectedOfficeLabel ||
+    officeId;
 
   return (
     <InspectionRouteShell
@@ -189,6 +218,46 @@ export default function InspectionBrowser() {
                   allowClear
                   showSearch
                   filterOption={false}
+                  placeholder="LGU"
+                  value={lguId || undefined}
+                  options={lguOptions}
+                  loading={lgusQuery.isLoading}
+                  onChange={(value) => {
+                    const nextLabel =
+                      lguOptions.find((option) => option.value === value)
+                        ?.label || "";
+
+                    setSelectedLguLabel(nextLabel);
+                    setValue("lguId", value || "");
+                  }}
+                  onSearch={setLguLookupSearch}
+                />
+              ) : null}
+              {isAdmin ? (
+                <Select
+                  allowClear
+                  showSearch
+                  filterOption={false}
+                  placeholder="Office"
+                  value={officeId || undefined}
+                  options={officeOptions}
+                  loading={officesQuery.isLoading}
+                  onChange={(value) => {
+                    const nextLabel =
+                      officeOptions.find((option) => option.value === value)
+                        ?.label || "";
+
+                    setSelectedOfficeLabel(nextLabel);
+                    setValue("officeId", value || "");
+                  }}
+                  onSearch={setOfficeLookupSearch}
+                />
+              ) : null}
+              {isAdmin ? (
+                <Select
+                  allowClear
+                  showSearch
+                  filterOption={false}
                   placeholder="Inspector"
                   value={inspectorId || undefined}
                   options={inspectorOptions}
@@ -241,6 +310,8 @@ export default function InspectionBrowser() {
           {inspectorId ? (
             <Tag color="green">Inspector: {activeInspectorLabel}</Tag>
           ) : null}
+          {lguId ? <Tag color="purple">LGU: {activeLguLabel}</Tag> : null}
+          {officeId ? <Tag color="cyan">Office: {activeOfficeLabel}</Tag> : null}
           {from ? <Tag color="purple">From: {from}</Tag> : null}
           {status !== "all" ? (
             <Tag color="gold">Status: {status.replace("_", " ")}</Tag>
@@ -332,6 +403,12 @@ export default function InspectionBrowser() {
                   key: "permit",
                 },
                 {
+                  title: "Office",
+                  key: "office",
+                  render: (_value, record) =>
+                    `${record.office.name} · ${record.office.code}`,
+                },
+                {
                   title: "Scheduled",
                   key: "scheduledAt",
                   render: (_value, record) => formatDate(record.scheduledAt),
@@ -411,6 +488,7 @@ export default function InspectionBrowser() {
             onFinish={async (values) => {
               await createInspectionMutation.mutateAsync({
                 businessId: values.businessId,
+                officeId: values.officeId,
                 ...(values.inspectorId
                   ? { inspectorId: values.inspectorId }
                   : {}),
@@ -438,6 +516,22 @@ export default function InspectionBrowser() {
                       form.setFieldValue("permitRecordId", undefined)
                     }
                     onSearch={setBusinessLookupSearch}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item
+                  label="Office"
+                  name="officeId"
+                  rules={[{ required: true }]}
+                >
+                  <Select
+                    showSearch
+                    filterOption={false}
+                    placeholder="Select office"
+                    options={officeOptions}
+                    loading={officesQuery.isLoading}
+                    onSearch={setOfficeLookupSearch}
                   />
                 </Form.Item>
               </Col>

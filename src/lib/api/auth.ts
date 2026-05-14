@@ -1,6 +1,7 @@
 import type {
   ApiListResponse,
   ApiResponse,
+  AuthSessionRecord,
   AuthTokens,
   OfficeRecord,
   User,
@@ -67,6 +68,38 @@ export async function listUsers(input: {
   );
 
   return response.data;
+}
+
+export async function listAuthSessions(input: {
+  accessToken: string;
+}): Promise<AuthSessionRecord[]> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<ApiResponse<AuthSessionRecord[]>>(
+    `${API_V1}/auth/sessions`,
+  );
+
+  return response.data.data;
+}
+
+export async function listUserAuthSessions(input: {
+  accessToken: string;
+  userId: string;
+}): Promise<AuthSessionRecord[]> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<ApiResponse<AuthSessionRecord[]>>(
+    `${API_V1}/auth/users/${input.userId}/sessions`,
+  );
+
+  return response.data.data;
+}
+
+export async function revokeAuthSession(input: {
+  accessToken: string;
+  sessionId: string;
+}): Promise<void> {
+  const client = createApiClient(input.accessToken);
+
+  await client.delete(`${API_V1}/auth/sessions/${input.sessionId}`);
 }
 
 export async function listUserOfficeAssignments(input: {
