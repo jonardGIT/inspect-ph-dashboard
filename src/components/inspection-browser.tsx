@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import {
   Alert,
+  Badge,
   Button,
   Card,
   Col,
@@ -17,6 +18,7 @@ import {
   Spin,
   Table,
   Tag,
+  Tooltip,
   Typography,
 } from "antd";
 
@@ -27,6 +29,7 @@ import { useInspectionBrowser } from "@/hooks/use-inspection-browser";
 import { useInspectionLookups } from "@/hooks/use-inspection-lookups";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
+import { useInspectionEventStream } from "@/hooks/use-inspection-event-stream";
 import { getApiErrorMessage } from "@/lib/api/http";
 
 const statusOptions = [
@@ -102,6 +105,9 @@ export default function InspectionBrowser({
       ] as const,
     });
   const { accessToken, session } = useAuthSession();
+  const { connectionState } = useInspectionEventStream(
+    accessToken ?? undefined,
+  );
   const isAdmin = session?.user.role === "admin";
   const businessId = values.businessId;
   const from = values.from;
@@ -414,14 +420,36 @@ export default function InspectionBrowser({
         className="glass-card dashboard-data-card"
         style={{ marginBottom: 20 }}
         extra={
-          <Select
-            style={{ minWidth: 180 }}
-            value={status}
-            options={
-              statusOptions as unknown as { label: string; value: string }[]
-            }
-            onChange={(value) => setValue("status", value)}
-          />
+          <Space>
+            <Tooltip
+              title={
+                connectionState === "connected"
+                  ? "Live updates active"
+                  : connectionState === "connecting"
+                    ? "Connecting to live feed…"
+                    : "Live updates disconnected"
+              }
+            >
+              <Badge
+                status={
+                  connectionState === "connected"
+                    ? "success"
+                    : connectionState === "connecting"
+                      ? "processing"
+                      : "default"
+                }
+                text={connectionState === "connected" ? "Live" : undefined}
+              />
+            </Tooltip>
+            <Select
+              style={{ minWidth: 180 }}
+              value={status}
+              options={
+                statusOptions as unknown as { label: string; value: string }[]
+              }
+              onChange={(value) => setValue("status", value)}
+            />
+          </Space>
         }
       >
         {inspectionsQuery.isLoading ? (

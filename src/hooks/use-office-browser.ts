@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { listLgus } from "@/lib/api/lgus";
-import { createOffice, listOffices } from "@/lib/api/offices";
+import { createOffice, archiveOffice, listOffices } from "@/lib/api/offices";
 
 export function useOfficeBrowser(input: {
   accessToken: string;
@@ -45,7 +45,15 @@ export function useOfficeBrowser(input: {
     },
   });
 
+  const archiveOfficeMutation = useMutation({
+    mutationFn: archiveOffice,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["office-browser"] });
+    },
+  });
+
   return {
+    archiveOfficeMutation,
     createOfficeMutation,
     lguOptionsQuery,
     officesQuery,

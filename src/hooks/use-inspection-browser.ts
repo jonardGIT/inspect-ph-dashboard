@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   createInspection,
+  getInspectionsByOffice,
   getInspectionSummary,
   listInspectionMapPoints,
   listInspections,
@@ -112,7 +113,20 @@ export function useInspectionBrowser(input: {
     enabled,
   });
 
+  const byOfficeQuery = useQuery({
+    queryKey: ["inspections-by-office", input.from, input.to, input.lguId],
+    queryFn: () =>
+      getInspectionsByOffice({
+        accessToken: input.accessToken,
+        from: input.from,
+        lguId: input.lguId,
+        to: input.to,
+      }),
+    enabled,
+  });
+
   return {
+    byOfficeQuery,
     createInspectionMutation,
     inspectionsQuery,
     mapPointsQuery,

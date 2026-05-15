@@ -10,6 +10,7 @@ import type {
   InspectionMapPoint,
   InspectionRecord,
   InspectionSummary,
+  InspectionsByOfficeRow,
 } from "@shared/types/api";
 
 import { createApiClient, getApiOrigin } from "./http";
@@ -290,4 +291,25 @@ export async function uploadInspectionAttachment(input: {
     inspectionId: input.inspectionId,
     storageKey: intent.storageKey,
   });
+}
+
+export async function getInspectionsByOffice(input: {
+  accessToken: string;
+  from?: string;
+  lguId?: string;
+  to?: string;
+}): Promise<InspectionsByOfficeRow[]> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<{ data: InspectionsByOfficeRow[] }>(
+    `${API_V1}/inspections/by-office`,
+    {
+      params: {
+        ...(input.from ? { from: input.from } : {}),
+        ...(input.lguId ? { lguId: input.lguId } : {}),
+        ...(input.to ? { to: input.to } : {}),
+      },
+    },
+  );
+
+  return response.data.data;
 }

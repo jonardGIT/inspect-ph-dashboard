@@ -32,6 +32,7 @@ const PROTECTED_PREFIXES = [
   "/inspections",
   "/issue-reports",
   "/lgus",
+  "/marketguard",
   "/modules",
   "/notifications",
   "/office-modules",
@@ -79,6 +80,11 @@ const navigationItems: NavigationItem[] = [
     icon: <BankOutlined />,
     key: "/fireguard",
     label: "FireGuard",
+  },
+  {
+    icon: <ShopOutlined />,
+    key: "/marketguard",
+    label: "MarketGuard",
   },
   {
     icon: <BankOutlined />,

@@ -9,6 +9,7 @@ import {
   Form,
   Input,
   Pagination,
+  Popconfirm,
   Row,
   Space,
   Table,
@@ -39,7 +40,7 @@ export default function LguBrowser() {
     });
   const { accessToken, session } = useAuthSession();
   const search = values.search;
-  const { createLguMutation, lgusQuery } = useLguBrowser({
+  const { archiveLguMutation, createLguMutation, lgusQuery } = useLguBrowser({
     accessToken,
     page,
     search: search || undefined,
@@ -148,6 +149,29 @@ export default function LguBrowser() {
                   title: "Created",
                   key: "createdAt",
                   render: (_value, record) => formatDate(record.createdAt),
+                },
+                {
+                  title: "Actions",
+                  key: "actions",
+                  render: (_value, record) =>
+                    session?.user.role === "admin" ? (
+                      <Popconfirm
+                        title="Archive this LGU?"
+                        description="Archived LGUs are hidden from all lists. This cannot be undone."
+                        okText="Archive"
+                        okButtonProps={{ danger: true }}
+                        onConfirm={() =>
+                          archiveLguMutation.mutate({
+                            accessToken,
+                            id: record.id,
+                          })
+                        }
+                      >
+                        <Button size="small" danger>
+                          Archive
+                        </Button>
+                      </Popconfirm>
+                    ) : null,
                 },
               ]}
             />

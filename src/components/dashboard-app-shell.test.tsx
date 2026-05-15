@@ -61,6 +61,7 @@ describe("DashboardAppShell", () => {
 
     expect(screen.getByText("BuildSure")).toBeInTheDocument();
     expect(screen.getByText("Inspections")).toBeInTheDocument();
+    expect(screen.getByText("MarketGuard")).toBeInTheDocument();
     expect(screen.getByText("SanitaCheck")).toBeInTheDocument();
     expect(screen.getByText("Owner support")).toBeInTheDocument();
     expect(screen.queryByText("Payments")).not.toBeInTheDocument();
@@ -78,6 +79,10 @@ describe("DashboardAppShell", () => {
 
   it("treats sanitacheck as a protected dashboard route", () => {
     expect(isProtectedDashboardPath("/sanitacheck")).toBe(true);
+  });
+
+  it("treats marketguard as a protected dashboard route", () => {
+    expect(isProtectedDashboardPath("/marketguard")).toBe(true);
   });
 
   it("treats buildsure as a protected dashboard route", () => {

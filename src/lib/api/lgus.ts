@@ -48,3 +48,11 @@ export async function createLgu(input: {
 
   return response.data.data;
 }
+
+export async function archiveLgu(input: {
+  accessToken: string;
+  id: string;
+}): Promise<void> {
+  const client = createApiClient(input.accessToken);
+  await client.patch(`${API_V1}/lgus/${input.id}/archive`);
+}

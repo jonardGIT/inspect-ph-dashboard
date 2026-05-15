@@ -9,6 +9,7 @@ import {
   Form,
   Input,
   Pagination,
+  Popconfirm,
   Row,
   Select,
   Space,
@@ -41,13 +42,17 @@ export default function OfficeBrowser() {
   const { accessToken, session } = useAuthSession();
   const lguId = values.lguId;
   const search = values.search;
-  const { createOfficeMutation, lguOptionsQuery, officesQuery } =
-    useOfficeBrowser({
-      accessToken,
-      lguId: lguId || undefined,
-      page,
-      search: search || undefined,
-    });
+  const {
+    archiveOfficeMutation,
+    createOfficeMutation,
+    lguOptionsQuery,
+    officesQuery,
+  } = useOfficeBrowser({
+    accessToken,
+    lguId: lguId || undefined,
+    page,
+    search: search || undefined,
+  });
 
   const offices = officesQuery.data?.data ?? [];
   const lgus = lguOptionsQuery.data?.data ?? [];
@@ -171,6 +176,29 @@ export default function OfficeBrowser() {
                   title: "Created",
                   key: "createdAt",
                   render: (_value, record) => formatDate(record.createdAt),
+                },
+                {
+                  title: "Actions",
+                  key: "actions",
+                  render: (_value, record) =>
+                    session?.user.role === "admin" ? (
+                      <Popconfirm
+                        title="Archive this office?"
+                        description="Archived offices are hidden from all lists. This cannot be undone."
+                        okText="Archive"
+                        okButtonProps={{ danger: true }}
+                        onConfirm={() =>
+                          archiveOfficeMutation.mutate({
+                            accessToken,
+                            id: record.id,
+                          })
+                        }
+                      >
+                        <Button size="small" danger>
+                          Archive
+                        </Button>
+                      </Popconfirm>
+                    ) : null,
                 },
               ]}
             />

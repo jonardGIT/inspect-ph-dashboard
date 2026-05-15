@@ -51,3 +51,11 @@ export async function createOffice(input: {
 
   return response.data.data;
 }
+
+export async function archiveOffice(input: {
+  accessToken: string;
+  id: string;
+}): Promise<void> {
+  const client = createApiClient(input.accessToken);
+  await client.patch(`${API_V1}/offices/${input.id}/archive`);
+}

@@ -120,7 +120,7 @@ export default function OperationsReport() {
   const lguId = values.lguId;
   const officeId = values.officeId;
   const to = values.to;
-  const { inspectionsQuery, mapPointsQuery, summaryQuery } =
+  const { byOfficeQuery, inspectionsQuery, mapPointsQuery, summaryQuery } =
     useInspectionBrowser({
       accessToken,
       from: from ? new Date(`${from}T00:00:00.000Z`).toISOString() : undefined,
@@ -358,6 +358,55 @@ export default function OperationsReport() {
                 description="Needs supervisory attention"
               />
             </Space>
+
+            <Card
+              title="Breakdown by office"
+              className="glass-card dashboard-data-card"
+            >
+              {byOfficeQuery.isLoading ? null : byOfficeQuery.data?.length ? (
+                <Table
+                  className="dashboard-table"
+                  dataSource={byOfficeQuery.data}
+                  pagination={false}
+                  rowKey="officeId"
+                  scroll={{ x: true }}
+                  columns={[
+                    {
+                      title: "Office",
+                      dataIndex: "officeName",
+                      key: "officeName",
+                    },
+                    {
+                      title: "Scheduled",
+                      dataIndex: "scheduled",
+                      key: "scheduled",
+                    },
+                    {
+                      title: "In progress",
+                      dataIndex: "inProgress",
+                      key: "inProgress",
+                    },
+                    {
+                      title: "Completed",
+                      dataIndex: "completed",
+                      key: "completed",
+                    },
+                    {
+                      title: "Overdue",
+                      dataIndex: "overdue",
+                      key: "overdue",
+                    },
+                    {
+                      title: "Total",
+                      dataIndex: "total",
+                      key: "total",
+                    },
+                  ]}
+                />
+              ) : (
+                <Empty description="No office breakdown data for the selected filters" />
+              )}
+            </Card>
 
             <Card
               title="Inspection coverage map"

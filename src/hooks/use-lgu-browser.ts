@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { createLgu, listLgus } from "@/lib/api/lgus";
+import { createLgu, archiveLgu, listLgus } from "@/lib/api/lgus";
 
 export function useLguBrowser(input: {
   accessToken: string;
@@ -31,7 +31,15 @@ export function useLguBrowser(input: {
     },
   });
 
+  const archiveLguMutation = useMutation({
+    mutationFn: archiveLgu,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["lgu-browser"] });
+    },
+  });
+
   return {
+    archiveLguMutation,
     createLguMutation,
     lgusQuery,
   };

@@ -27,6 +27,9 @@ const roleOptions = [
   { label: "All roles", value: "all" },
   { label: "Admin", value: "admin" },
   { label: "Inspector", value: "inspector" },
+  { label: "LGU Admin", value: "lgu_admin" },
+  { label: "Office Supervisor", value: "office_supervisor" },
+  { label: "Office Clerk", value: "office_clerk" },
 ] as const;
 
 function formatDate(value: string) {
