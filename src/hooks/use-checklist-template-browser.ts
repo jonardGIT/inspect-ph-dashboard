@@ -6,6 +6,7 @@ import {
   createChecklistTemplate,
   listChecklistTemplates,
   patchChecklistTemplateActive,
+  updateChecklistTemplate,
 } from "@/lib/api/checklist-templates";
 
 export function useChecklistTemplateBrowser(input: {
@@ -56,5 +57,14 @@ export function useChecklistTemplateBrowser(input: {
     },
   });
 
-  return { createMutation, setActiveMutation, templatesQuery };
+  const updateMutation = useMutation({
+    mutationFn: updateChecklistTemplate,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["checklist-template-browser"],
+      });
+    },
+  });
+
+  return { createMutation, setActiveMutation, templatesQuery, updateMutation };
 }

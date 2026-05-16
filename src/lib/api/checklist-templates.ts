@@ -72,3 +72,21 @@ export async function patchChecklistTemplateActive(input: {
 
   return response.data.data;
 }
+
+export async function updateChecklistTemplate(input: {
+  accessToken: string;
+  id: string;
+  description?: string | null;
+  isActive?: boolean;
+  sortOrder?: number;
+  title?: string;
+}): Promise<ChecklistTemplateRecord> {
+  const { accessToken, id, ...fields } = input;
+  const client = createApiClient(accessToken);
+  const response = await client.patch<ApiResponse<ChecklistTemplateRecord>>(
+    `${API_V1}/checklist-templates/${id}`,
+    fields,
+  );
+
+  return response.data.data;
+}

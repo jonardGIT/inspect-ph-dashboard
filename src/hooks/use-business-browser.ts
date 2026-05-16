@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { createBusiness, listBusinesses } from "@/lib/api/businesses";
+import { archiveBusiness, createBusiness, listBusinesses, updateBusiness } from "@/lib/api/businesses";
 
 export function useBusinessBrowser(input: {
   accessToken: string;
@@ -42,8 +42,24 @@ export function useBusinessBrowser(input: {
     },
   });
 
+  const archiveBusinessMutation = useMutation({
+    mutationFn: archiveBusiness,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["business-browser"] });
+    },
+  });
+
+  const updateBusinessMutation = useMutation({
+    mutationFn: updateBusiness,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["business-browser"] });
+    },
+  });
+
   return {
+    archiveBusinessMutation,
     businessesQuery,
     createBusinessMutation,
+    updateBusinessMutation,
   };
 }

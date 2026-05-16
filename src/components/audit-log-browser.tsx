@@ -52,14 +52,28 @@ const entityTypeOptions: {
   { label: "Checklist result", value: "checklist_result" },
   { label: "Finding", value: "finding" },
   { label: "Attachment", value: "attachment" },
+  { label: "Business", value: "business" },
+  { label: "Certificate", value: "certificate" },
+  { label: "Issue report", value: "issue_report" },
+  { label: "LGU", value: "lgu" },
+  { label: "Office", value: "office" },
+  { label: "Payment", value: "payment" },
+  { label: "Permit", value: "permit" },
   { label: "User", value: "user" },
 ];
 
 const entityTypeColors: Record<AuditLogRecord["entityType"], string> = {
   attachment: "default",
+  business: "cyan",
+  certificate: "purple",
   checklist_result: "blue",
   finding: "red",
   inspection: "gold",
+  issue_report: "orange",
+  lgu: "geekblue",
+  office: "volcano",
+  payment: "lime",
+  permit: "green",
   user: "green",
 };
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import {
   Alert,
   Button,
@@ -8,6 +10,7 @@ import {
   Empty,
   Form,
   Input,
+  Modal,
   Pagination,
   Row,
   Select,
@@ -26,6 +29,8 @@ import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useChecklistTemplateBrowser } from "@/hooks/use-checklist-template-browser";
 import { getApiErrorMessage } from "@/lib/api/http";
+
+import type { ChecklistTemplateRecord } from "@shared/types/api";
 
 const MODULE_OPTIONS = [
   { label: "All modules", value: "" },
@@ -56,6 +61,8 @@ function formatDate(value: string) {
 
 export default function ChecklistTemplateBrowser() {
   const [form] = Form.useForm();
+  const [editForm] = Form.useForm();
+  const [editTarget, setEditTarget] = useState<ChecklistTemplateRecord | null>(null);
   const { activeCount, clearValues, page, setPage, setValue, values } =
     useBrowserQueryParams({
       defaults: { module: "", status: "all" },
@@ -65,7 +72,7 @@ export default function ChecklistTemplateBrowser() {
   const search = values.search;
   const status = values.status as "all" | "active" | "inactive";
   const moduleFilter = values.module ?? "";
-  const { createMutation, setActiveMutation, templatesQuery } =
+  const { createMutation, setActiveMutation, templatesQuery, updateMutation } =
     useChecklistTemplateBrowser({
       accessToken,
       isActive: status === "all" ? undefined : status === "active",
@@ -226,20 +233,36 @@ export default function ChecklistTemplateBrowser() {
                 ...(isAdmin
                   ? [
                       {
-                        title: "Active",
+                        title: "Actions",
                         key: "actions",
-                        render: (_value: unknown, record: { id: string; isActive: boolean }) => (
-                          <Switch
-                            checked={record.isActive}
-                            loading={setActiveMutation.isPending}
-                            onChange={(checked) => {
-                              setActiveMutation.mutate({
-                                accessToken,
-                                id: record.id,
-                                isActive: checked,
-                              });
-                            }}
-                          />
+                        render: (_value: unknown, record: ChecklistTemplateRecord) => (
+                          <Space size="small">
+                            <Button
+                              size="small"
+                              onClick={() => {
+                                setEditTarget(record);
+                                editForm.setFieldsValue({
+                                  title: record.title,
+                                  description: record.description,
+                                  sortOrder: record.sortOrder,
+                                  isActive: record.isActive,
+                                });
+                              }}
+                            >
+                              Edit
+                            </Button>
+                            <Switch
+                              checked={record.isActive}
+                              loading={setActiveMutation.isPending}
+                              onChange={(checked) => {
+                                setActiveMutation.mutate({
+                                  accessToken,
+                                  id: record.id,
+                                  isActive: checked,
+                                });
+                              }}
+                            />
+                          </Space>
                         ),
                       },
                     ]
@@ -346,6 +369,67 @@ export default function ChecklistTemplateBrowser() {
           </Form>
         </Card>
       ) : null}
+
+      <Modal
+        title="Edit checklist template"
+        open={editTarget !== null}
+        onCancel={() => {
+          setEditTarget(null);
+          editForm.resetFields();
+        }}
+        footer={null}
+      >
+        {editTarget ? (
+          <Form
+            form={editForm}
+            layout="vertical"
+            onFinish={async (values) => {
+              await updateMutation.mutateAsync({
+                accessToken,
+                id: editTarget.id,
+                title: values.title,
+                description: values.description || null,
+                sortOrder:
+                  typeof values.sortOrder === "number"
+                    ? values.sortOrder
+                    : Number(values.sortOrder) || 0,
+                isActive: Boolean(values.isActive),
+              });
+              setEditTarget(null);
+              editForm.resetFields();
+            }}
+          >
+            <Form.Item label="Title" name="title" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="Sort order" name="sortOrder">
+              <Input type="number" min={0} />
+            </Form.Item>
+            <Form.Item label="Active" name="isActive" valuePropName="checked">
+              <Switch />
+            </Form.Item>
+            <Form.Item label="Description" name="description">
+              <Input.TextArea rows={3} />
+            </Form.Item>
+            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+              <Button
+                htmlType="submit"
+                type="primary"
+                loading={updateMutation.isPending}
+              >
+                Save changes
+              </Button>
+              {updateMutation.error ? (
+                <Alert
+                  type="error"
+                  showIcon
+                  message={getApiErrorMessage(updateMutation.error)}
+                />
+              ) : null}
+            </Space>
+          </Form>
+        ) : null}
+      </Modal>
     </InspectionRouteShell>
   );
 }

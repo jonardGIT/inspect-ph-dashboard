@@ -77,3 +77,39 @@ export async function getPublicPermitFindingsByNumber(input: {
 
   return response.data.data;
 }
+
+export async function archivePermit(input: {
+  accessToken: string;
+  id: string;
+}): Promise<void> {
+  const client = createApiClient(input.accessToken);
+  await client.patch(`${API_V1}/permits/${input.id}/archive`);
+}
+
+export async function getPermit(input: {
+  accessToken: string;
+  id: string;
+}): Promise<PermitRecord> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<ApiResponse<PermitRecord>>(
+    `${API_V1}/permits/${input.id}`,
+  );
+  return response.data.data;
+}
+
+export async function updatePermit(input: {
+  accessToken: string;
+  id: string;
+  applicationDate?: string;
+  expirationDate?: string;
+  lineOfBusiness?: string;
+  permitNumber?: string;
+}): Promise<PermitRecord> {
+  const { accessToken, id, ...fields } = input;
+  const client = createApiClient(accessToken);
+  const response = await client.patch<ApiResponse<PermitRecord>>(
+    `${API_V1}/permits/${id}`,
+    fields,
+  );
+  return response.data.data;
+}

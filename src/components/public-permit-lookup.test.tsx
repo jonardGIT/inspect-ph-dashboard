@@ -29,6 +29,10 @@ describe("PublicPermitLookup", () => {
       business: {
         businessName: "North Star Trading",
         id: "11111111-1111-4111-8111-111111111111",
+        ownerName: null,
+        contactNumber: null,
+        addressLine: null,
+        city: null,
       },
       createdAt: "2026-05-12T08:00:00.000Z",
       expirationDate: "2027-05-12T08:00:00.000Z",
@@ -61,6 +65,10 @@ describe("PublicPermitLookup", () => {
         business: {
           businessName: "North Star Trading",
           id: "11111111-1111-4111-8111-111111111111",
+          ownerName: null,
+          contactNumber: null,
+          addressLine: null,
+          city: null,
         },
         createdAt: "2026-05-12T08:00:00.000Z",
         expirationDate: "2027-05-12T08:00:00.000Z",

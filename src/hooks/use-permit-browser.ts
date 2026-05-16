@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { createPermit, listPermits } from "@/lib/api/permits";
+import { archivePermit, createPermit, listPermits, updatePermit } from "@/lib/api/permits";
 
 export function usePermitBrowser(input: {
   accessToken: string;
@@ -33,8 +33,24 @@ export function usePermitBrowser(input: {
     },
   });
 
+  const archivePermitMutation = useMutation({
+    mutationFn: archivePermit,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["permit-browser"] });
+    },
+  });
+
+  const updatePermitMutation = useMutation({
+    mutationFn: updatePermit,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["permit-browser"] });
+    },
+  });
+
   return {
+    archivePermitMutation,
     createPermitMutation,
     permitsQuery,
+    updatePermitMutation,
   };
 }

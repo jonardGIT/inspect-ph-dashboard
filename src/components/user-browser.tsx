@@ -30,6 +30,8 @@ const roleOptions = [
   { label: "LGU Admin", value: "lgu_admin" },
   { label: "Office Supervisor", value: "office_supervisor" },
   { label: "Office Clerk", value: "office_clerk" },
+  { label: "Business Owner", value: "business_owner" },
+  { label: "Citizen", value: "citizen" },
 ] as const;
 
 function formatDate(value: string) {
@@ -49,7 +51,7 @@ export default function UserBrowser() {
       defaults: { role: "all" },
       keys: ["role", "search", "userId"] as const,
     });
-  const { accessToken, session } = useAuthSession();
+  const { accessToken } = useAuthSession();
   const role = values.role as "all" | "admin" | "inspector";
   const search = values.search;
   const selectedUserId = values.userId;

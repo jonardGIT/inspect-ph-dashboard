@@ -63,3 +63,44 @@ export async function createBusiness(input: {
 
   return response.data.data;
 }
+
+export async function archiveBusiness(input: {
+  accessToken: string;
+  id: string;
+}): Promise<void> {
+  const client = createApiClient(input.accessToken);
+  await client.patch(`${API_V1}/businesses/${input.id}/archive`);
+}
+
+export async function getBusiness(input: {
+  accessToken: string;
+  id: string;
+}): Promise<BusinessEstablishment> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<ApiResponse<BusinessEstablishment>>(
+    `${API_V1}/businesses/${input.id}`,
+  );
+  return response.data.data;
+}
+
+export async function updateBusiness(input: {
+  accessToken: string;
+  id: string;
+  addressLine?: string;
+  barangay?: string;
+  businessName?: string;
+  city?: string;
+  contactNumber?: string | null;
+  ownerName?: string;
+  province?: string;
+  taxIdentificationNumber?: string | null;
+  tradeName?: string | null;
+}): Promise<BusinessEstablishment> {
+  const { accessToken, id, ...fields } = input;
+  const client = createApiClient(accessToken);
+  const response = await client.patch<ApiResponse<BusinessEstablishment>>(
+    `${API_V1}/businesses/${id}`,
+    fields,
+  );
+  return response.data.data;
+}

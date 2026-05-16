@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import {
   Alert,
   Button,
@@ -8,7 +10,9 @@ import {
   Empty,
   Form,
   Input,
+  Modal,
   Pagination,
+  Popconfirm,
   Row,
   Select,
   Space,
@@ -25,6 +29,8 @@ import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { usePermitBrowser } from "@/hooks/use-permit-browser";
 import { getApiErrorMessage } from "@/lib/api/http";
+
+import type { PermitRecord } from "@shared/types/api";
 
 const statusOptions = [
   { label: "All statuses", value: "all" },
@@ -52,6 +58,8 @@ function formatDate(value: string) {
 
 export default function PermitBrowser() {
   const [form] = Form.useForm();
+  const [editForm] = Form.useForm();
+  const [editTarget, setEditTarget] = useState<PermitRecord | null>(null);
   const { activeCount, clearValues, page, setPage, setValue, values } =
     useBrowserQueryParams({
       defaults: { status: "all" },
@@ -60,7 +68,7 @@ export default function PermitBrowser() {
   const { accessToken, session } = useAuthSession();
   const businessId = values.businessId;
   const status = values.status as (typeof statusOptions)[number]["value"];
-  const { createPermitMutation, permitsQuery } = usePermitBrowser({
+  const { createPermitMutation, archivePermitMutation, permitsQuery, updatePermitMutation } = usePermitBrowser({
     accessToken,
     businessId: businessId || undefined,
     page,
@@ -193,6 +201,47 @@ export default function PermitBrowser() {
                     </Tag>
                   ),
                 },
+                {
+                  title: "Actions",
+                  key: "actions",
+                  render: (_value, record) =>
+                    hasPermission(session, "permit:manage") ? (
+                      <Space size="small">
+                        {hasPermission(session, "permit:update") ? (
+                          <Button
+                            size="small"
+                            onClick={() => {
+                              setEditTarget(record);
+                              editForm.setFieldsValue({
+                                lineOfBusiness: record.lineOfBusiness,
+                                permitNumber: record.permitNumber,
+                                applicationDate: record.applicationDate,
+                                expirationDate: record.expirationDate,
+                              });
+                            }}
+                          >
+                            Edit
+                          </Button>
+                        ) : null}
+                        <Popconfirm
+                          title="Archive this permit?"
+                          description="Archived permits are hidden from all lists. This cannot be undone."
+                          okText="Archive"
+                          okButtonProps={{ danger: true }}
+                          onConfirm={() =>
+                            archivePermitMutation.mutate({
+                              accessToken,
+                              id: record.id,
+                            })
+                          }
+                        >
+                          <Button size="small" danger>
+                            Archive
+                          </Button>
+                        </Popconfirm>
+                      </Space>
+                    ) : null,
+                },
               ]}
             />
             {meta ? (
@@ -293,6 +342,64 @@ export default function PermitBrowser() {
           </Form>
         </Card>
       ) : null}
+
+      <Modal
+        title="Edit permit"
+        open={editTarget !== null}
+        onCancel={() => {
+          setEditTarget(null);
+          editForm.resetFields();
+        }}
+        footer={null}
+      >
+        {editTarget ? (
+          <Form
+            form={editForm}
+            layout="vertical"
+            onFinish={async (values) => {
+              await updatePermitMutation.mutateAsync({
+                accessToken,
+                id: editTarget.id,
+                lineOfBusiness: values.lineOfBusiness,
+                permitNumber: values.permitNumber,
+                applicationDate: values.applicationDate,
+                expirationDate: values.expirationDate,
+              });
+              setEditTarget(null);
+              editForm.resetFields();
+            }}
+          >
+            <Form.Item label="Permit number" name="permitNumber" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="Line of business" name="lineOfBusiness" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item label="Application date (ISO)" name="applicationDate" rules={[{ required: true }]}>
+              <Input placeholder="2025-01-15T00:00:00.000Z" />
+            </Form.Item>
+            <Form.Item label="Expiration date (ISO)" name="expirationDate" rules={[{ required: true }]}>
+              <Input placeholder="2027-01-14T00:00:00.000Z" />
+            </Form.Item>
+            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+              <Button
+                htmlType="submit"
+                type="primary"
+                loading={updatePermitMutation.isPending}
+              >
+                Save changes
+              </Button>
+              {updatePermitMutation.error ? (
+                <Alert
+                  type="error"
+                  showIcon
+                  message={getApiErrorMessage(updatePermitMutation.error)}
+                />
+              ) : null}
+            </Space>
+          </Form>
+        ) : null}
+      </Modal>
     </InspectionRouteShell>
   );
 }

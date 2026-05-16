@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import {
   Alert,
   Button,
@@ -8,7 +10,9 @@ import {
   Empty,
   Form,
   Input,
+  Modal,
   Pagination,
+  Popconfirm,
   Row,
   Space,
   Table,
@@ -25,6 +29,8 @@ import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useBusinessBrowser } from "@/hooks/use-business-browser";
 import { getApiErrorMessage } from "@/lib/api/http";
 
+import type { BusinessEstablishment } from "@shared/types/api";
+
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-PH", {
     dateStyle: "medium",
@@ -34,6 +40,8 @@ function formatDate(value: string) {
 
 export default function BusinessBrowser() {
   const [form] = Form.useForm();
+  const [editForm] = Form.useForm();
+  const [editTarget, setEditTarget] = useState<BusinessEstablishment | null>(null);
   const { activeCount, clearValues, page, setPage, setValue, values } =
     useBrowserQueryParams({
       keys: ["search", "city", "barangay"] as const,
@@ -42,7 +50,7 @@ export default function BusinessBrowser() {
   const barangay = values.barangay;
   const city = values.city;
   const search = values.search;
-  const { businessesQuery, createBusinessMutation } = useBusinessBrowser({
+  const { businessesQuery, createBusinessMutation, archiveBusinessMutation, updateBusinessMutation } = useBusinessBrowser({
     accessToken,
     barangay: barangay || undefined,
     city: city || undefined,
@@ -172,6 +180,53 @@ export default function BusinessBrowser() {
                   title: "Created",
                   key: "createdAt",
                   render: (_value, record) => formatDate(record.createdAt),
+                },
+                {
+                  title: "Actions",
+                  key: "actions",
+                  render: (_value, record) =>
+                    hasPermission(session, "business:manage") ? (
+                      <Space size="small">
+                        {hasPermission(session, "business:update") ? (
+                          <Button
+                            size="small"
+                            onClick={() => {
+                              setEditTarget(record);
+                              editForm.setFieldsValue({
+                                businessName: record.businessName,
+                                ownerName: record.ownerName,
+                                tradeName: record.tradeName,
+                                contactNumber: record.contactNumber,
+                                addressLine: record.addressLine,
+                                barangay: record.barangay,
+                                city: record.city,
+                                province: record.province,
+                                taxIdentificationNumber:
+                                  record.taxIdentificationNumber,
+                              });
+                            }}
+                          >
+                            Edit
+                          </Button>
+                        ) : null}
+                        <Popconfirm
+                          title="Archive this business?"
+                          description="Archived businesses are hidden from all lists. This cannot be undone."
+                          okText="Archive"
+                          okButtonProps={{ danger: true }}
+                          onConfirm={() =>
+                            archiveBusinessMutation.mutate({
+                              accessToken,
+                              id: record.id,
+                            })
+                          }
+                        >
+                          <Button size="small" danger>
+                            Archive
+                          </Button>
+                        </Popconfirm>
+                      </Space>
+                    ) : null,
                 },
               ]}
             />
@@ -304,6 +359,105 @@ export default function BusinessBrowser() {
           </Form>
         </Card>
       ) : null}
+
+      <Modal
+        title="Edit business"
+        open={editTarget !== null}
+        onCancel={() => {
+          setEditTarget(null);
+          editForm.resetFields();
+        }}
+        footer={null}
+      >
+        {editTarget ? (
+          <Form
+            form={editForm}
+            layout="vertical"
+            onFinish={async (values) => {
+              await updateBusinessMutation.mutateAsync({
+                accessToken,
+                id: editTarget.id,
+                businessName: values.businessName,
+                ownerName: values.ownerName,
+                tradeName: values.tradeName || null,
+                contactNumber: values.contactNumber || null,
+                addressLine: values.addressLine,
+                barangay: values.barangay,
+                city: values.city,
+                province: values.province,
+                taxIdentificationNumber:
+                  values.taxIdentificationNumber || null,
+              });
+              setEditTarget(null);
+              editForm.resetFields();
+            }}
+          >
+            <Row gutter={[16, 0]}>
+              <Col xs={24} md={12}>
+                <Form.Item label="Business name" name="businessName" rules={[{ required: true }]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item label="Trade name" name="tradeName">
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item label="Owner name" name="ownerName" rules={[{ required: true }]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item label="Contact number" name="contactNumber">
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col xs={24}>
+                <Form.Item label="Address line" name="addressLine" rules={[{ required: true }]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={8}>
+                <Form.Item label="Barangay" name="barangay" rules={[{ required: true }]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={8}>
+                <Form.Item label="City" name="city" rules={[{ required: true }]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={8}>
+                <Form.Item label="Province" name="province" rules={[{ required: true }]}>
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={12}>
+                <Form.Item label="TIN" name="taxIdentificationNumber">
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+              <Button
+                htmlType="submit"
+                type="primary"
+                loading={updateBusinessMutation.isPending}
+              >
+                Save changes
+              </Button>
+              {updateBusinessMutation.error ? (
+                <Alert
+                  type="error"
+                  showIcon
+                  message={getApiErrorMessage(updateBusinessMutation.error)}
+                />
+              ) : null}
+            </Space>
+          </Form>
+        ) : null}
+      </Modal>
     </InspectionRouteShell>
   );
 }
