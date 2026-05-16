@@ -19,6 +19,7 @@ import type { NotificationOutboxRecord } from "@shared/types/api";
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useNotificationOutboxBrowser } from "@/hooks/use-notification-outbox-browser";
@@ -95,7 +96,7 @@ export default function NotificationOutboxBrowser() {
     keys: ["eventType", "status", "search"] as const,
   });
   const { accessToken, session } = useAuthSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = hasPermission(session, "user:manage");
   const eventType = values.eventType as
     | NotificationOutboxRecord["eventType"]
     | "all";

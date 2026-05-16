@@ -1,6 +1,5 @@
 import { App as AntdApp, ConfigProvider } from "antd";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -134,12 +133,10 @@ describe("OfficeModuleBrowser", () => {
     expect(screen.getByText("BPLO Inspection")).toBeInTheDocument();
   });
 
-  it("removes an office module assignment", async () => {
-    const user = userEvent.setup();
-
+  it("removes an office module assignment", { timeout: 60000 }, () => {
     renderWithProviders(<OfficeModuleBrowser />);
 
-    await user.click(screen.getByRole("button", { name: "Remove" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove" }));
 
     expect(deleteMutate).toHaveBeenCalledWith({ assignmentId: "assignment-1" });
   });

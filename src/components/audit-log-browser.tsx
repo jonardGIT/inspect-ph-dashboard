@@ -18,6 +18,7 @@ import type { AuditLogRecord } from "@shared/types/api";
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useAuditLogBrowser } from "@/hooks/use-audit-log-browser";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
@@ -103,7 +104,7 @@ export default function AuditLogBrowser() {
     keys: ["action", "entityType", "search"] as const,
   });
   const { accessToken, session } = useAuthSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = hasPermission(session, "report:read");
   const action = values.action as AuditLogRecord["action"] | "all";
   const entityType = values.entityType as AuditLogRecord["entityType"] | "all";
   const search = values.search;

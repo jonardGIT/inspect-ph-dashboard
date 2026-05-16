@@ -26,6 +26,7 @@ import type { InspectionHistoryEvent } from "@shared/types/api";
 
 import { useInspectionWorkspace } from "@/hooks/use-inspection-workspace";
 import { useInspectionLookups } from "@/hooks/use-inspection-lookups";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { getApiErrorMessage } from "@/lib/api/http";
 import InspectionRouteShell from "@/components/inspection-route-shell";
@@ -104,7 +105,7 @@ export default function InspectionWorkspace({
   const [preview, setPreview] = useState<AttachmentPreviewState | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { accessToken, session } = useAuthSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = hasPermission(session, "inspection:assign");
   const { inspectorsQuery } = useInspectionLookups({
     accessToken,
     canListInspectors: isAdmin,
@@ -198,7 +199,7 @@ export default function InspectionWorkspace({
       description="Load an inspection record, review checklist and findings, and upload evidence through the provider-aware attachment flow."
       secondarySidebar={
         <Space direction="vertical" size={20} style={{ width: "100%" }}>
-          {session?.user.role === "admin" ? (
+          {hasPermission(session, "inspection:assign") ? (
             <Card title="Assignment" className="glass-card dashboard-side-card">
               <Space direction="vertical" size={12} style={{ width: "100%" }}>
                 <Typography.Paragraph style={{ margin: 0 }}>

@@ -1,221 +1,632 @@
 
 [1m[30m[46m RUN [49m[39m[22m [36mv4.1.6 [39m[90m/home/nhad/inspect-ph/inspect-ph-dashboard[39m
 
-[90mstderr[2m | src/components/user-browser.test.tsx[2m > [22m[2mUserBrowser[2m > [22m[2mrenders the user directory and selected assignment state
-[22m[39mWarning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+ [31m×[39m src/components/buildsure-browser.test.tsx[2m > [22mBuildSureBrowser[2m > [22mlocks the inspection browser to the BuildSure office[33m 421[2mms[22m[39m
+[31m   → Unable to find an element with the text: NoBeforeContent. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
 
-[90mstderr[2m | src/components/user-browser.test.tsx[2m > [22m[2mUserBrowser[2m > [22m[2mremoves an assignment from the selected user
-[22m[39mWarning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
-
- [31m❯[39m src/components/user-browser.test.tsx [2m([22m[2m2 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 2112[2mms[22m[39m
-[31m     [31m×[31m renders the user directory and selected assignment state[39m[33m 1148[2mms[22m[39m
-     [33m[2m✓[22m[39m removes an assignment from the selected user [33m 960[2mms[22m[39m
-
-[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
-
-[41m[1m FAIL [22m[49m src/components/user-browser.test.tsx[2m > [22mUserBrowser[2m > [22mrenders the user directory and selected assignment state
-[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the text: Field Inspector
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"css-dev-only-do-not-override-tql0nm ant-app css-var-root"[31m
+    [36m>[31m
+      [36m<div>[31m
+        [36m<div>[31m
+          [0mInspectionBrowserStub[0m
+        [36m</div>[31m
+        [36m<div>[31m
+          [0mBuildSure PH[0m
+        [36m</div>[31m
+        [36m<div>[31m
+          [0moffice-build[0m
+        [36m</div>[31m
+        [36m<div>[31m
+          [0mBuilding Safety Headquarters · BLD-HQ[0m
+        [36m</div>[31m
+        [36m<div>[31m
+          [0mHasBeforeContent[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m src/components/user-browser.test.tsx[2m > [22mUserBrowser[2m > [22mrenders the user directory and selected assignment state[33m 1765[2mms[22m[39m
+[31m   → Found multiple elements with the text: Field Inspector
 
 Here are the matching elements:
 
 Ignored nodes: comments, script, style
-[36m<h3[39m
-  [33mclass[39m=[32m"ant-typography dashboard-metric-value css-dev-only-do-not-override-tql0nm css-var-root"[39m
-[36m>[39m
+[36m<h3[31m
+  [33mclass[31m=[32m"ant-typography dashboard-metric-value css-dev-only-do-not-override-tql0nm css-var-root"[31m
+[36m>[31m
   [0mField Inspector[0m
-[36m</h3>[39m
+[36m</h3>[31m
 
 Ignored nodes: comments, script, style
-[36m<strong>[39m
+[36m<strong>[31m
   [0mField Inspector[0m
-[36m</strong>[39m
+[36m</strong>[31m
 
 Ignored nodes: comments, script, style
-[36m<strong>[39m
+[36m<strong>[31m
   [0mField Inspector[0m
-[36m</strong>[39m
+[36m</strong>[31m
 
 (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
 
 Ignored nodes: comments, script, style
-[36m<body>[39m
-  [36m<div>[39m
-    [36m<div[39m
-      [33mclass[39m=[32m"css-dev-only-do-not-override-tql0nm ant-app css-var-root"[39m
-    [36m>[39m
-      [36m<main[39m
-        [33mclass[39m=[32m"page-shell"[39m
-      [36m>[39m
-        [36m<section[39m
-          [33mclass[39m=[32m"hero-panel"[39m
-        [36m>[39m
-          [36m<div[39m
-            [33mclass[39m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-vertical css-var-root"[39m
-            [33mstyle[39m=[32m"column-gap: 16px; row-gap: 16px; width: 100%;"[39m
-          [36m>[39m
-            [36m<div[39m
-              [33mclass[39m=[32m"ant-space-item"[39m
-            [36m>[39m
-              [36m<span[39m
-                [33mclass[39m=[32m"ant-typography eyebrow css-dev-only-do-not-override-tql0nm css-var-root"[39m
-              [36m>[39m
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"css-dev-only-do-not-override-tql0nm ant-app css-var-root"[31m
+    [36m>[31m
+      [36m<main[31m
+        [33mclass[31m=[32m"page-shell"[31m
+      [36m>[31m
+        [36m<section[31m
+          [33mclass[31m=[32m"hero-panel"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-vertical css-var-root"[31m
+            [33mstyle[31m=[32m"column-gap: 16px; row-gap: 16px; width: 100%;"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"ant-typography eyebrow css-dev-only-do-not-override-tql0nm css-var-root"[31m
+              [36m>[31m
                 [0mPlatform administration[0m
-              [36m</span>[39m
-            [36m</div>[39m
-            [36m<div[39m
-              [33mclass[39m=[32m"ant-space-item"[39m
-            [36m>[39m
-              [36m<h1[39m
-                [33mclass[39m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[39m
-                [33mstyle[39m=[32m"margin: 0px;"[39m
-              [36m>[39m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<h1[31m
+                [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                [33mstyle[31m=[32m"margin: 0px;"[31m
+              [36m>[31m
                 [0mUsers[0m
-              [36m</h1>[39m
-            [36m</div>[39m
-            [36m<div[39m
-              [33mclass[39m=[32m"ant-space-item"[39m
-            [36m>[39m
-              [36m<div[39m
-                [33mclass[39m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[39m
-                [33mstyle[39m=[32m"margin: 0px; max-width: 780px;"[39m
-              [36m>[39m
+              [36m</h1>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                [33mstyle[31m=[32m"margin: 0px; max-width: 780px;"[31m
+              [36m>[31m
                 [0mReview authenticated users and manage which office queues they can operate within as Phase 3 scoping comes online.[0m
-              [36m</div>[39m
-            [36m</div>[39m
-            [36m<div[39m
-              [33mclass[39m=[32m"ant-space-item"[39m
-            [36m>[39m
-              [36m<div[39m
-                [33mclass[39m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small css-var-root"[39m
-                [33mstyle[39m=[32m"flex-wrap: wrap;"[39m
-              [36m>[39m
-                [36m<div[39m
-                  [33mclass[39m=[32m"ant-space-item"[39m
-                [36m>[39m
-                  [36m<button[39m
-                    [33mclass[39m=[32m"ant-btn css-dev-only-do-not-override-tql0nm css-var-root ant-btn-primary ant-btn-color-primary ant-btn-variant-solid"[39m
-                    [33mtype[39m=[32m"button"[39m
-                  [36m>[39m
-                    [36m<a[39m
-                      [33mhref[39m=[32m"/"[39m
-                    [36m>[39m
+              [36m</div>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small css-var-root"[31m
+                [33mstyle[31m=[32m"flex-wrap: wrap;"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space-item"[31m
+                [36m>[31m
+                  [36m<button[31m
+                    [33mclass[31m=[32m"ant-btn css-dev-only-do-not-override-tql0nm css-var-root ant-btn-primary ant-btn-color-primary ant-btn-variant-solid"[31m
+                    [33mtype[31m=[32m"button"[31m
+                  [36m>[31m
+                    [36m<a[31m
+                      [33mhref[31m=[32m"/"[31m
+                    [36m>[31m
                       [0mReturn to dashboard[0m
-                    [36m</a>[39m
-                  [36m</button>[39m
-                [36m</div>[39m
-                [36m<div[39m
-                  [33mclass[39m=[32m"ant-space-item"[39m
-                [36m>[39m
-                  [36m<span[39m
-                    [33mclass[39m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[39m
-                  [36m>[39m
+                    [36m</a>[31m
+                  [36m</button>[31m
+                [36m</div>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space-item"[31m
+                [36m>[31m
+                  [36m<span[31m
+                    [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                  [36m>[31m
                     [0mAPI origin:[0m
                     [0m [0m
                     [0mhttp://localhost:4000[0m
-                  [36m</span>[39m
-                [36m</div>[39m
-              [36m</div>[39m
-            [36m</div>[39m
-          [36m</div>[39m
-        [36m</section>[39m
-        [36m<div[39m
-          [33mclass[39m=[32m"ant-row css-dev-only-do-not-override-tql0nm css-var-root"[39m
-          [33mstyle[39m=[32m"margin-inline: -10px; row-gap: 20px;"[39m
-        [36m>[39m
-          [36m<div[39m
-            [33mclass[39m=[32m"ant-col ant-col-xs-24 ant-col-xl-8 css-dev-only-do-not-override-tql0nm css-var-root"[39m
-            [33mstyle[39m=[32m"padding-inline: 10px;"[39m
-          [36m>[39m
-            [36m<div[39m
-              [33mclass[39m=[32m"ant-card ant-card-bordered glass-card css-dev-only-do-not-override-tql0nm css-var-root"[39m
-            [36m>[39m
-              [36m<div[39m
-                [33mclass[39m=[32m"ant-card-head"[39m
-              [36m>[39m
-                [36m<div[39m
-                  [33mclass[39m=[32m"ant-card-head-wrapper"[39m
-                [36m>[39m
-                  [36m<div[39m
-                    [33mclass[39m=[32m"ant-card-head-title"[39m
-                  [36m>[39m
+                  [36m</span>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</section>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"ant-row css-dev-only-do-not-override-tql0nm css-var-root"[31m
+          [33mstyle[31m=[32m"margin-inline: -10px; row-gap: 20px;"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"ant-col ant-col-xs-24 ant-col-xl-8 css-dev-only-do-not-override-tql0nm css-var-root"[31m
+            [33mstyle[31m=[32m"padding-inline: 10px;"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-card ant-card-bordered glass-card css-dev-only-do-not-override-tql0nm css-var-root"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-card-head"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-card-head-wrapper"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-card-head-title"[31m
+                  [36m>[31m
                     [0mDashboard session[0m
-                  [36m</div>[39m
-                [36m</div>[39m
-              [36m</div>[39m
-              [36m<div[39m
-                [33mclass[39m=[32m"ant-card-body"[39m
-              [36m>[39m
-                [36m<div[39m
-                  [33mclass[39m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-vertical css-var-root"[39m
-                  [33mstyle[39m=[32m"column-gap: 12px; row-gap: 12px; width: 100%;"[39m
-                [36m>[39m
-                  [36m<div[39m
-                    [33mclass[39m=[32m"ant-space-item"[39m
-                  [36m>[39m
-                    [36m<div[39m
-                      [33mclass[39m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[39m
-                      [33mstyle[39m=[32m"margin: 0px;"[39m
-                    [36m>[39m
+                  [36m</div>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-card-body"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-vertical css-var-root"[31m
+                  [33mstyle[31m=[32m"column-gap: 12px; row-gap: 12px; width: 100%;"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                      [33mstyle[31m=[32m"margin: 0px;"[31m
+                    [36m>[31m
                       [0mSigned in as [0m
                       [0mSystem Admin[0m
                       [0m ([0m
-                      [0madmin[0m
+                      [0mPlatform Admin[0m
                       [0m).[0m
-                    [36m</div>[39m
-                  [36m</div>[39m
-                  [36m<div[39m
-                    [33mclass[39m=[32m"ant-space-item"[39m
-                  [36m>[39m
-                    [36m<span[39m
-                      [33mclass[39m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[39m
-                    [36m>[39m
+                    [36m</div>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<span[31m
+                      [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                    [36m>[31m
                       [0madmin@example.com[0m
-                    [36m</span>[39m
-                  [36m</div>[39m
-                  [36m<div[39m
-                    [33mclass[39m=[32m"ant-space-item"[39m
-                  [36m>[39m
-                    [36m<button[39m
-                      [33mclass[39m=[32m"ant-btn css-dev-only-do-not-override-tql0nm css-var-root ant-btn-default ant-btn-color-default ant-btn-variant-outlined"[39m
-                      [33mtype[39m=[32m"button"[39m
-                    [36m>[39m
-                      [36m<span>[39m
+                    [36m</span>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<span[31m
+                      [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                    [36m>[31m
+                      [0mScope: [0m
+                      [0mglobal[0m
+                      [0m · [0m
+                      [0m0[0m
+                      [0m office[0m
+                      [0ms[0m
+                    [36m</span>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[...[39m
+ [32m✓[39m src/components/user-browser.test.tsx[2m > [22mUserBrowser[2m > [22mremoves an assignment from the selected user[33m 1648[2mms[22m[39m
+ [31m×[39m src/components/operations-report.test.tsx[2m > [22mOperationsReport[2m > [22mrenders the operations report summary and queue[33m 1891[2mms[22m[39m
+[31m   → Unable to find an element with the text: Live inspection queue. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"css-dev-only-do-not-override-tql0nm ant-app css-var-root"[31m
+    [36m>[31m
+      [36m<main[31m
+        [33mclass[31m=[32m"page-shell"[31m
+      [36m>[31m
+        [36m<section[31m
+          [33mclass[31m=[32m"hero-panel"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-vertical css-var-root"[31m
+            [33mstyle[31m=[32m"column-gap: 16px; row-gap: 16px; width: 100%;"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"ant-typography eyebrow css-dev-only-do-not-override-tql0nm css-var-root"[31m
+              [36m>[31m
+                [0mBPLO supervisory reporting[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<h1[31m
+                [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                [33mstyle[31m=[32m"margin: 0px;"[31m
+              [36m>[31m
+                [0mOperations report[0m
+              [36m</h1>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                [33mstyle[31m=[32m"margin: 0px; max-width: 780px;"[31m
+              [36m>[31m
+                [0mTrack inspection workload, completion, and exception pressure across a reporting window while keeping the live inspection queue close at hand.[0m
+              [36m</div>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small css-var-root"[31m
+                [33mstyle[31m=[32m"flex-wrap: wrap;"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space-item"[31m
+                [36m>[31m
+                  [36m<button[31m
+                    [33mclass[31m=[32m"ant-btn css-dev-only-do-not-override-tql0nm css-var-root ant-btn-primary ant-btn-color-primary ant-btn-variant-solid"[31m
+                    [33mtype[31m=[32m"button"[31m
+                  [36m>[31m
+                    [36m<a[31m
+                      [33mhref[31m=[32m"/"[31m
+                    [36m>[31m
+                      [0mReturn to dashboard[0m
+                    [36m</a>[31m
+                  [36m</button>[31m
+                [36m</div>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space-item"[31m
+                [36m>[31m
+                  [36m<span[31m
+                    [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                  [36m>[31m
+                    [0mAPI origin:[0m
+                    [0m [0m
+                    [0mhttp://localhost:4000[0m
+                  [36m</span>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</section>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"ant-row css-dev-only-do-not-override-tql0nm css-var-root"[31m
+          [33mstyle[31m=[32m"margin-inline: -10px; row-gap: 20px;"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"ant-col ant-col-xs-24 ant-col-xl-8 css-dev-only-do-not-override-tql0nm css-var-root"[31m
+            [33mstyle[31m=[32m"padding-inline: 10px;"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-card ant-card-bordered glass-card css-dev-only-do-not-override-tql0nm css-var-root"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-card-head"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-card-head-wrapper"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-card-head-title"[31m
+                  [36m>[31m
+                    [0mDashboard session[0m
+                  [36m</div>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-card-body"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-vertical css-var-root"[31m
+                  [33mstyle[31m=[32m"column-gap: 12px; row-gap: 12px; width: 100%;"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                      [33mstyle[31m=[32m"margin: 0px;"[31m
+                    [36m>[31m
+                      [0mSigned in as [0m
+                      [0mSystem Admin[0m
+                      [0m ([0m
+                      [0mBPLO Admin[0m
+                      [0m).[0m
+                    [36m</div>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<span[31m
+                      [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                    [36m>[31m
+                      [0madmin@example.com[0m
+                    [36m</span>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<span[31m
+                      [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                    [36m>[31m
+                      [0mScope: [0m
+                      [0mglobal[0m
+                      [0m · [0m
+                      [0m1[0m
+                      [0m office[0m
+                    [36m</span>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<button[31m
+                      [33mclass[31m=[32m"ant-btn css-dev-only-do-not-override-tql0nm css-var-root ant-btn-default ant-btn-color-default ant-btn-variant-outlined"[31m
+                      [33mtype[31m=[32m"button"[31m
+                    [36m>[31m
+                      [36m<span>[31m
                         [0mSign out[0m
-                      [36m</span>[39m
-                    [36m</button>[39m
-                  [36m</div>[39m
-                [36m</div>[39m
-              [36m</div>[39m
-            [36m</div>[39m
-        ...
-[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
-[90m [2m❯[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
-[90m [2m❯[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
-[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
-[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
-[36m [2m❯[22m src/components/user-browser.test.tsx:[2m132:19[22m[39m
-    [90m130|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Users"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
-    [90m131|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"User directory"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
-    [90m132|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Field Inspector"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
-    [90m   |[39m                   [31m^[39m
-    [90m133|[39m     [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m"Role: Inspector"[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
-    [90m134|[39m     expect(screen.getByText("BPLO Headquarters · BPLO-HQ")).toBeInTheD…
+                      [36m</span>[31m
+                    [36m</button>[31m
+                  [36m</div>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"ant-col ant-col-xs-24 ant-col-xl-16 css-dev-only-do-not-override-tql0nm css-var-root"[31m
+            [33mstyle[31m=[32m"padding-inline: 10px;"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-alert ant-alert-warning css-var-root css-dev-only-do-not-override-tql0nm"[31m
+              [33mdata-show[31m=[32m"true"[31m
+              [33mrole[31m=[32m"alert"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"ant-alert-icon"[31m
+              [36m>[31m
+                [36m<span[31m
+                  [33maria-label[31m=[32m"exclamation-circle"[31m
+                  [33mclass[31m=[32m"anticon anticon-exclamation-circle"[31m
+                  [33mrole[31m=[32m"img"[31m
+                [36m>[31m
+                  [36m<svg[31m
+                    [33maria-hidden[31m=[32m"true"[31m
+                    [33mdata-icon[31m=[32m"exclamation-circle"[31m
+                    [33mfill[31m=[32m"currentColor"[31m
+                    [33mfocusable[31m=[32m"false"[31m
+                    [33mheight[31m=[32m"1em"[31m
+                    [33mviewBox[31m=[32m"64 64 896 896"[31m
+                    [33mwidth[31m=[32m"1em"[31m
+                  [36m>[31m
+                    [36m<path[31m
+                      [33md[31m=[32m"M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm-32 232c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v272c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8V296zm32 440a48.01 48.01 0 010-96 48.01 48.01 0 010 96z"[31m
+                    [36m/>[31m
+                  [36m</svg>[31m
+                [36m</span>[31m
+              [36m</span>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-alert-section"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-alert-title"[31m
+                [36m>[31m
+                  [0mOperations reports are limited to admins.[0m
+                [36m</div>[31m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+      [36m</main>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [32m✓[39m src/components/inspection-workspace.test.tsx[2m > [22mInspectionWorkspace[2m > [22mrenders the login prompt before data is loaded[33m 3745[2mms[22m[39m
+ [32m✓[39m src/components/inspection-workspace.test.tsx[2m > [22mInspectionWorkspace[2m > [22mrenders activity history and preview controls when inspection data is loaded[33m 2042[2mms[22m[39m
+ [32m✓[39m src/components/module-browser.test.tsx[2m > [22mModuleBrowser[2m > [22mrenders the module registry[33m 6256[2mms[22m[39m
+ [32m✓[39m src/components/audit-log-browser.test.tsx[2m > [22mAuditLogBrowser[2m > [22mrenders the admin audit activity stream[33m 6222[2mms[22m[39m
+ [32m✓[39m src/components/audit-log-browser.test.tsx[2m > [22mAuditLogBrowser[2m > [22mshows the login prompt when no session is available[33m 863[2mms[22m[39m
+ [32m✓[39m src/components/lgu-browser.test.tsx[2m > [22mLguBrowser[2m > [22mrenders the LGU registry and active filter[33m 7056[2mms[22m[39m
+ [32m✓[39m src/components/inspection-browser.test.tsx[2m > [22mInspectionBrowser[2m > [22mrenders the login prompt and queue heading[33m 5122[2mms[22m[39m
+ [31m×[39m src/components/inspection-browser.test.tsx[2m > [22mInspectionBrowser[2m > [22mshows friendly filter labels and the schedule form for admins[33m 2273[2mms[22m[39m
+[31m   → Unable to find an element with the text: Schedule inspection. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
 
-[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"css-dev-only-do-not-override-tql0nm ant-app css-var-root"[31m
+    [36m>[31m
+      [36m<main[31m
+        [33mclass[31m=[32m"page-shell"[31m
+      [36m>[31m
+        [36m<section[31m
+          [33mclass[31m=[32m"hero-panel"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-vertical css-var-root"[31m
+            [33mstyle[31m=[32m"column-gap: 16px; row-gap: 16px; width: 100%;"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<span[31m
+                [33mclass[31m=[32m"ant-typography eyebrow css-dev-only-do-not-override-tql0nm css-var-root"[31m
+              [36m>[31m
+                [0mBPLO inspection operations[0m
+              [36m</span>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<h1[31m
+                [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                [33mstyle[31m=[32m"margin: 0px;"[31m
+              [36m>[31m
+                [0mInspections[0m
+              [36m</h1>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                [33mstyle[31m=[32m"margin: 0px; max-width: 780px;"[31m
+              [36m>[31m
+                [0mBrowse assigned or scoped inspections, review KPI counts, and jump directly into the inspection workspace when you already know the ID.[0m
+              [36m</div>[31m
+            [36m</div>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-space-item"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-horizontal ant-space-align-center ant-space-gap-row-small ant-space-gap-col-small css-var-root"[31m
+                [33mstyle[31m=[32m"flex-wrap: wrap;"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space-item"[31m
+                [36m>[31m
+                  [36m<button[31m
+                    [33mclass[31m=[32m"ant-btn css-dev-only-do-not-override-tql0nm css-var-root ant-btn-primary ant-btn-color-primary ant-btn-variant-solid"[31m
+                    [33mtype[31m=[32m"button"[31m
+                  [36m>[31m
+                    [36m<a[31m
+                      [33mhref[31m=[32m"/"[31m
+                    [36m>[31m
+                      [0mReturn to dashboard[0m
+                    [36m</a>[31m
+                  [36m</button>[31m
+                [36m</div>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space-item"[31m
+                [36m>[31m
+                  [36m<span[31m
+                    [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                  [36m>[31m
+                    [0mAPI origin:[0m
+                    [0m [0m
+                    [0mhttp://localhost:4000[0m
+                  [36m</span>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+            [36m</div>[31m
+          [36m</div>[31m
+        [36m</section>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"ant-row css-dev-only-do-not-override-tql0nm css-var-root"[31m
+          [33mstyle[31m=[32m"margin-inline: -10px; row-gap: 20px;"[31m
+        [36m>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"ant-col ant-col-xs-24 ant-col-xl-8 css-dev-only-do-not-override-tql0nm css-var-root"[31m
+            [33mstyle[31m=[32m"padding-inline: 10px;"[31m
+          [36m>[31m
+            [36m<div[31m
+              [33mclass[31m=[32m"ant-card ant-card-bordered glass-card css-dev-only-do-not-override-tql0nm css-var-root"[31m
+            [36m>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-card-head"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-card-head-wrapper"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-card-head-title"[31m
+                  [36m>[31m
+                    [0mDashboard session[0m
+                  [36m</div>[31m
+                [36m</div>[31m
+              [36m</div>[31m
+              [36m<div[31m
+                [33mclass[31m=[32m"ant-card-body"[31m
+              [36m>[31m
+                [36m<div[31m
+                  [33mclass[31m=[32m"ant-space css-dev-only-do-not-override-tql0nm ant-space-vertical css-var-root"[31m
+                  [33mstyle[31m=[32m"column-gap: 12px; row-gap: 12px; width: 100%;"[31m
+                [36m>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<div[31m
+                      [33mclass[31m=[32m"ant-typography css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                      [33mstyle[31m=[32m"margin: 0px;"[31m
+                    [36m>[31m
+                      [0mSigned in as [0m
+                      [0mSystem Admin[0m
+                      [0m ([0m
+                      [0mBPLO Admin[0m
+                      [0m).[0m
+                    [36m</div>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<span[31m
+                      [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                    [36m>[31m
+                      [0madmin@example.com[0m
+                    [36m</span>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+                  [36m>[31m
+                    [36m<span[31m
+                      [33mclass[31m=[32m"ant-typography ant-typography-secondary css-dev-only-do-not-override-tql0nm css-var-root"[31m
+                    [36m>[31m
+                      [0mScope: [0m
+                      [0mglobal[0m
+                      [0m · [0m
+                      [0m1[0m
+                      [0m office[0m
+                    [36m</span>[31m
+                  [36m</div>[31m
+                  [36m<div[31m
+                    [33mclass[31m=[32m"ant-space-item"[31m
+  ...[39m
+ [32m✓[39m src/components/office-browser.test.tsx[2m > [22mOfficeBrowser[2m > [22mrenders the office registry and LGU filter state[33m 7287[2mms[22m[39m
+ [32m✓[39m src/components/notification-outbox-browser.test.tsx[2m > [22mNotificationOutboxBrowser[2m > [22mrenders the admin notification outbox[33m 7222[2mms[22m[39m
+ [32m✓[39m src/components/notification-outbox-browser.test.tsx[2m > [22mNotificationOutboxBrowser[2m > [22mtriggers notification status updates from row actions[33m 2269[2mms[22m[39m
+ [32m✓[39m src/components/notification-outbox-browser.test.tsx[2m > [22mNotificationOutboxBrowser[2m > [22mshows the login prompt when no session is available[33m 486[2mms[22m[39m
+ [32m✓[39m src/components/session-browser.test.tsx[2m > [22mSessionBrowser[2m > [22mrenders the session inventory[33m 3674[2mms[22m[39m
+ [32m✓[39m src/components/public-issue-report-form.test.tsx[2m > [22mPublicIssueReportForm[2m > [22msubmits a public issue report and shows the reference number[33m 3859[2mms[22m[39m
+ [32m✓[39m src/components/public-issue-report-form.test.tsx[2m > [22mPublicIssueReportForm[2m > [22mrenders an API error when submission fails[33m 1076[2mms[22m[39m
+ [32m✓[39m src/components/public-fire-safety-certificate-lookup.test.tsx[2m > [22mPublicFireSafetyCertificateLookup[2m > [22mlooks up and renders a public FireGuard certificate[33m 2464[2mms[22m[39m
+ [32m✓[39m src/components/public-fire-safety-certificate-lookup.test.tsx[2m > [22mPublicFireSafetyCertificateLookup[2m > [22mrenders an API error when lookup fails[33m 661[2mms[22m[39m
+ [32m✓[39m src/components/public-permit-lookup.test.tsx[2m > [22mPublicPermitLookup[2m > [22mlooks up a public permit by permit number[33m 2762[2mms[22m[39m
+ [32m✓[39m src/components/public-permit-lookup.test.tsx[2m > [22mPublicPermitLookup[2m > [22mrenders an error when the public permit lookup fails[33m 632[2mms[22m[39m
+ [32m✓[39m src/components/public-payment-lookup.test.tsx[2m > [22mPublicPaymentLookup[2m > [22mlooks up a public payment by reference number[33m 2583[2mms[22m[39m
+ [32m✓[39m src/components/public-payment-lookup.test.tsx[2m > [22mPublicPaymentLookup[2m > [22mrenders an API error when lookup fails[33m 607[2mms[22m[39m
+ [32m✓[39m src/components/public-issue-report-lookup.test.tsx[2m > [22mPublicIssueReportLookup[2m > [22mlooks up an issue report by reference number[33m 2369[2mms[22m[39m
+ [32m✓[39m src/components/public-issue-report-lookup.test.tsx[2m > [22mPublicIssueReportLookup[2m > [22mrenders an API error when lookup fails[33m 540[2mms[22m[39m
+ [32m✓[39m src/components/session-browser.test.tsx[2m > [22mSessionBrowser[2m > [22mlogs out after revoking the current session[33m 16445[2mms[22m[39m
+ [32m✓[39m src/app/page.test.tsx[2m > [22mHomePage[2m > [22mrenders the dashboard heading, queue link, and public public-service tools[33m 2677[2mms[22m[39m
+ [32m✓[39m src/components/dashboard-app-shell.test.tsx[2m > [22mDashboardAppShell[2m > [22mhides admin-only navigation for inspectors[33m 1951[2mms[22m[39m
+ [32m✓[39m src/components/dashboard-app-shell.test.tsx[2m > [22mDashboardAppShell[2m > [22mtreats support as a protected dashboard route[32m 6[2mms[22m[39m
+ [32m✓[39m src/components/dashboard-app-shell.test.tsx[2m > [22mDashboardAppShell[2m > [22mtreats payments as a protected dashboard route[32m 1[2mms[22m[39m
+ [32m✓[39m src/components/dashboard-app-shell.test.tsx[2m > [22mDashboardAppShell[2m > [22mtreats sanitacheck as a protected dashboard route[32m 1[2mms[22m[39m
+ [32m✓[39m src/components/dashboard-app-shell.test.tsx[2m > [22mDashboardAppShell[2m > [22mtreats marketguard as a protected dashboard route[32m 1[2mms[22m[39m
+ [32m✓[39m src/components/dashboard-app-shell.test.tsx[2m > [22mDashboardAppShell[2m > [22mtreats buildsure as a protected dashboard route[32m 1[2mms[22m[39m
+ [32m✓[39m src/components/dashboard-app-shell.test.tsx[2m > [22mDashboardAppShell[2m > [22mblocks inspectors from direct admin routes[33m 556[2mms[22m[39m
+ [32m✓[39m src/components/issue-report-browser.test.tsx[2m > [22mIssueReportBrowser[2m > [22mrenders the issue report inbox rows[33m 14744[2mms[22m[39m
+ [32m✓[39m src/components/payment-browser.test.tsx[2m > [22mPaymentBrowser[2m > [22mrenders payment reconciliation rows for admins[33m 2628[2mms[22m[39m
+ [32m✓[39m src/components/payment-browser.test.tsx[2m > [22mPaymentBrowser[2m > [22mshows an admin-only warning for inspectors[32m 142[2mms[22m[39m
+ [32m✓[39m src/components/fire-safety-certificate-panel.test.tsx[2m > [22mFireSafetyCertificatePanel[2m > [22mrenders certificate cards for the FireGuard office[33m 1226[2mms[22m[39m
+ [32m✓[39m src/components/fire-safety-certificate-panel.test.tsx[2m > [22mFireSafetyCertificatePanel[2m > [22mrenders an empty state when no certificates are available[32m 116[2mms[22m[39m
+ [32m✓[39m src/components/sanitacheck-overview-panel.test.tsx[2m > [22mSanitaCheckOverviewPanel[2m > [22mrenders a scoped sanitation snapshot[33m 1220[2mms[22m[39m
+ [32m✓[39m src/components/sanitacheck-overview-panel.test.tsx[2m > [22mSanitaCheckOverviewPanel[2m > [22mrenders an empty state when no sanitation inspections are available[32m 141[2mms[22m[39m
+ [32m✓[39m src/app/support/page.test.tsx[2m > [22mSupportPage[2m > [22mrenders the owner support lookup workspace[33m 1733[2mms[22m[39m
+ [32m✓[39m src/components/fireguard-browser.test.tsx[2m > [22mFireGuardBrowser[2m > [22mlocks the inspection browser to the FireGuard office[33m 517[2mms[22m[39m
+ [32m✓[39m src/components/issue-report-browser.test.tsx[2m > [22mIssueReportBrowser[2m > [22mtriggers issue report status updates from row actions[33m 13514[2mms[22m[39m
+ [32m✓[39m src/components/issue-report-browser.test.tsx[2m > [22mIssueReportBrowser[2m > [22mrenders an empty state when no issue reports exist[32m 144[2mms[22m[39m
+ [32m✓[39m src/components/sanitacheck-browser.test.tsx[2m > [22mSanitaCheckBrowser[2m > [22mlocks the inspection browser to the SanitaCheck office[33m 383[2mms[22m[39m
+ [32m✓[39m src/components/permit-browser.test.tsx[2m > [22mPermitBrowser[2m > [22mrenders the permits heading and records card[33m 1045[2mms[22m[39m
+ [32m✓[39m src/components/business-browser.test.tsx[2m > [22mBusinessBrowser[2m > [22mrenders the businesses heading and registry card[33m 954[2mms[22m[39m
+ [32m✓[39m src/components/office-module-browser.test.tsx[2m > [22mOfficeModuleBrowser[2m > [22mrenders the office module matrix[33m 4088[2mms[22m[39m
+ [31m×[39m src/components/office-module-browser.test.tsx[2m > [22mOfficeModuleBrowser[2m > [22mremoves an office module assignment[33m 35818[2mms[22m[39m
+[31m   → Test timed out in 30000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".[39m
 
-
-[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
-[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
-[2m   Start at [22m 20:49:48
-[2m   Duration [22m 5.47s[2m (transform 230ms, setup 141ms, import 1.89s, tests 2.11s, environment 1.11s)[22m
+[2m Test Files [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m23 passed[39m[22m[90m (28)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m47 passed[39m[22m[90m (52)[39m
+[2m   Start at [22m 18:25:34
+[2m   Duration [22m 60.63s[2m (transform 79.89s, setup 7.01s, import 259.60s, tests 178.16s, environment 87.43s)[22m
 

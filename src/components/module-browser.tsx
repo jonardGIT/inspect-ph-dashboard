@@ -21,6 +21,7 @@ import {
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useModuleBrowser } from "@/hooks/use-module-browser";
@@ -196,7 +197,7 @@ export default function ModuleBrowser() {
         )}
       </Card>
 
-      {session?.user.role === "admin" ? (
+      {hasPermission(session, "module:manage") ? (
         <Card
           title="Register module"
           className="glass-card dashboard-form-card"

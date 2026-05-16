@@ -16,6 +16,7 @@ import {
 
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { getApiErrorMessage } from "@/lib/api/http";
+import { getRoleProfile } from "@/lib/role-profiles";
 
 interface InspectionRouteShellProps {
   children: React.ReactNode;
@@ -36,6 +37,10 @@ export default function InspectionRouteShell({
   const [password, setPassword] = useState("");
   const { accessToken, isHydrated, loginMutation, logout, session } =
     useAuthSession();
+  const roleProfile = getRoleProfile(session?.user);
+  const officeCount = Array.isArray(session?.user.officeIds)
+    ? session.user.officeIds.length
+    : 0;
 
   const submitLogin = async () => {
     await loginMutation.mutateAsync({
@@ -73,13 +78,14 @@ export default function InspectionRouteShell({
               {isHydrated && session ? (
                 <>
                   <Typography.Paragraph style={{ margin: 0 }}>
-                    Signed in as {session.user.name} ({session.user.roleProfile.label}).
+                    Signed in as {session.user.name} ({roleProfile.label}).
                   </Typography.Paragraph>
                   <Typography.Text type="secondary">
                     {session.user.email}
                   </Typography.Text>
                   <Typography.Text type="secondary">
-                    Scope: {session.user.roleProfile.accessScope} · {session.user.officeIds.length} office{session.user.officeIds.length === 1 ? "" : "s"}
+                    Scope: {roleProfile.accessScope} · {officeCount} office
+                    {officeCount === 1 ? "" : "s"}
                   </Typography.Text>
                   <Button onClick={logout}>Sign out</Button>
                 </>

@@ -15,6 +15,7 @@ import {
 
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useOfficeModuleBrowser } from "@/hooks/use-office-module-browser";
@@ -116,7 +117,7 @@ export default function OfficeModuleBrowser() {
         style={{ marginBottom: 20 }}
       >
         <Space direction="vertical" size={16} style={{ width: "100%" }}>
-          {session?.user.role === "admin" ? (
+          {hasPermission(session, "module:manage") ? (
             <Space wrap>
               <Select
                 showSearch

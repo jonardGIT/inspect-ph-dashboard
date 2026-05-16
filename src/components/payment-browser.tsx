@@ -18,6 +18,7 @@ import type { PaymentRecord } from "@shared/types/api";
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { usePaymentsBrowser } from "@/hooks/use-payments-browser";
@@ -80,7 +81,7 @@ export default function PaymentBrowser() {
       keys: ["provider", "status"] as const,
     });
   const { accessToken, session } = useAuthSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = hasPermission(session, "payment:read");
   const provider = values.provider as PaymentRecord["provider"] | "all";
   const status = values.status as PaymentRecord["status"] | "all";
   const { paymentsQuery } = usePaymentsBrowser({

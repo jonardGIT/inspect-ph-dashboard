@@ -19,6 +19,7 @@ import {
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "./dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useBusinessBrowser } from "@/hooks/use-business-browser";
@@ -111,7 +112,9 @@ export default function BusinessBrowser() {
         <Col xs={24} md={8}>
           <DashboardMetricCard
             label="Operator access"
-            value={session?.user.role === "admin" ? "Admin" : "Viewer"}
+            value={
+              hasPermission(session, "business:create") ? "Admin" : "Viewer"
+            }
             description="New registrations require admin role"
           />
         </Col>
@@ -187,7 +190,7 @@ export default function BusinessBrowser() {
         )}
       </Card>
 
-      {session?.user.role === "admin" ? (
+      {hasPermission(session, "business:create") ? (
         <Card
           title="Register business"
           className="glass-card dashboard-form-card"

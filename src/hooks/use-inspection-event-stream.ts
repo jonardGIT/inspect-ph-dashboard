@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { QueryClientContext } from "@tanstack/react-query";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { getApiOrigin } from "@/lib/api/http";
 
@@ -15,13 +15,14 @@ type ConnectionState = "connecting" | "connected" | "disconnected";
  * Cleans up the EventSource when the component unmounts or the token changes.
  */
 export function useInspectionEventStream(accessToken: string | undefined) {
-  const queryClient = useQueryClient();
+  const queryClient = useContext(QueryClientContext);
+
   const [connectionState, setConnectionState] =
     useState<ConnectionState>("disconnected");
   const esRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
-    if (!accessToken) {
+    if (!accessToken || typeof EventSource === "undefined") {
       return;
     }
 
@@ -31,13 +32,19 @@ export function useInspectionEventStream(accessToken: string | undefined) {
     const es = new EventSource(url);
     esRef.current = es;
 
-    setConnectionState("connecting");
+    queueMicrotask(() => {
+      setConnectionState("connecting");
+    });
 
     es.addEventListener("open", () => {
       setConnectionState("connected");
     });
 
     const handleInspectionEvent = () => {
+      if (!queryClient) {
+        return;
+      }
+
       void queryClient.invalidateQueries({
         queryKey: ["inspections-browser"],
       });

@@ -4,6 +4,7 @@ import { Alert, Card, Empty, Spin } from "antd";
 
 import InspectionBrowser from "@/components/inspection-browser";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import BuildSureOverviewPanel from "@/components/buildsure-overview-panel";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useModuleWorkspace } from "@/hooks/use-module-workspace";
 import { getApiErrorMessage } from "@/lib/api/http";
@@ -67,6 +68,13 @@ export default function BuildSureBrowser() {
 
   return (
     <InspectionBrowser
+      beforeContent={
+        <BuildSureOverviewPanel
+          accessToken={accessToken ?? ""}
+          officeId={assignedOffice.id}
+          officeLabel={`${assignedOffice.name} · ${assignedOffice.code}`}
+        />
+      }
       description="Run BuildSure inspections through the same core queue, metrics, and workspace flow already used for BPLO, FireGuard, and SanitaCheck, but scoped to the BuildSure office assignment."
       eyebrow="BuildSure operations"
       lockedOfficeId={assignedOffice.id}

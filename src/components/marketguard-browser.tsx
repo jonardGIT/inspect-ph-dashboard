@@ -4,6 +4,7 @@ import { Alert, Card, Empty, Spin } from "antd";
 
 import InspectionBrowser from "@/components/inspection-browser";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import MarketGuardOverviewPanel from "@/components/marketguard-overview-panel";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useModuleWorkspace } from "@/hooks/use-module-workspace";
 import { getApiErrorMessage } from "@/lib/api/http";
@@ -67,6 +68,13 @@ export default function MarketGuardBrowser() {
 
   return (
     <InspectionBrowser
+      beforeContent={
+        <MarketGuardOverviewPanel
+          accessToken={accessToken ?? ""}
+          officeId={assignedOffice.id}
+          officeLabel={`${assignedOffice.name} · ${assignedOffice.code}`}
+        />
+      }
       description="Run MarketGuard inspections through the same core queue, metrics, and workspace flow already used for BPLO, FireGuard, SanitaCheck, and BuildSure, but scoped to the MarketGuard office assignment."
       eyebrow="MarketGuard operations"
       lockedOfficeId={assignedOffice.id}

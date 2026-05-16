@@ -27,6 +27,7 @@ import DashboardMetricCard from "./dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
 import { useInspectionBrowser } from "@/hooks/use-inspection-browser";
 import { useInspectionLookups } from "@/hooks/use-inspection-lookups";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useInspectionEventStream } from "@/hooks/use-inspection-event-stream";
@@ -108,7 +109,8 @@ export default function InspectionBrowser({
   const { connectionState } = useInspectionEventStream(
     accessToken ?? undefined,
   );
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = hasPermission(session, "inspection:assign");
+  const canCreate = hasPermission(session, "inspection:create");
   const businessId = values.businessId;
   const from = values.from;
   const inspectorId = values.inspectorId;
@@ -548,7 +550,7 @@ export default function InspectionBrowser({
         )}
       </Card>
 
-      {session?.user.role === "admin" ? (
+      {canCreate ? (
         <Card
           title="Schedule inspection"
           className="glass-card dashboard-form-card"

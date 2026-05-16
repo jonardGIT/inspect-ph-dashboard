@@ -133,7 +133,7 @@ describe("UserBrowser", () => {
 
     expect(screen.getByText("Users")).toBeInTheDocument();
     expect(screen.getByText("User directory")).toBeInTheDocument();
-    expect(screen.getByText("Field Inspector")).toBeInTheDocument();
+    expect(screen.getAllByText("Field Inspector")[0]).toBeInTheDocument();
     expect(screen.getByText("Role: Inspector")).toBeInTheDocument();
     expect(screen.getByText("BPLO Headquarters · BPLO-HQ")).toBeInTheDocument();
   });

@@ -20,6 +20,7 @@ import {
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "./dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { usePermitBrowser } from "@/hooks/use-permit-browser";
@@ -124,7 +125,7 @@ export default function PermitBrowser() {
         <Col xs={24} md={8}>
           <DashboardMetricCard
             label="Ready to create"
-            value={session?.user.role === "admin" ? "Yes" : "No"}
+            value={hasPermission(session, "permit:create") ? "Yes" : "No"}
             description="Permit issuance needs admin access"
           />
         </Col>
@@ -209,7 +210,7 @@ export default function PermitBrowser() {
         )}
       </Card>
 
-      {session?.user.role === "admin" ? (
+      {hasPermission(session, "permit:create") ? (
         <Card title="Create permit" className="glass-card dashboard-form-card">
           <Form
             form={form}

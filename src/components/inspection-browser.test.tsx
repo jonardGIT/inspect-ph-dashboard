@@ -67,8 +67,12 @@ describe("InspectionBrowser", () => {
           role: "admin",
           roleProfile: {
             accessScope: "global",
-            label: "BPLO Admin",
-            permissions: ["inspection:read"],
+            label: "Platform Admin",
+            permissions: [
+              "inspection:read",
+              "inspection:create",
+              "inspection:assign",
+            ],
           },
         },
       },

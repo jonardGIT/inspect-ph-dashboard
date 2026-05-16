@@ -17,6 +17,7 @@ import {
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useSessionBrowser } from "@/hooks/use-session-browser";
@@ -34,7 +35,7 @@ export default function SessionBrowser() {
     keys: ["userId"] as const,
   });
   const { accessToken, logout, session } = useAuthSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = hasPermission(session, "user:manage");
   const selectedUserId = values.userId;
   const { revokeSessionMutation, sessionsQuery, usersQuery } =
     useSessionBrowser({

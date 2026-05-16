@@ -66,8 +66,8 @@ describe("OperationsReport", () => {
           role: "admin",
           roleProfile: {
             accessScope: "global",
-            label: "BPLO Admin",
-            permissions: ["inspection:read"],
+            label: "Platform Admin",
+            permissions: ["inspection:read", "report:read"],
           },
         },
       },
@@ -116,6 +116,11 @@ describe("OperationsReport", () => {
           scheduled: 5,
           total: 19,
         },
+        error: null,
+        isLoading: false,
+      },
+      byOfficeQuery: {
+        data: [],
         error: null,
         isLoading: false,
       },

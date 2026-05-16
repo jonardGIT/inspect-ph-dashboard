@@ -113,6 +113,37 @@ export default function PublicPermitLookup() {
               <Typography.Text type="secondary">
                 Last updated {formatDate(result.updatedAt)}
               </Typography.Text>
+              {result.business.ownerName ||
+              result.business.contactNumber ||
+              result.business.addressLine ? (
+                <Card
+                  type="inner"
+                  size="small"
+                  title="Owner contact"
+                  style={{ marginTop: 4 }}
+                >
+                  <Space direction="vertical" size={4}>
+                    {result.business.ownerName ? (
+                      <Typography.Text>
+                        Owner: {result.business.ownerName}
+                      </Typography.Text>
+                    ) : null}
+                    {result.business.contactNumber ? (
+                      <Typography.Text>
+                        Contact: {result.business.contactNumber}
+                      </Typography.Text>
+                    ) : null}
+                    {result.business.addressLine ? (
+                      <Typography.Text type="secondary">
+                        {result.business.addressLine}
+                        {result.business.city
+                          ? `, ${result.business.city}`
+                          : ""}
+                      </Typography.Text>
+                    ) : null}
+                  </Space>
+                </Card>
+              ) : null}
               {findingsResult?.latestInspection ? (
                 <Typography.Text type="secondary">
                   Latest inspection {findingsResult.latestInspection.status.replace("_", " ")}

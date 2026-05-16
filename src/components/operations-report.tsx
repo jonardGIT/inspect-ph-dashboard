@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import {
   Alert,
+  Button,
   Card,
   Empty,
   Input,
@@ -14,12 +15,67 @@ import {
   Tag,
   Typography,
 } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import type { TableProps } from "antd";
-import type { InspectionMapPoint, InspectionRecord } from "@shared/types/api";
+import type {
+  InspectionMapPoint,
+  InspectionRecord,
+  InspectionsByOfficeRow,
+} from "@shared/types/api";
+
+function exportByOfficePdf(
+  rows: InspectionsByOfficeRow[],
+  reportTitle: string,
+) {
+  const rows_html = rows
+    .map(
+      (r) =>
+        `<tr><td>${r.officeName}</td><td>${r.scheduled}</td><td>${r.inProgress}</td><td>${r.completed}</td><td>${r.overdue}</td><td>${r.total}</td></tr>`,
+    )
+    .join("");
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${reportTitle}</title>
+<style>body{font-family:Arial,sans-serif;padding:24px}h1{font-size:15px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{border:1px solid #ccc;padding:6px 10px;text-align:left}
+th{background:#f5f5f5;font-weight:600}</style></head>
+<body><h1>${reportTitle}</h1><table>
+<thead><tr><th>Office</th><th>Scheduled</th><th>In Progress</th><th>Completed</th><th>Overdue</th><th>Total</th></tr></thead>
+<tbody>${rows_html}</tbody></table></body></html>`;
+  const win = window.open("", "_blank");
+  if (win) {
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    win.print();
+  }
+}
+
+function exportByOfficeCsv(rows: InspectionsByOfficeRow[]) {
+  const header = "Office,Scheduled,In Progress,Completed,Overdue,Total";
+  const lines = rows.map((r) =>
+    [
+      `"${r.officeName.replace(/"/g, '""')}"`,
+      r.scheduled,
+      r.inProgress,
+      r.completed,
+      r.overdue,
+      r.total,
+    ].join(","),
+  );
+  const csv = [header, ...lines].join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "inspections-by-office.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBrowserQueryParams } from "@/hooks/use-browser-query-params";
 import { useInspectionBrowser } from "@/hooks/use-inspection-browser";
@@ -114,7 +170,7 @@ export default function OperationsReport() {
       keys: ["from", "lguId", "officeId", "status", "to"] as const,
     });
   const { accessToken, session } = useAuthSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = hasPermission(session, "report:read");
   const status = values.status as InspectionRecord["status"] | "all";
   const from = values.from;
   const lguId = values.lguId;
@@ -362,6 +418,31 @@ export default function OperationsReport() {
             <Card
               title="Breakdown by office"
               className="glass-card dashboard-data-card"
+              extra={
+                byOfficeQuery.data?.length ? (
+                  <Space size={8}>
+                    <Button
+                      icon={<DownloadOutlined />}
+                      size="small"
+                      onClick={() =>
+                        exportByOfficePdf(
+                          byOfficeQuery.data!,
+                          "Inspections by Office",
+                        )
+                      }
+                    >
+                      Download PDF
+                    </Button>
+                    <Button
+                      icon={<DownloadOutlined />}
+                      size="small"
+                      onClick={() => exportByOfficeCsv(byOfficeQuery.data!)}
+                    >
+                      Download CSV
+                    </Button>
+                  </Space>
+                ) : null
+              }
             >
               {byOfficeQuery.isLoading ? null : byOfficeQuery.data?.length ? (
                 <Table

@@ -18,6 +18,7 @@ import {
   Typography,
 } from "antd";
 
+import { hasPermission } from "@/components/dashboard-app-shell";
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
@@ -181,7 +182,7 @@ export default function OfficeBrowser() {
                   title: "Actions",
                   key: "actions",
                   render: (_value, record) =>
-                    session?.user.role === "admin" ? (
+                    hasPermission(session, "office:manage") ? (
                       <Popconfirm
                         title="Archive this office?"
                         description="Archived offices are hidden from all lists. This cannot be undone."
@@ -217,7 +218,7 @@ export default function OfficeBrowser() {
         )}
       </Card>
 
-      {session?.user.role === "admin" ? (
+      {hasPermission(session, "office:manage") ? (
         <Card
           title="Register office"
           className="glass-card dashboard-form-card"

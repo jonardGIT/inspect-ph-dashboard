@@ -17,6 +17,7 @@ import {
   Typography,
 } from "antd";
 
+import { hasPermission } from "@/components/dashboard-app-shell";
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
@@ -96,7 +97,7 @@ export default function LguBrowser() {
         <Col xs={24} md={8}>
           <DashboardMetricCard
             label="Operator access"
-            value={session?.user.role === "admin" ? "Admin" : "Viewer"}
+            value={hasPermission(session, "lgu:manage") ? "Admin" : "Viewer"}
             description="Creating LGUs requires admin role"
           />
         </Col>
@@ -154,7 +155,7 @@ export default function LguBrowser() {
                   title: "Actions",
                   key: "actions",
                   render: (_value, record) =>
-                    session?.user.role === "admin" ? (
+                    hasPermission(session, "lgu:manage") ? (
                       <Popconfirm
                         title="Archive this LGU?"
                         description="Archived LGUs are hidden from all lists. This cannot be undone."
@@ -190,7 +191,7 @@ export default function LguBrowser() {
         )}
       </Card>
 
-      {session?.user.role === "admin" ? (
+      {hasPermission(session, "lgu:manage") ? (
         <Card title="Register LGU" className="glass-card dashboard-form-card">
           <Form
             form={form}

@@ -7,6 +7,8 @@ import {
   BankOutlined,
   BarChartOutlined,
   BellOutlined,
+  HeartOutlined,
+  EnvironmentOutlined,
   FileTextOutlined,
   GlobalOutlined,
   MenuFoldOutlined,
@@ -21,14 +23,33 @@ import { usePathname, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { useAuthSession } from "@/hooks/use-auth-session";
+import { getRoleProfile } from "@/lib/role-profiles";
+import type { User } from "@shared/types/api";
+
+const ADMIN_ROLES: User["role"][] = ["admin", "lgu_admin", "office_supervisor"];
+
+export function hasPermission(
+  session:
+    | { user: Pick<User, "role" | "roleProfile"> }
+    | { user: { role?: User["role"]; roleProfile?: User["roleProfile"] } }
+    | null,
+  permission: string,
+): boolean {
+  return getRoleProfile(session?.user).permissions.includes(permission);
+}
 
 const { Content, Header, Sider } = Layout;
 
 const PROTECTED_PREFIXES = [
+  "/agricheck",
+  "/assesspro",
   "/audit-logs",
   "/buildsure",
   "/businesses",
+  "/checklist-templates",
+  "/ecowatch",
   "/fireguard",
+  "/infrainspect",
   "/inspections",
   "/issue-reports",
   "/lgus",
@@ -43,7 +64,9 @@ const PROTECTED_PREFIXES = [
   "/sanitacheck",
   "/sessions",
   "/support",
+  "/tourismsafe",
   "/users",
+  "/zoneverify",
 ] as const;
 
 const ADMIN_ONLY_PATHS = [
@@ -92,6 +115,36 @@ const navigationItems: NavigationItem[] = [
     label: "SanitaCheck",
   },
   {
+    icon: <EnvironmentOutlined />,
+    key: "/ecowatch",
+    label: "EcoWatch",
+  },
+  {
+    icon: <EnvironmentOutlined />,
+    key: "/zoneverify",
+    label: "ZoneVerify",
+  },
+  {
+    icon: <BankOutlined />,
+    key: "/infrainspect",
+    label: "InfraInspect",
+  },
+  {
+    icon: <ShopOutlined />,
+    key: "/agricheck",
+    label: "AgriCheck",
+  },
+  {
+    icon: <BankOutlined />,
+    key: "/tourismsafe",
+    label: "TourismSafe",
+  },
+  {
+    icon: <BankOutlined />,
+    key: "/assesspro",
+    label: "AssessPro",
+  },
+  {
     icon: <ShopOutlined />,
     key: "/businesses",
     label: "Businesses",
@@ -131,6 +184,12 @@ const navigationItems: NavigationItem[] = [
   },
   {
     adminOnly: true,
+    icon: <FileTextOutlined />,
+    key: "/checklist-templates",
+    label: "Checklist templates",
+  },
+  {
+    adminOnly: true,
     icon: <AuditOutlined />,
     key: "/audit-logs",
     label: "Audit log",
@@ -166,6 +225,12 @@ const navigationItems: NavigationItem[] = [
     label: "Reports",
   },
   {
+    adminOnly: true,
+    icon: <HeartOutlined />,
+    key: "/reports/system",
+    label: "System health",
+  },
+  {
     icon: <FileTextOutlined />,
     key: "/permits",
     label: "Permits",
@@ -191,7 +256,7 @@ export default function DashboardAppShell({
   const pathname = usePathname();
   const router = useRouter();
   const { logout, session } = useAuthSession();
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = ADMIN_ROLES.includes(session?.user.role as User["role"]);
   const visibleNavigationItems = useMemo(
     () => navigationItems.filter((item) => (item.adminOnly ? isAdmin : true)),
     [isAdmin],

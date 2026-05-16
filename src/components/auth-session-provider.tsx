@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { login, type AuthSession } from "@/lib/api/auth";
+import { normalizeUser } from "@/lib/role-profiles";
 
 const AUTH_SESSION_STORAGE_KEY = "inspect-ph-dashboard-session";
 
@@ -20,6 +21,10 @@ interface AuthSessionContextValue {
 const AuthSessionContext = createContext<AuthSessionContextValue | null>(null);
 
 function readStoredSession(): AuthSession | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
   const rawValue = window.localStorage.getItem(AUTH_SESSION_STORAGE_KEY);
 
   if (!rawValue) {
@@ -27,7 +32,7 @@ function readStoredSession(): AuthSession | null {
   }
 
   try {
-    return JSON.parse(rawValue) as AuthSession;
+    return normalizeUser(JSON.parse(rawValue) as AuthSession);
   } catch {
     window.localStorage.removeItem(AUTH_SESSION_STORAGE_KEY);
     return null;
@@ -40,21 +45,25 @@ interface AuthSessionProviderProps {
 
 export function AuthSessionProvider({ children }: AuthSessionProviderProps) {
   const [isHydrated, setIsHydrated] = useState(false);
-  const [session, setSession] = useState<AuthSession | null>(null);
+  const [session, setSession] = useState<AuthSession | null>(() =>
+    readStoredSession(),
+  );
 
   useEffect(() => {
-    setSession(readStoredSession());
-    setIsHydrated(true);
+    queueMicrotask(() => {
+      setIsHydrated(true);
+    });
   }, []);
 
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (nextSession) => {
+      const normalizedSession = normalizeUser(nextSession);
       window.localStorage.setItem(
         AUTH_SESSION_STORAGE_KEY,
-        JSON.stringify(nextSession),
+        JSON.stringify(normalizedSession),
       );
-      setSession(nextSession);
+      setSession(normalizedSession);
     },
   });
 

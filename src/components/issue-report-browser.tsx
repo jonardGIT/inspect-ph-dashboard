@@ -20,6 +20,7 @@ import type { IssueReportRecord } from "@shared/types/api";
 
 import DashboardMetricCard from "@/components/dashboard-metric-card";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useIssueReportBrowser } from "@/hooks/use-issue-report-browser";
 import { getApiErrorMessage } from "@/lib/api/http";
@@ -58,18 +59,21 @@ function formatDate(value: string) {
 export default function IssueReportBrowser() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<IssueReportRecord["category"] | "">("");
+  const [category, setCategory] = useState<IssueReportRecord["category"] | "">(
+    "",
+  );
   const [status, setStatus] = useState<IssueReportRecord["status"] | "">("");
   const { accessToken, session } = useAuthSession();
   const effectiveCategory = category === "" ? undefined : category;
   const effectiveStatus = status === "" ? undefined : status;
-  const { issueReportsQuery, updateIssueReportStatusMutation } = useIssueReportBrowser({
-    accessToken,
-    category: effectiveCategory,
-    page,
-    search: search || undefined,
-    status: effectiveStatus,
-  });
+  const { issueReportsQuery, updateIssueReportStatusMutation } =
+    useIssueReportBrowser({
+      accessToken,
+      category: effectiveCategory,
+      page,
+      search: search || undefined,
+      status: effectiveStatus,
+    });
 
   const issueReports = issueReportsQuery.data?.data ?? [];
   const meta = issueReportsQuery.data?.meta;
@@ -144,7 +148,7 @@ export default function IssueReportBrowser() {
         <Col xs={24} md={8}>
           <DashboardMetricCard
             label="Operator access"
-            value={session?.user.role === "admin" ? "Admin" : "Staff"}
+            value={hasPermission(session, "report:read") ? "Admin" : "Staff"}
             description="Authenticated dashboard inbox"
           />
         </Col>
@@ -159,7 +163,10 @@ export default function IssueReportBrowser() {
         />
       ) : null}
 
-      <Card title="Submitted issue reports" className="glass-card dashboard-data-card">
+      <Card
+        title="Submitted issue reports"
+        className="glass-card dashboard-data-card"
+      >
         {issueReportsQuery.isLoading ? null : issueReports.length ? (
           <>
             <Table

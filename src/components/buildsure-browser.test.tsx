@@ -110,6 +110,6 @@ describe("BuildSureBrowser", () => {
     expect(
       screen.getByText("Building Safety Headquarters · BLD-HQ"),
     ).toBeInTheDocument();
-    expect(screen.getByText("NoBeforeContent")).toBeInTheDocument();
+    expect(screen.getByText("HasBeforeContent")).toBeInTheDocument();
   });
 });
