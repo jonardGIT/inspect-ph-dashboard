@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface UseBrowserQueryParamsOptions<Key extends string> {
@@ -21,6 +22,35 @@ function parsePage(value: string | null) {
   return Math.floor(parsed);
 }
 
+function storageKey(pathname: string) {
+  return `inspect-ph-filters:${pathname}`;
+}
+
+function loadSavedParams(pathname: string): URLSearchParams | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(storageKey(pathname));
+    if (!raw) return null;
+    return new URLSearchParams(raw);
+  } catch {
+    return null;
+  }
+}
+
+function saveParams(pathname: string, params: URLSearchParams) {
+  if (typeof window === "undefined") return;
+  try {
+    const value = params.toString();
+    if (value) {
+      window.localStorage.setItem(storageKey(pathname), value);
+    } else {
+      window.localStorage.removeItem(storageKey(pathname));
+    }
+  } catch {
+    // storage unavailable
+  }
+}
+
 export function useBrowserQueryParams<Key extends string>({
   defaults,
   keys,
@@ -28,6 +58,33 @@ export function useBrowserQueryParams<Key extends string>({
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const restoredRef = useRef(false);
+
+  // On first render: if URL has no filter params, restore from localStorage
+  useEffect(() => {
+    if (restoredRef.current) return;
+    restoredRef.current = true;
+
+    const hasAnyKey = keys.some((key) => searchParams.has(key));
+    if (hasAnyKey) return; // URL already has filters — respect them
+
+    const saved = loadSavedParams(pathname);
+    if (!saved) return;
+
+    const hasAnySaved = keys.some((key) => saved.has(key));
+    if (!hasAnySaved) return;
+
+    // Copy only known keys + page from saved params
+    const nextParams = new URLSearchParams();
+    keys.forEach((key) => {
+      const v = saved.get(key);
+      if (v) nextParams.set(key, v);
+    });
+    const page = saved.get("page");
+    if (page && page !== "1") nextParams.set("page", page);
+
+    router.replace(`${pathname}?${nextParams.toString()}`);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const values = keys.reduce(
     (result, key) => {
@@ -44,6 +101,9 @@ export function useBrowserQueryParams<Key extends string>({
     if (nextQuery === currentQuery) {
       return;
     }
+
+    // Persist to localStorage
+    saveParams(pathname, nextParams);
 
     if (!nextQuery) {
       router.replace(pathname);
@@ -103,6 +163,7 @@ export function useBrowserQueryParams<Key extends string>({
 
       keys.forEach((key) => nextParams.delete(key));
       nextParams.delete("page");
+      saveParams(pathname, nextParams);
       replaceParams(nextParams);
     },
     page: parsePage(searchParams.get("page")),

@@ -20,6 +20,17 @@ vi.mock("@/hooks/use-inspection-workspace", () => ({
   useInspectionWorkspace: vi.fn(),
 }));
 
+vi.mock("@/hooks/use-finding-dispute", () => ({
+  useFindingDispute: vi.fn().mockReturnValue({
+    dispute: null,
+    isLoading: false,
+    submitDispute: vi.fn(),
+    resolveDispute: vi.fn(),
+    isSubmitting: false,
+    isResolving: false,
+  }),
+}));
+
 function renderWithProviders(ui: ReactNode) {
   return render(
     <ConfigProvider>

@@ -27,6 +27,8 @@ import { useMemo, useState } from "react";
 
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { getRoleProfile } from "@/lib/role-profiles";
+import { useCommandPalette } from "@/hooks/use-command-palette";
+import CommandPalette from "@/components/command-palette";
 import type { User } from "@shared/types/api";
 
 const ADMIN_ROLES: User["role"][] = ["admin", "lgu_admin", "office_supervisor"];
@@ -276,6 +278,7 @@ export default function DashboardAppShell({
   const pathname = usePathname();
   const router = useRouter();
   const { logout, session } = useAuthSession();
+  const { closePalette, open: paletteOpen, openPalette } = useCommandPalette();
   const isAdmin = ADMIN_ROLES.includes(session?.user.role as User["role"]);
   const visibleNavigationItems = useMemo(
     () => navigationItems.filter((item) => (item.adminOnly ? isAdmin : true)),
@@ -379,6 +382,13 @@ export default function DashboardAppShell({
               </div>
             </div>
             {session ? <Button onClick={logout}>Sign out</Button> : null}
+            <Button
+              size="small"
+              style={{ color: "#999", fontSize: 11 }}
+              onClick={openPalette}
+            >
+              ⌘K search
+            </Button>
           </Space>
         </Header>
         <Content className="dashboard-content">
@@ -406,6 +416,11 @@ export default function DashboardAppShell({
           )}
         </Content>
       </Layout>
+      <CommandPalette
+        isAdmin={isAdmin}
+        open={paletteOpen}
+        onClose={closePalette}
+      />
     </Layout>
   );
 }
