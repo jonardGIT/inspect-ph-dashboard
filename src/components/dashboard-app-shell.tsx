@@ -17,6 +17,7 @@ import {
   ReconciliationOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  RocketOutlined,
   ShopOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -65,6 +66,7 @@ const PROTECTED_PREFIXES = [
   "/notifications",
   "/office-modules",
   "/offices",
+  "/onboarding",
   "/payments",
   "/permits",
   "/privacy",
@@ -84,6 +86,7 @@ const ADMIN_ONLY_PATHS = [
   "/notifications",
   "/office-modules",
   "/offices",
+  "/onboarding",
   "/payments",
   "/privacy/requests",
   "/reports",
@@ -224,6 +227,18 @@ const navigationItems: NavigationItem[] = [
     icon: <ReconciliationOutlined />,
     key: "/reports/payments",
     label: "Payment reconciliation",
+  },
+  {
+    adminOnly: true,
+    icon: <AuditOutlined />,
+    key: "/reports/treasurer",
+    label: "Treasurer report",
+  },
+  {
+    adminOnly: true,
+    icon: <RocketOutlined />,
+    key: "/onboarding",
+    label: "Provision LGU",
   },
   {
     adminOnly: true,
