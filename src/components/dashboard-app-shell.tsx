@@ -13,6 +13,7 @@ import {
   EnvironmentOutlined,
   FileTextOutlined,
   GlobalOutlined,
+  ReconciliationOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ShopOutlined,
@@ -206,6 +207,12 @@ const navigationItems: NavigationItem[] = [
     icon: <AuditOutlined />,
     key: "/audit-logs",
     label: "Audit log",
+  },
+  {
+    adminOnly: true,
+    icon: <ReconciliationOutlined />,
+    key: "/reports/payments",
+    label: "Payment reconciliation",
   },
   {
     adminOnly: true,

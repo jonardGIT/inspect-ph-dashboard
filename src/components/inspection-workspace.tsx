@@ -29,6 +29,7 @@ import { hasPermission } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { getApiErrorMessage } from "@/lib/api/http";
 import InspectionRouteShell from "@/components/inspection-route-shell";
+import FindingDisputePanel from "@/components/finding-dispute-panel";
 
 const inspectionStatusColors: Record<string, string> = {
   canceled: "default",
@@ -483,13 +484,19 @@ export default function InspectionWorkspace({
                           title={item.title}
                           description={item.description}
                         />
-                        <Tag
-                          color={
-                            findingSeverityColors[item.severity] || "default"
-                          }
-                        >
-                          {item.severity}
-                        </Tag>
+                        <Space direction="vertical" align="end" size={0}>
+                          <Tag
+                            color={
+                              findingSeverityColors[item.severity] || "default"
+                            }
+                          >
+                            {item.severity}
+                          </Tag>
+                          <FindingDisputePanel
+                            findingId={item.id}
+                            findingTitle={item.title}
+                          />
+                        </Space>
                       </List.Item>
                     )}
                   />
