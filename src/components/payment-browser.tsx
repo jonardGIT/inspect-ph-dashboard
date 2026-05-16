@@ -2,6 +2,7 @@
 
 import {
   Alert,
+  Button,
   Card,
   Empty,
   Pagination,
@@ -14,6 +15,8 @@ import {
 import type { TableProps } from "antd";
 import Link from "next/link";
 import type { PaymentRecord } from "@shared/types/api";
+
+import { getPaymentReceiptUrl } from "@/lib/api/payments";
 
 import DashboardFilterStrip from "@/components/dashboard-filter-strip";
 import DashboardMetricCard from "@/components/dashboard-metric-card";
@@ -132,6 +135,24 @@ export default function PaymentBrowser() {
       render: (value: PaymentRecord["status"]) => (
         <Tag color={statusColors[value]}>{value.replace("_", " ")}</Tag>
       ),
+    },
+    {
+      title: "Receipt",
+      key: "receipt",
+      render: (_value, record) =>
+        record.status === "paid" && record.receiptNumber ? (
+          <Button
+            size="small"
+            type="link"
+            href={getPaymentReceiptUrl(record.id)}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Download OR
+          </Button>
+        ) : (
+          <Typography.Text type="secondary">—</Typography.Text>
+        ),
     },
     {
       title: "Updated",

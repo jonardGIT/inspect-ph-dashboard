@@ -1,12 +1,14 @@
 "use client";
 
 import {
+  AlertOutlined,
   AppstoreOutlined,
   ApartmentOutlined,
   AuditOutlined,
   BankOutlined,
   BarChartOutlined,
   BellOutlined,
+  CalendarOutlined,
   HeartOutlined,
   EnvironmentOutlined,
   FileTextOutlined,
@@ -46,6 +48,7 @@ const PROTECTED_PREFIXES = [
   "/audit-logs",
   "/buildsure",
   "/businesses",
+  "/caps",
   "/checklist-templates",
   "/ecowatch",
   "/fireguard",
@@ -93,6 +96,16 @@ const navigationItems: NavigationItem[] = [
     icon: <AppstoreOutlined />,
     key: "/inspections",
     label: "Inspections",
+  },
+  {
+    icon: <CalendarOutlined />,
+    key: "/inspections/calendar",
+    label: "Inspector Calendar",
+  },
+  {
+    icon: <AlertOutlined />,
+    key: "/caps",
+    label: "CAPs",
   },
   {
     icon: <BankOutlined />,

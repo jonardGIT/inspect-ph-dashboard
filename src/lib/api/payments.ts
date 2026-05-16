@@ -42,3 +42,7 @@ export async function getPublicPaymentByReferenceNumber(input: {
 
   return response.data.data;
 }
+
+export function getPaymentReceiptUrl(paymentId: string): string {
+  return `${getApiOrigin()}${API_V1}/payments/${paymentId}/receipt`;
+}

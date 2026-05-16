@@ -5,6 +5,7 @@ import { Alert, Button, Card, Empty, Space, Spin, Tag, Typography } from "antd";
 
 import { useFireSafetyCertificates } from "@/hooks/use-fire-safety-certificates";
 import { getApiErrorMessage } from "@/lib/api/http";
+import { getCertificatePrintUrl } from "@/lib/api/fire-safety-certificates";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-PH", {
@@ -102,6 +103,17 @@ export default function FireSafetyCertificatePanel(input: {
                       Open inspection workspace
                     </Link>
                   </Button>
+                  {certificate.status === "issued" && (
+                    <Button
+                      type="default"
+                      size="small"
+                      href={getCertificatePrintUrl(certificate.id)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Print Certificate
+                    </Button>
+                  )}
                 </Space>
               </Card>
             ))

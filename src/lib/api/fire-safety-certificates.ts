@@ -55,3 +55,7 @@ export async function getPublicFireSafetyCertificateByNumber(input: {
 
   return response.data.data;
 }
+
+export function getCertificatePrintUrl(certificateId: string): string {
+  return `${getApiOrigin()}${API_V1}/fire-safety-certificates/${certificateId}/print`;
+}

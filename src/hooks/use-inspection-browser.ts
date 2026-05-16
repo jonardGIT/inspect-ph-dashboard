@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+  bulkAssignInspections,
   createInspection,
   getInspectionsByOffice,
   getInspectionSummary,
@@ -92,6 +93,19 @@ export function useInspectionBrowser(input: {
     },
   });
 
+  const bulkAssignMutation = useMutation({
+    mutationFn: (payload: { inspectionIds: string[]; inspectorId: string }) =>
+      bulkAssignInspections({
+        accessToken: input.accessToken,
+        ...payload,
+      }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["inspections-browser"],
+      });
+    },
+  });
+
   const mapPointsQuery = useQuery({
     queryKey: [
       "inspections-map-points",
@@ -127,6 +141,7 @@ export function useInspectionBrowser(input: {
 
   return {
     byOfficeQuery,
+    bulkAssignMutation,
     createInspectionMutation,
     inspectionsQuery,
     mapPointsQuery,

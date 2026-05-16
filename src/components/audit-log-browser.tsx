@@ -48,6 +48,7 @@ const entityTypeOptions: {
   value: AuditLogRecord["entityType"] | "all";
 }[] = [
   { label: "All entity types", value: "all" },
+  { label: "CAP", value: "cap" },
   { label: "Inspection", value: "inspection" },
   { label: "Checklist result", value: "checklist_result" },
   { label: "Finding", value: "finding" },
@@ -65,6 +66,7 @@ const entityTypeOptions: {
 const entityTypeColors: Record<AuditLogRecord["entityType"], string> = {
   attachment: "default",
   business: "cyan",
+  cap: "warning",
   certificate: "purple",
   checklist_result: "blue",
   finding: "red",

@@ -313,3 +313,40 @@ export async function getInspectionsByOffice(input: {
 
   return response.data.data;
 }
+
+export async function bulkCreateInspections(input: {
+  accessToken: string;
+  items: {
+    businessId: string;
+    officeId: string;
+    permitRecordId: string;
+    scheduledAt: string;
+    inspectorId?: string;
+    notes?: string;
+  }[];
+}): Promise<InspectionRecord[]> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.post<{ data: InspectionRecord[] }>(
+    `${API_V1}/inspections/bulk`,
+    { items: input.items },
+  );
+
+  return response.data.data;
+}
+
+export async function bulkAssignInspections(input: {
+  accessToken: string;
+  inspectionIds: string[];
+  inspectorId: string;
+}): Promise<{ updated: number }> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.patch<{ data: { updated: number } }>(
+    `${API_V1}/inspections/bulk-assign`,
+    {
+      inspectionIds: input.inspectionIds,
+      inspectorId: input.inspectorId,
+    },
+  );
+
+  return response.data.data;
+}
