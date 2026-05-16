@@ -2,6 +2,7 @@ import type {
   ApiListResponse,
   ApiResponse,
   BusinessEstablishment,
+  ComplianceScoreResult,
 } from "@shared/types/api";
 
 import { createApiClient } from "./http";
@@ -101,6 +102,17 @@ export async function updateBusiness(input: {
   const response = await client.patch<ApiResponse<BusinessEstablishment>>(
     `${API_V1}/businesses/${id}`,
     fields,
+  );
+  return response.data.data;
+}
+
+export async function getComplianceScore(input: {
+  accessToken: string;
+  businessId: string;
+}): Promise<ComplianceScoreResult> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<ApiResponse<ComplianceScoreResult>>(
+    `${API_V1}/businesses/${input.businessId}/compliance-score`,
   );
   return response.data.data;
 }

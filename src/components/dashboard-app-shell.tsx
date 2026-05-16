@@ -13,6 +13,7 @@ import {
   EnvironmentOutlined,
   FileTextOutlined,
   GlobalOutlined,
+  LineChartOutlined,
   LockOutlined,
   ReconciliationOutlined,
   MenuFoldOutlined,
@@ -20,6 +21,10 @@ import {
   RocketOutlined,
   ShopOutlined,
   UserOutlined,
+  ApiOutlined,
+  KeyOutlined,
+  ShoppingOutlined,
+  SwapOutlined,
 } from "@ant-design/icons";
 import { Avatar, Button, Layout, Menu, Space, Tag, Typography } from "antd";
 import type { MenuProps } from "antd";
@@ -74,6 +79,7 @@ const PROTECTED_PREFIXES = [
   "/sanitacheck",
   "/sessions",
   "/support",
+  "/mutual-recognition",
   "/tourismsafe",
   "/users",
   "/zoneverify",
@@ -233,6 +239,48 @@ const navigationItems: NavigationItem[] = [
     icon: <AuditOutlined />,
     key: "/reports/treasurer",
     label: "Treasurer report",
+  },
+  {
+    adminOnly: true,
+    icon: <LineChartOutlined />,
+    key: "/reports/kpi",
+    label: "KPI dashboard",
+  },
+  {
+    adminOnly: true,
+    icon: <HeartOutlined />,
+    key: "/reports/wellness",
+    label: "Inspector wellness",
+  },
+  {
+    adminOnly: true,
+    icon: <AlertOutlined />,
+    key: "/reports/payment-anomalies",
+    label: "Payment anomalies",
+  },
+  {
+    adminOnly: true,
+    icon: <ApiOutlined />,
+    key: "/settings/webhooks",
+    label: "Webhook endpoints",
+  },
+  {
+    adminOnly: false,
+    icon: <ShoppingOutlined />,
+    key: "/checklist-templates/marketplace",
+    label: "Template marketplace",
+  },
+  {
+    adminOnly: true,
+    icon: <KeyOutlined />,
+    key: "/settings/oauth-apps",
+    label: "OAuth apps",
+  },
+  {
+    adminOnly: false,
+    icon: <SwapOutlined />,
+    key: "/mutual-recognition",
+    label: "Mutual recognition",
   },
   {
     adminOnly: true,
