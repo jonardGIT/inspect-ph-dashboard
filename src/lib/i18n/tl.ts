@@ -1,0 +1,68 @@
+import type { Locale } from "./en";
+
+export const tl: Locale = {
+  nav: {
+    inspections: "Mga Inspeksyon",
+    businesses: "Mga Negosyo",
+    reports: "Mga Ulat",
+    auditLog: "Talaan ng Audit",
+    privacyRequests: "Mga Kahilingan sa Pribasidad",
+    payments: "Mga Bayad",
+    users: "Mga Gumagamit",
+    notifications: "Mga Abiso",
+  },
+  auth: {
+    signIn: "Mag-sign In",
+    signOut: "Mag-sign Out",
+    email: "Email",
+    password: "Password",
+    forgotPassword: "Nakalimutan ang password?",
+    loginButton: "Mag-login",
+  },
+  common: {
+    save: "I-save",
+    cancel: "Kanselahin",
+    submit: "Isumite",
+    loading: "Naglo-load…",
+    error: "May naganap na error",
+    noData: "Walang datos",
+    search: "Maghanap",
+    filter: "Salain",
+    actions: "Mga Aksyon",
+    status: "Katayuan",
+    createdAt: "Nilikha",
+    updatedAt: "Na-update",
+  },
+  inspections: {
+    title: "Mga Inspeksyon",
+    schedule: "Iskedyul",
+    newInspection: "Bagong Inspeksyon",
+    assignInspector: "Mag-assign ng Inspektor",
+    status: {
+      PENDING: "Nakabinbin",
+      SCHEDULED: "Nakatakda",
+      IN_PROGRESS: "Isinasagawa",
+      COMPLETED: "Natapos",
+      CANCELED: "Nakansela",
+    },
+  },
+  privacy: {
+    title: "Pribasidad ng Datos",
+    requestTitle: "Kahilingan ng Data Subject",
+    types: {
+      ACCESS: "I-access ang aking datos",
+      CORRECTION: "Iwasto ang aking datos",
+      ERASURE: "Burahin ang aking datos",
+    },
+    statuses: {
+      PENDING: "Nakabinbin",
+      IN_REVIEW: "Sinusuri",
+      COMPLETED: "Natapos",
+      REJECTED: "Tinanggihan",
+      WITHDRAWN: "Binawi",
+    },
+    submitSuccess: "Ang iyong kahilingan ay naisumite na.",
+    emailLabel: "Email address",
+    descriptionLabel: "Paglalarawan",
+  },
+};

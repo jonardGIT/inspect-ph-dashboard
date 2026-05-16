@@ -13,6 +13,7 @@ import {
   EnvironmentOutlined,
   FileTextOutlined,
   GlobalOutlined,
+  LockOutlined,
   ReconciliationOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -66,6 +67,7 @@ const PROTECTED_PREFIXES = [
   "/offices",
   "/payments",
   "/permits",
+  "/privacy",
   "/reports",
   "/sanitacheck",
   "/sessions",
@@ -83,6 +85,7 @@ const ADMIN_ONLY_PATHS = [
   "/office-modules",
   "/offices",
   "/payments",
+  "/privacy/requests",
   "/reports",
   "/users",
 ] as const;
@@ -209,6 +212,12 @@ const navigationItems: NavigationItem[] = [
     icon: <AuditOutlined />,
     key: "/audit-logs",
     label: "Audit log",
+  },
+  {
+    adminOnly: true,
+    icon: <LockOutlined />,
+    key: "/privacy/requests",
+    label: "Privacy requests",
   },
   {
     adminOnly: true,
