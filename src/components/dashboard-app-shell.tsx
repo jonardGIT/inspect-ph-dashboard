@@ -80,6 +80,7 @@ const PROTECTED_PREFIXES = [
   "/sessions",
   "/support",
   "/mutual-recognition",
+  "/settings/national-integrations",
   "/tourismsafe",
   "/users",
   "/zoneverify",
@@ -281,6 +282,12 @@ const navigationItems: NavigationItem[] = [
     icon: <SwapOutlined />,
     key: "/mutual-recognition",
     label: "Mutual recognition",
+  },
+  {
+    adminOnly: true,
+    icon: <GlobalOutlined />,
+    key: "/settings/national-integrations",
+    label: "National integrations",
   },
   {
     adminOnly: true,

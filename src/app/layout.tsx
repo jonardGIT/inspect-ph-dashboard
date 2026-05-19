@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 import DashboardShellGate from "@/components/dashboard-shell-gate";
 import Providers from "@/components/providers";
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <DashboardShellGate>{children}</DashboardShellGate>
-        </Providers>
+        <AntdRegistry>
+          <Providers>
+            <DashboardShellGate>{children}</DashboardShellGate>
+          </Providers>
+        </AntdRegistry>
       </body>
     </html>
   );

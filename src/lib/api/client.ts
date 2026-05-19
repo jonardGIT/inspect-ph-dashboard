@@ -5,7 +5,7 @@
  */
 import axios from "axios";
 
-import type { AuthSession } from "@/types";
+import type { AuthSession } from "@/lib/api/auth";
 
 import { getApiOrigin } from "./http";
 

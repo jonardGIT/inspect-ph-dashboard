@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { login, type AuthSession } from "@/lib/api/auth";
+import type { User } from "@shared/types/api";
 import { normalizeUser } from "@/lib/role-profiles";
 
 const AUTH_SESSION_STORAGE_KEY = "inspect-ph-dashboard-session";
@@ -16,6 +17,7 @@ interface AuthSessionContextValue {
   >;
   logout: () => void;
   session: AuthSession | null;
+  user: User | null;
 }
 
 const AuthSessionContext = createContext<AuthSessionContextValue | null>(null);
@@ -77,6 +79,7 @@ export function AuthSessionProvider({ children }: AuthSessionProviderProps) {
         setSession(null);
       },
       session,
+      user: session?.user ?? null,
     }),
     [isHydrated, loginMutation, session],
   );

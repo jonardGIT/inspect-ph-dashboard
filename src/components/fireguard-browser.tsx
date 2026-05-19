@@ -1,6 +1,7 @@
 "use client";
 
-import { Alert, Card, Empty, Spin } from "antd";
+import { useState } from "react";
+import { Alert, Card, Empty, Select, Spin } from "antd";
 
 import FireSafetyCertificatePanel from "@/components/fire-safety-certificate-panel";
 import InspectionBrowser from "@/components/inspection-browser";
@@ -18,7 +19,15 @@ export default function FireGuardBrowser() {
     moduleCode: FIREGUARD_MODULE_CODE,
   });
 
-  const assignedOffice = officeModulesQuery.data?.data?.[0]?.office;
+  const assignedOffices =
+    officeModulesQuery.data?.data?.map((m) => m.office) ?? [];
+  const [selectedOfficeId, setSelectedOfficeId] = useState<
+    string | undefined
+  >();
+  const assignedOffice =
+    assignedOffices.find(
+      (o) => o.id === (selectedOfficeId ?? assignedOffices[0]?.id),
+    ) ?? assignedOffices[0];
 
   if (moduleQuery.isLoading || officeModulesQuery.isLoading) {
     return (
@@ -52,7 +61,7 @@ export default function FireGuardBrowser() {
     );
   }
 
-  if (!moduleQuery.data || !assignedOffice) {
+  if (!moduleQuery.data || assignedOffices.length === 0) {
     return (
       <InspectionRouteShell
         eyebrow="FireGuard operations"
@@ -66,19 +75,34 @@ export default function FireGuardBrowser() {
     );
   }
 
+  const officeLabel = `${assignedOffice.name} · ${assignedOffice.code}`;
+
   return (
     <InspectionBrowser
       beforeContent={
-        <FireSafetyCertificatePanel
-          accessToken={accessToken ?? ""}
-          officeId={assignedOffice.id}
-          officeLabel={`${assignedOffice.name} · ${assignedOffice.code}`}
-        />
+        <>
+          {assignedOffices.length > 1 && (
+            <Select
+              value={assignedOffice.id}
+              onChange={setSelectedOfficeId}
+              options={assignedOffices.map((o) => ({
+                label: `${o.name} · ${o.code}`,
+                value: o.id,
+              }))}
+              style={{ marginBottom: 16, width: "100%" }}
+            />
+          )}
+          <FireSafetyCertificatePanel
+            accessToken={accessToken ?? ""}
+            officeId={assignedOffice.id}
+            officeLabel={officeLabel}
+          />
+        </>
       }
       description="Run FireGuard inspections through the same core queue, metrics, and workspace flow already used for BPLO, but scoped to the FireGuard office assignment."
       eyebrow="FireGuard operations"
       lockedOfficeId={assignedOffice.id}
-      lockedOfficeLabel={`${assignedOffice.name} · ${assignedOffice.code}`}
+      lockedOfficeLabel={officeLabel}
       title="FireGuard Inspect"
     />
   );

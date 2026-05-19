@@ -1,6 +1,7 @@
 "use client";
 
-import { Alert, Card, Empty, Spin } from "antd";
+import { useState } from "react";
+import { Alert, Card, Empty, Select, Spin } from "antd";
 
 import InspectionBrowser from "@/components/inspection-browser";
 import InspectionRouteShell from "@/components/inspection-route-shell";
@@ -18,7 +19,15 @@ export default function BuildSureBrowser() {
     moduleCode: BUILDSURE_MODULE_CODE,
   });
 
-  const assignedOffice = officeModulesQuery.data?.data?.[0]?.office;
+  const assignedOffices =
+    officeModulesQuery.data?.data?.map((m) => m.office) ?? [];
+  const [selectedOfficeId, setSelectedOfficeId] = useState<
+    string | undefined
+  >();
+  const assignedOffice =
+    assignedOffices.find(
+      (o) => o.id === (selectedOfficeId ?? assignedOffices[0]?.id),
+    ) ?? assignedOffices[0];
 
   if (moduleQuery.isLoading || officeModulesQuery.isLoading) {
     return (
@@ -52,7 +61,7 @@ export default function BuildSureBrowser() {
     );
   }
 
-  if (!moduleQuery.data || !assignedOffice) {
+  if (!moduleQuery.data || assignedOffices.length === 0) {
     return (
       <InspectionRouteShell
         eyebrow="BuildSure operations"
@@ -66,19 +75,34 @@ export default function BuildSureBrowser() {
     );
   }
 
+  const officeLabel = `${assignedOffice.name} · ${assignedOffice.code}`;
+
   return (
     <InspectionBrowser
       beforeContent={
-        <BuildSureOverviewPanel
-          accessToken={accessToken ?? ""}
-          officeId={assignedOffice.id}
-          officeLabel={`${assignedOffice.name} · ${assignedOffice.code}`}
-        />
+        <>
+          {assignedOffices.length > 1 && (
+            <Select
+              value={assignedOffice.id}
+              onChange={setSelectedOfficeId}
+              options={assignedOffices.map((o) => ({
+                label: `${o.name} · ${o.code}`,
+                value: o.id,
+              }))}
+              style={{ marginBottom: 16, width: "100%" }}
+            />
+          )}
+          <BuildSureOverviewPanel
+            accessToken={accessToken ?? ""}
+            officeId={assignedOffice.id}
+            officeLabel={officeLabel}
+          />
+        </>
       }
       description="Run BuildSure inspections through the same core queue, metrics, and workspace flow already used for BPLO, FireGuard, and SanitaCheck, but scoped to the BuildSure office assignment."
       eyebrow="BuildSure operations"
       lockedOfficeId={assignedOffice.id}
-      lockedOfficeLabel={`${assignedOffice.name} · ${assignedOffice.code}`}
+      lockedOfficeLabel={officeLabel}
       title="BuildSure PH"
     />
   );
