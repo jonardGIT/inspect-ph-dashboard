@@ -15,40 +15,37 @@ const SCOPE_LABELS: Record<string, string> = {
 };
 
 interface OAuthConsentPageProps {
-  accessToken: string;
   clientId: string;
   redirectUri: string;
   responseType: string;
   scope: string;
-  state?: string;
   onDecision: (decision: "approve" | "deny") => Promise<void>;
   fetchClientInfo: (clientId: string) => Promise<OAuthConsentInfo>;
 }
 
 export function OAuthConsentPage({
-  accessToken: _accessToken,
   clientId,
   fetchClientInfo,
   onDecision,
   redirectUri,
   responseType,
   scope,
-  state: _state,
 }: OAuthConsentPageProps) {
   const [clientInfo, setClientInfo] = useState<OAuthConsentInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [deciding, setDeciding] = useState<"approve" | "deny" | null>(null);
+  const responseTypeError =
+    responseType !== "code" ? "Only response_type=code is supported" : null;
 
   useEffect(() => {
-    if (responseType !== "code") {
-      setError("Only response_type=code is supported");
+    if (responseTypeError) {
       return;
     }
 
     fetchClientInfo(clientId)
       .then(setClientInfo)
       .catch(() => setError("Unknown or invalid client application"));
-  }, [clientId, fetchClientInfo, responseType]);
+  }, [clientId, fetchClientInfo, responseTypeError]);
 
   const handleDecision = async (decision: "approve" | "deny") => {
     setDeciding(decision);
@@ -60,11 +57,11 @@ export function OAuthConsentPage({
     }
   };
 
-  if (error) {
+  if (responseTypeError || error) {
     return (
       <Alert
-        description={error}
-        message="Authorization Error"
+        description={responseTypeError ?? error}
+        title="Authorization Error"
         showIcon
         type="error"
       />
@@ -73,6 +70,17 @@ export function OAuthConsentPage({
 
   if (!clientInfo) {
     return <div>Loading...</div>;
+  }
+
+  if (clientInfo.redirectUri !== redirectUri) {
+    return (
+      <Alert
+        description="The redirect destination does not match the application registration."
+        title="Authorization Error"
+        showIcon
+        type="error"
+      />
+    );
   }
 
   const requestedScopes = scope.split(" ").filter(Boolean);
@@ -86,7 +94,7 @@ export function OAuthConsentPage({
     return (
       <Alert
         description="None of the requested scopes are registered for this application."
-        message="Invalid scope request"
+        title="Invalid scope request"
         showIcon
         type="error"
       />
@@ -105,7 +113,7 @@ export function OAuthConsentPage({
       <Divider />
 
       <Title level={5}>This app wants to:</Title>
-      <Space direction="vertical" style={{ marginBottom: 16, width: "100%" }}>
+      <Space orientation="vertical" style={{ marginBottom: 16, width: "100%" }}>
         {displayScopes.map((s) => (
           <Space key={s} align="start">
             <CheckCircleOutlined style={{ color: "#52c41a" }} />
@@ -120,7 +128,7 @@ export function OAuthConsentPage({
             Access will be sent to: <Tag>{redirectUri}</Tag>
           </>
         }
-        message="Verify the destination"
+        title="Verify the destination"
         showIcon
         type="info"
       />

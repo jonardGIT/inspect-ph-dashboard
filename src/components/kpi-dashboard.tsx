@@ -109,7 +109,7 @@ export default function KpiDashboard() {
       {isError && (
         <Alert
           type="error"
-          message="Failed to load KPI data"
+          title="Failed to load KPI data"
           description={getApiErrorMessage(error)}
         />
       )}
@@ -131,7 +131,7 @@ export default function KpiDashboard() {
                 <Statistic
                   title="Completed"
                   value={data.inspections.completed}
-                  valueStyle={{ color: "#52c41a" }}
+                  styles={{ content: { color: "#52c41a" } }}
                 />
               </Card>
             </Col>
@@ -140,7 +140,7 @@ export default function KpiDashboard() {
                 <Statistic
                   title="Overdue"
                   value={data.inspections.overdue}
-                  valueStyle={{ color: "#f5222d" }}
+                  styles={{ content: { color: "#f5222d" } }}
                 />
               </Card>
             </Col>
@@ -150,13 +150,15 @@ export default function KpiDashboard() {
                   title="Pass Rate"
                   value={data.inspections.passRate}
                   suffix="%"
-                  valueStyle={{
-                    color:
-                      data.inspections.passRate >= 75
-                        ? "#52c41a"
-                        : data.inspections.passRate >= 50
-                          ? "#faad14"
-                          : "#f5222d",
+                  styles={{
+                    content: {
+                      color:
+                        data.inspections.passRate >= 75
+                          ? "#52c41a"
+                          : data.inspections.passRate >= 50
+                            ? "#faad14"
+                            : "#f5222d",
+                    },
                   }}
                 />
               </Card>
@@ -175,9 +177,11 @@ export default function KpiDashboard() {
                 <Statistic
                   title="Critical Open"
                   value={data.findings.criticalOpen}
-                  valueStyle={{
-                    color:
-                      data.findings.criticalOpen > 0 ? "#f5222d" : "#52c41a",
+                  styles={{
+                    content: {
+                      color:
+                        data.findings.criticalOpen > 0 ? "#f5222d" : "#52c41a",
+                    },
                   }}
                 />
               </Card>
@@ -188,9 +192,13 @@ export default function KpiDashboard() {
                   title="Findings Resolved Rate"
                   value={data.findings.resolvedRate}
                   suffix="%"
-                  valueStyle={{
-                    color:
-                      data.findings.resolvedRate >= 75 ? "#52c41a" : "#faad14",
+                  styles={{
+                    content: {
+                      color:
+                        data.findings.resolvedRate >= 75
+                          ? "#52c41a"
+                          : "#faad14",
+                    },
                   }}
                 />
               </Card>

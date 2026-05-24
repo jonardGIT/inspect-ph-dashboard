@@ -85,7 +85,7 @@ export default function PermitBrowser() {
       description="Browse permit records, filter by status or business, and create permit records for registered establishments when signed in as an admin."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Input
               placeholder="Business UUID"
               value={businessId}
@@ -144,7 +144,7 @@ export default function PermitBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(permitsQuery.error)}
+          title={getApiErrorMessage(permitsQuery.error)}
         />
       ) : null}
 
@@ -166,7 +166,7 @@ export default function PermitBrowser() {
                   title: "Permit",
                   key: "permitNumber",
                   render: (_value, record) => (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text strong>
                         {record.permitNumber}
                       </Typography.Text>
@@ -323,7 +323,7 @@ export default function PermitBrowser() {
                 </Form.Item>
               </Col>
             </Row>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 htmlType="submit"
                 type="primary"
@@ -335,7 +335,7 @@ export default function PermitBrowser() {
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(createPermitMutation.error)}
+                  title={getApiErrorMessage(createPermitMutation.error)}
                 />
               ) : null}
             </Space>
@@ -381,7 +381,7 @@ export default function PermitBrowser() {
             <Form.Item label="Expiration date (ISO)" name="expirationDate" rules={[{ required: true }]}>
               <Input placeholder="2027-01-14T00:00:00.000Z" />
             </Form.Item>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 htmlType="submit"
                 type="primary"
@@ -393,7 +393,7 @@ export default function PermitBrowser() {
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(updatePermitMutation.error)}
+                  title={getApiErrorMessage(updatePermitMutation.error)}
                 />
               ) : null}
             </Space>

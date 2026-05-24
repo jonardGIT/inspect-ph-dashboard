@@ -141,7 +141,7 @@ export default function ComplianceScoreCard({
       {isError && (
         <Alert
           type="error"
-          message="Failed to load compliance score"
+          title="Failed to load compliance score"
           description={getApiErrorMessage(error)}
         />
       )}

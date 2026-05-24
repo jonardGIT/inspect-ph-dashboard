@@ -18,6 +18,7 @@ vi.mock("@/components/inspection-browser", () => ({
       <div>{props.title as string}</div>
       <div>{props.lockedOfficeId as string}</div>
       <div>{props.lockedOfficeLabel as string}</div>
+      <div>{props.beforeContent as ReactNode}</div>
       <div>{props.beforeContent ? "HasBeforeContent" : "NoBeforeContent"}</div>
     </div>
   )),
@@ -152,6 +153,46 @@ describe("ZoneVerifyBrowser", () => {
 
     expect(
       screen.getByText("No ZoneVerify office assignments found yet"),
+    ).toBeInTheDocument();
+  });
+
+  it("offers an office selector when multiple offices are assigned", () => {
+    vi.mocked(useModuleWorkspace).mockReturnValue({
+      ...baseModuleData,
+      officeModulesQuery: {
+        data: {
+          data: [
+            ...baseModuleData.officeModulesQuery.data.data,
+            {
+              createdAt: "2026-05-14T08:00:00.000Z",
+              id: "assignment-2",
+              module: {
+                code: "ZONE",
+                id: "module-zone",
+                isActive: true,
+                name: "ZoneVerify",
+              },
+              office: {
+                code: "ZONE-NORTH",
+                id: "office-zone-2",
+                lguId: "lgu-1",
+                name: "North Zoning Office",
+              },
+            },
+          ],
+          meta: { limit: 100, page: 1, total: 2 },
+        },
+        error: null,
+        isLoading: false,
+      },
+    } as unknown as ReturnType<typeof useModuleWorkspace>);
+
+    renderWithProviders(<ZoneVerifyBrowser />);
+
+    expect(
+      screen.getByRole("combobox", {
+        name: "Select ZoneVerify office assignment",
+      }),
     ).toBeInTheDocument();
   });
 });

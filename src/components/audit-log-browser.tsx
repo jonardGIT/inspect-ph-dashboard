@@ -157,7 +157,7 @@ export default function AuditLogBrowser() {
       title: "Summary",
       key: "summary",
       render: (_value, record) => (
-        <Space direction="vertical" size={0}>
+        <Space orientation="vertical" size={0}>
           <Typography.Text strong>{record.summary}</Typography.Text>
           {record.detail ? (
             <Typography.Text type="secondary">{record.detail}</Typography.Text>
@@ -170,7 +170,7 @@ export default function AuditLogBrowser() {
       key: "actor",
       render: (_value, record) =>
         record.actor ? (
-          <Space direction="vertical" size={0}>
+          <Space orientation="vertical" size={0}>
             <Typography.Text>{record.actor.name}</Typography.Text>
             <Typography.Text type="secondary">
               {record.actor.email}
@@ -192,7 +192,7 @@ export default function AuditLogBrowser() {
         const inspectionHref = getInspectionEntityHref(record);
 
         return (
-          <Space direction="vertical" size={4}>
+          <Space orientation="vertical" size={4}>
             <Tag color={entityTypeColors[record.entityType]}>
               {formatEntityTypeLabel(record.entityType)}
             </Tag>
@@ -221,7 +221,7 @@ export default function AuditLogBrowser() {
         <Alert
           type="warning"
           showIcon
-          message="Audit log access is limited to admins."
+          title="Audit log access is limited to admins."
         />
       ) : (
         <>
@@ -239,7 +239,7 @@ export default function AuditLogBrowser() {
             </DashboardFilterStrip>
           ) : null}
 
-          <Space direction="vertical" size={20} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={20} style={{ width: "100%" }}>
             <Space size={16} style={{ width: "100%" }} wrap>
               <DashboardMetricCard
                 label="Visible events"
@@ -263,7 +263,7 @@ export default function AuditLogBrowser() {
               <Alert
                 type="error"
                 showIcon
-                message={getApiErrorMessage(auditLogsQuery.error)}
+                title={getApiErrorMessage(auditLogsQuery.error)}
               />
             ) : null}
 
@@ -281,7 +281,7 @@ export default function AuditLogBrowser() {
                 }}
                 wrap
               >
-                <Space direction="vertical" size={4}>
+                <Space orientation="vertical" size={4}>
                   <Typography.Text strong>Table search</Typography.Text>
                   <Typography.Text type="secondary">
                     Search summary, detail, actor, or entity ID.

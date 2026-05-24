@@ -4,9 +4,11 @@ import { render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
-import { AuthSessionProvider } from "@/components/auth-session-provider";
+import { useAuthSession } from "@/hooks/use-auth-session";
 
 import BusinessBrowser from "./business-browser";
+
+vi.mock("@/hooks/use-auth-session", () => ({ useAuthSession: vi.fn() }));
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/businesses",
@@ -22,9 +24,7 @@ function renderWithProviders(ui: ReactNode) {
   return render(
     <ConfigProvider>
       <AntdApp>
-        <QueryClientProvider client={queryClient}>
-          <AuthSessionProvider>{ui}</AuthSessionProvider>
-        </QueryClientProvider>
+        <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
       </AntdApp>
     </ConfigProvider>,
   );
@@ -32,6 +32,14 @@ function renderWithProviders(ui: ReactNode) {
 
 describe("BusinessBrowser", () => {
   it("renders the businesses heading and registry card", () => {
+    vi.mocked(useAuthSession).mockReturnValue({
+      accessToken: "",
+      isHydrated: true,
+      loginMutation: { error: null, isPending: false, mutateAsync: vi.fn() },
+      logout: vi.fn(),
+      session: null,
+    } as never);
+
     renderWithProviders(<BusinessBrowser />);
 
     expect(screen.getByText("Businesses")).toBeInTheDocument();

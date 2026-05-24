@@ -1,6 +1,7 @@
 "use client";
 
-import { Alert, Card, Empty, Spin } from "antd";
+import { useState } from "react";
+import { Alert, Card, Empty, Select, Spin } from "antd";
 
 import InspectionBrowser from "@/components/inspection-browser";
 import InspectionRouteShell from "@/components/inspection-route-shell";
@@ -18,7 +19,15 @@ export default function ZoneVerifyBrowser() {
     moduleCode: ZONEVERIFY_MODULE_CODE,
   });
 
-  const assignedOffice = officeModulesQuery.data?.data?.[0]?.office;
+  const assignedOffices =
+    officeModulesQuery.data?.data?.map((assignment) => assignment.office) ?? [];
+  const [selectedOfficeId, setSelectedOfficeId] = useState<
+    string | undefined
+  >();
+  const assignedOffice =
+    assignedOffices.find(
+      (office) => office.id === (selectedOfficeId ?? assignedOffices[0]?.id),
+    ) ?? assignedOffices[0];
 
   if (moduleQuery.isLoading || officeModulesQuery.isLoading) {
     return (
@@ -44,7 +53,7 @@ export default function ZoneVerifyBrowser() {
         <Alert
           type="error"
           showIcon
-          message={getApiErrorMessage(
+          title={getApiErrorMessage(
             moduleQuery.error || officeModulesQuery.error,
           )}
         />
@@ -52,7 +61,7 @@ export default function ZoneVerifyBrowser() {
     );
   }
 
-  if (!moduleQuery.data || !assignedOffice) {
+  if (!moduleQuery.data || assignedOffices.length === 0) {
     return (
       <InspectionRouteShell
         eyebrow="ZoneVerify operations"
@@ -69,11 +78,26 @@ export default function ZoneVerifyBrowser() {
   return (
     <InspectionBrowser
       beforeContent={
-        <ZoneVerifyOverviewPanel
-          accessToken={accessToken ?? ""}
-          officeId={assignedOffice.id}
-          officeLabel={`${assignedOffice.name} · ${assignedOffice.code}`}
-        />
+        <>
+          {assignedOffices.length > 1 && (
+            <Select
+              aria-label="Select ZoneVerify office assignment"
+              value={assignedOffice.id}
+              onChange={setSelectedOfficeId}
+              options={assignedOffices.map((office) => ({
+                label: `${office.name} · ${office.code}`,
+                value: office.id,
+              }))}
+              placeholder="Select office"
+              style={{ marginBottom: 16, width: "100%" }}
+            />
+          )}
+          <ZoneVerifyOverviewPanel
+            accessToken={accessToken ?? ""}
+            officeId={assignedOffice.id}
+            officeLabel={`${assignedOffice.name} · ${assignedOffice.code}`}
+          />
+        </>
       }
       description="Run ZoneVerify zoning compliance inspections through the shared core queue, scoped to the ZoneVerify-enabled office assignment."
       eyebrow="ZoneVerify operations"

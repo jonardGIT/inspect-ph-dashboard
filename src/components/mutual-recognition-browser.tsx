@@ -225,7 +225,7 @@ function VerifyPanel() {
       {mutation.isError && (
         <Alert
           description={getApiErrorMessage(mutation.error)}
-          message="Verification failed"
+          title="Verification failed"
           showIcon
           type="error"
         />
@@ -246,11 +246,7 @@ function VerifyPanel() {
   );
 }
 
-interface MutualRecognitionBrowserProps {}
-
-export function MutualRecognitionBrowser(
-  _: MutualRecognitionBrowserProps = {},
-) {
+export function MutualRecognitionBrowser() {
   const { session } = useAuthSession();
   const isBusinessOwner = session?.user.role === "business_owner";
   const [roleFilter, setRoleFilter] = useState<
@@ -307,7 +303,7 @@ export function MutualRecognitionBrowser(
   const tabItems = [
     {
       children: (
-        <Space direction="vertical" style={{ width: "100%" }}>
+        <Space orientation="vertical" style={{ width: "100%" }}>
           <Space wrap>
             {!isBusinessOwner && (
               <Select
@@ -389,7 +385,7 @@ export function MutualRecognitionBrowser(
   ];
 
   return (
-    <Space direction="vertical" style={{ width: "100%" }}>
+    <Space orientation="vertical" style={{ width: "100%" }}>
       {!isBusinessOwner && (
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button
@@ -432,7 +428,7 @@ export function MutualRecognitionBrowser(
         {createMutation.isError && (
           <Alert
             description={getApiErrorMessage(createMutation.error)}
-            message="Failed to create request"
+            title="Failed to create request"
             showIcon
             type="error"
           />

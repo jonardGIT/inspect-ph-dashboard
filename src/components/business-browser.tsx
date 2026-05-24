@@ -68,7 +68,7 @@ export default function BusinessBrowser() {
       description="Browse registered business establishments, filter by location, search by owner or business name, and register new establishments when signed in as an admin."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Input.Search
               allowClear
               placeholder="Search business or owner"
@@ -133,7 +133,7 @@ export default function BusinessBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(businessesQuery.error)}
+          title={getApiErrorMessage(businessesQuery.error)}
         />
       ) : null}
 
@@ -155,7 +155,7 @@ export default function BusinessBrowser() {
                   title: "Business",
                   key: "businessName",
                   render: (_value, record) => (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text strong>
                         {record.businessName}
                       </Typography.Text>
@@ -340,7 +340,7 @@ export default function BusinessBrowser() {
                 </Form.Item>
               </Col>
             </Row>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 htmlType="submit"
                 type="primary"
@@ -352,7 +352,7 @@ export default function BusinessBrowser() {
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(createBusinessMutation.error)}
+                  title={getApiErrorMessage(createBusinessMutation.error)}
                 />
               ) : null}
             </Space>
@@ -439,7 +439,7 @@ export default function BusinessBrowser() {
                 </Form.Item>
               </Col>
             </Row>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 htmlType="submit"
                 type="primary"
@@ -451,7 +451,7 @@ export default function BusinessBrowser() {
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(updateBusinessMutation.error)}
+                  title={getApiErrorMessage(updateBusinessMutation.error)}
                 />
               ) : null}
             </Space>

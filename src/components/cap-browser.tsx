@@ -151,7 +151,7 @@ export default function CapBrowser() {
         {capsQuery.isError && (
           <Alert
             type="error"
-            message={getApiErrorMessage(capsQuery.error)}
+            title={getApiErrorMessage(capsQuery.error)}
             style={{ marginBottom: 16 }}
           />
         )}
@@ -244,7 +244,7 @@ function UpdateCapStatusForm({
       initialValues={{ status: cap.status }}
     >
       {error && (
-        <Alert type="error" message={error} style={{ marginBottom: 16 }} />
+        <Alert type="error" title={error} style={{ marginBottom: 16 }} />
       )}
       <Form.Item name="status" label="New Status" rules={[{ required: true }]}>
         <Select options={isAdmin ? adminStatuses : ownerStatuses} />

@@ -66,7 +66,7 @@ export default function PublicPermitLookup() {
 
   return (
     <Card title="Public permit lookup" className="glass-card">
-      <Space direction="vertical" size={12} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={12} style={{ width: "100%" }}>
         <Typography.Paragraph style={{ margin: 0 }}>
           Business owners can check permit application status by permit number
           without signing in.
@@ -92,11 +92,11 @@ export default function PublicPermitLookup() {
           </Button>
         </Space.Compact>
 
-        {error ? <Alert type="error" showIcon message={error} /> : null}
+        {error ? <Alert type="error" showIcon title={error} /> : null}
 
         {result ? (
           <Card type="inner" title={result.permitNumber}>
-            <Space direction="vertical" size={8} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={8} style={{ width: "100%" }}>
               <Space wrap>
                 <Tag color={statusColors[result.status] || "default"}>
                   {result.status.replace("_", " ")}
@@ -122,7 +122,7 @@ export default function PublicPermitLookup() {
                   title="Owner contact"
                   style={{ marginTop: 4 }}
                 >
-                  <Space direction="vertical" size={4}>
+                  <Space orientation="vertical" size={4}>
                     {result.business.ownerName ? (
                       <Typography.Text>
                         Owner: {result.business.ownerName}
@@ -151,11 +151,11 @@ export default function PublicPermitLookup() {
               ) : null}
               {findingsResult ? (
                 findingsResult.findings.length ? (
-                  <Space direction="vertical" size={8} style={{ width: "100%" }}>
+                  <Space orientation="vertical" size={8} style={{ width: "100%" }}>
                     <Typography.Text strong>Inspection findings</Typography.Text>
                     {findingsResult.findings.map((finding) => (
                       <Card key={finding.id} type="inner" size="small">
-                        <Space direction="vertical" size={4} style={{ width: "100%" }}>
+                        <Space orientation="vertical" size={4} style={{ width: "100%" }}>
                           <Space wrap>
                             <Tag color={finding.resolvedAt ? "green" : "gold"}>
                               {finding.resolvedAt ? "resolved" : "open"}

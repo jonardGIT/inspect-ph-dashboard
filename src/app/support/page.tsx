@@ -11,7 +11,7 @@ export default function SupportPage() {
   return (
     <Providers>
       <main className="page-shell">
-        <Space direction="vertical" size={16} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={16} style={{ width: "100%" }}>
           <div>
             <Typography.Text type="secondary">Owner support desk</Typography.Text>
             <Typography.Title level={2} style={{ margin: 0 }}>

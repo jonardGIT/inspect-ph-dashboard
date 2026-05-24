@@ -49,7 +49,7 @@ function MetricCard({
         }
         value={value ?? "—"}
         suffix={suffix}
-        valueStyle={warn ? { color: "#faad14" } : undefined}
+        styles={warn ? { content: { color: "#faad14" } } : undefined}
       />
     </Card>
   );
@@ -98,7 +98,7 @@ export default function WellnessReport() {
       {isError && (
         <Alert
           type="error"
-          message="Failed to load wellness data"
+          title="Failed to load wellness data"
           description={getApiErrorMessage(error)}
         />
       )}

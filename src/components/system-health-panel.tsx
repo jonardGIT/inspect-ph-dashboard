@@ -27,11 +27,11 @@ export default function SystemHealthPanel() {
       title="System health"
       description="Live status of the API, database, and inspection workload. Refreshes every 30 seconds."
     >
-      <Space direction="vertical" size={20} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={20} style={{ width: "100%" }}>
         <Card title="Service status" className="glass-card dashboard-data-card">
           <Row gutter={[16, 16]}>
             <Col xs={24} sm={12}>
-              <Space direction="vertical" size={4}>
+              <Space orientation="vertical" size={4}>
                 <Typography.Text strong>API server</Typography.Text>
                 {apiStatus === "healthy" ? (
                   <Badge
@@ -57,7 +57,7 @@ export default function SystemHealthPanel() {
               </Space>
             </Col>
             <Col xs={24} sm={12}>
-              <Space direction="vertical" size={4}>
+              <Space orientation="vertical" size={4}>
                 <Typography.Text strong>Database</Typography.Text>
                 {dbStatus === "ok" ? (
                   <Badge
@@ -87,7 +87,7 @@ export default function SystemHealthPanel() {
             <Alert
               type="error"
               showIcon
-              message="Could not reach the API server. Check that the API service is running."
+              title="Could not reach the API server. Check that the API service is running."
               style={{ marginTop: 16 }}
             />
           ) : null}

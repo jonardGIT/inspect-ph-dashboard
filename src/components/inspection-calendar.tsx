@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, Select, Space, Tag, Typography } from "antd";
+import { Button, Card, Space, Tag, Typography } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 import InspectionRouteShell from "@/components/inspection-route-shell";

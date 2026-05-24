@@ -41,7 +41,7 @@ export default function FireSafetyCertificatePanel(input: {
       className="glass-card dashboard-data-card"
       style={{ marginBottom: 20 }}
     >
-      <Space direction="vertical" size={16} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={16} style={{ width: "100%" }}>
         <Typography.Paragraph style={{ margin: 0 }}>
           FSIC records issued for {input.officeLabel} appear here as the first
           FireGuard-specific reporting surface on top of the shared inspection
@@ -54,7 +54,7 @@ export default function FireSafetyCertificatePanel(input: {
           <Alert
             type="error"
             showIcon
-            message={getApiErrorMessage(certificatesQuery.error)}
+            title={getApiErrorMessage(certificatesQuery.error)}
           />
         ) : null}
 
@@ -71,7 +71,7 @@ export default function FireSafetyCertificatePanel(input: {
                 type="inner"
                 title={certificate.certificateNumber}
               >
-                <Space direction="vertical" size={8} style={{ width: "100%" }}>
+                <Space orientation="vertical" size={8} style={{ width: "100%" }}>
                   <Space wrap>
                     <Tag color={statusColors[certificate.status] || "default"}>
                       {certificate.status}

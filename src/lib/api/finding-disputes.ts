@@ -1,7 +1,6 @@
 import type { ApiResponse, FindingDisputeRecord } from "@shared/types/api";
 
-import { createApiClient, getApiOrigin } from "./http";
-import axios from "axios";
+import { createApiClient } from "./http";
 
 const API_V1 = "/api/v1";
 

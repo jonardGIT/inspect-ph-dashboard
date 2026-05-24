@@ -44,7 +44,7 @@ export default function PublicIssueReportLookup() {
 
   return (
     <Card title="Track an issue report" className="glass-card">
-      <Space direction="vertical" size={12} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={12} style={{ width: "100%" }}>
         <Typography.Paragraph style={{ margin: 0 }}>
           Enter a public issue report reference number to check its current
           status.
@@ -62,11 +62,11 @@ export default function PublicIssueReportLookup() {
           Check report status
         </Button>
 
-        {error ? <Alert type="error" showIcon message={error} /> : null}
+        {error ? <Alert type="error" showIcon title={error} /> : null}
 
         {report ? (
           <Card type="inner" title={report.reportNumber}>
-            <Space direction="vertical" size={8} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={8} style={{ width: "100%" }}>
               <Tag color="blue">{report.status.replace("_", " ")}</Tag>
               <Typography.Text strong>{report.subject}</Typography.Text>
               <Typography.Text>{report.description}</Typography.Text>

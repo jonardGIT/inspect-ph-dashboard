@@ -80,7 +80,7 @@ export default function PrivacyRequestForm() {
       {error && (
         <Alert
           type="error"
-          message={error}
+          title={error}
           showIcon
           style={{ marginBottom: 16 }}
           closable

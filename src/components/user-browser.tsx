@@ -82,7 +82,7 @@ export default function UserBrowser() {
       description="Review authenticated users and manage which office queues they can operate within as Phase 3 scoping comes online."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Select
               options={roleOptions.map((option) => ({
                 label: option.label,
@@ -162,7 +162,7 @@ export default function UserBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(usersQuery.error)}
+          title={getApiErrorMessage(usersQuery.error)}
         />
       ) : null}
 
@@ -184,7 +184,7 @@ export default function UserBrowser() {
                   title: "User",
                   key: "name",
                   render: (_value, record) => (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text strong>{record.name}</Typography.Text>
                       <Typography.Text type="secondary">
                         {record.email}
@@ -240,7 +240,7 @@ export default function UserBrowser() {
         {!selectedUser ? (
           <Empty description="Select a user to manage office assignments" />
         ) : (
-          <Space direction="vertical" size={16} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={16} style={{ width: "100%" }}>
             <Typography.Text>
               Managing assignments for <strong>{selectedUser.name}</strong>.
             </Typography.Text>
@@ -269,21 +269,21 @@ export default function UserBrowser() {
               <Alert
                 type="error"
                 showIcon
-                message={getApiErrorMessage(assignmentsQuery.error)}
+                title={getApiErrorMessage(assignmentsQuery.error)}
               />
             ) : null}
             {createAssignmentMutation.error ? (
               <Alert
                 type="error"
                 showIcon
-                message={getApiErrorMessage(createAssignmentMutation.error)}
+                title={getApiErrorMessage(createAssignmentMutation.error)}
               />
             ) : null}
             {deleteAssignmentMutation.error ? (
               <Alert
                 type="error"
                 showIcon
-                message={getApiErrorMessage(deleteAssignmentMutation.error)}
+                title={getApiErrorMessage(deleteAssignmentMutation.error)}
               />
             ) : null}
             {assignmentsQuery.isLoading ? null : assignments.length ? (
@@ -328,7 +328,7 @@ function ViewAssignmentRow(input: {
         style={{ justifyContent: "space-between", width: "100%" }}
         wrap
       >
-        <Space direction="vertical" size={0}>
+        <Space orientation="vertical" size={0}>
           <Typography.Text strong>{input.description}</Typography.Text>
           <Typography.Text type="secondary">
             Assignment ID: {input.assignmentId}

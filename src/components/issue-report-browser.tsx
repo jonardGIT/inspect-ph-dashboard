@@ -85,7 +85,7 @@ export default function IssueReportBrowser() {
       description="Review public issue submissions, search by reference or subject, and monitor what has been reported into the system."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Input.Search
               allowClear
               placeholder="Search report number or subject"
@@ -159,7 +159,7 @@ export default function IssueReportBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(issueReportsQuery.error)}
+          title={getApiErrorMessage(issueReportsQuery.error)}
         />
       ) : null}
 
@@ -180,7 +180,7 @@ export default function IssueReportBrowser() {
                   title: "Reference",
                   key: "reportNumber",
                   render: (_value, record) => (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text strong>
                         {record.reportNumber}
                       </Typography.Text>

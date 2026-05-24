@@ -1,8 +1,4 @@
-import type {
-  OAuthClientRecord,
-  OAuthConsentInfo,
-  OAuthTokenResponse,
-} from "@/types";
+import type { OAuthClientRecord, OAuthConsentInfo } from "@/types";
 
 import { apiClient } from "./client";
 

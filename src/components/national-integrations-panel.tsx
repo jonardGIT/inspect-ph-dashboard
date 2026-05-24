@@ -94,7 +94,7 @@ function PhilSysPanel() {
       {mutation.isError && (
         <Alert
           description={getApiErrorMessage(mutation.error)}
-          message="Verification failed"
+          title="Verification failed"
           showIcon
           type="error"
         />
@@ -166,7 +166,7 @@ function TinPanel() {
       {mutation.isError && (
         <Alert
           description={getApiErrorMessage(mutation.error)}
-          message="Verification failed"
+          title="Verification failed"
           showIcon
           type="error"
         />
@@ -230,7 +230,7 @@ function BusinessLookupPanel() {
       {mutation.isError && (
         <Alert
           description={getApiErrorMessage(mutation.error)}
-          message="Lookup failed"
+          title="Lookup failed"
           showIcon
           style={{ marginTop: 12 }}
           type="error"
@@ -391,13 +391,13 @@ function VerificationHistoryPanel() {
 
 export function NationalIntegrationsPanel() {
   return (
-    <Space direction="vertical" style={{ width: "100%" }}>
+    <Space orientation="vertical" style={{ width: "100%" }}>
       <Title level={5} style={{ margin: 0 }}>
         Government registry verifications
       </Title>
       <Alert
         description="Format validation runs locally. Full identity matching requires a Data Sharing Agreement (DSA) with the respective agency. Contact your LGU's ICT officer to provision live API credentials."
-        message="Stub mode active"
+        title="Stub mode active"
         showIcon
         type="info"
       />

@@ -80,7 +80,7 @@ export function OAuthClientManager() {
       dataIndex: "name",
       key: "name",
       render: (name: string, r: OAuthClientRecord) => (
-        <Space direction="vertical" size={0}>
+        <Space orientation="vertical" size={0}>
           <Text strong>{name}</Text>
           {r.description && <Text type="secondary">{r.description}</Text>}
         </Space>
@@ -199,7 +199,7 @@ export function OAuthClientManager() {
             rules={[{ message: "Select at least one scope", required: true }]}
           >
             <Checkbox.Group>
-              <Space direction="vertical">
+              <Space orientation="vertical">
                 {OAUTH_SCOPES.map((s) => (
                   <Checkbox key={s} value={s}>
                     <strong>{s}</strong>
@@ -222,12 +222,12 @@ export function OAuthClientManager() {
       >
         <Alert
           description="This is the only time the client secret will be shown. Copy it now and store it securely."
-          message="Copy your client secret"
+          title="Copy your client secret"
           showIcon
           type="warning"
         />
 
-        <Space direction="vertical" style={{ marginTop: 16, width: "100%" }}>
+        <Space orientation="vertical" style={{ marginTop: 16, width: "100%" }}>
           <Text>Client ID:</Text>
           <Input.Password
             readOnly

@@ -53,7 +53,7 @@ export default function FireGuardBrowser() {
         <Alert
           type="error"
           showIcon
-          message={getApiErrorMessage(
+          title={getApiErrorMessage(
             moduleQuery.error || officeModulesQuery.error,
           )}
         />

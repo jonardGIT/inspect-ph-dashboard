@@ -18,6 +18,7 @@ vi.mock("@/components/inspection-browser", () => ({
       <div>{props.title as string}</div>
       <div>{props.lockedOfficeId as string}</div>
       <div>{props.lockedOfficeLabel as string}</div>
+      <div>{props.beforeContent as ReactNode}</div>
       <div>{props.beforeContent ? "HasBeforeContent" : "NoBeforeContent"}</div>
     </div>
   )),
@@ -155,5 +156,64 @@ describe("AssessProBrowser", () => {
     expect(
       screen.getByText("No AssessPro office assignments found yet"),
     ).toBeInTheDocument();
+  });
+
+  it("labels the office selector when multiple offices are assigned", () => {
+    vi.mocked(useModuleWorkspace).mockReturnValue({
+      ...baseModuleData,
+      officeModulesQuery: {
+        data: {
+          data: [
+            ...baseModuleData.officeModulesQuery.data.data,
+            {
+              createdAt: "2026-05-14T08:00:00.000Z",
+              id: "assignment-2",
+              module: {
+                code: "ASSESS",
+                id: "module-assess",
+                isActive: true,
+                name: "AssessPro LGU",
+              },
+              office: {
+                code: "ASSESS-NORTH",
+                id: "office-assess-2",
+                lguId: "lgu-1",
+                name: "North Assessors Office",
+              },
+            },
+          ],
+          meta: { limit: 100, page: 1, total: 2 },
+        },
+        error: null,
+        isLoading: false,
+      },
+    } as unknown as ReturnType<typeof useModuleWorkspace>);
+
+    renderWithProviders(<AssessProBrowser />);
+
+    expect(
+      screen.getByRole("combobox", {
+        name: "Select AssessPro office assignment",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows an error state when module loading fails", () => {
+    vi.mocked(useModuleWorkspace).mockReturnValue({
+      moduleQuery: {
+        data: undefined,
+        error: new Error("AssessPro module disabled"),
+        isLoading: false,
+      },
+      officeModulesQuery: {
+        data: undefined,
+        error: null,
+        isLoading: false,
+      },
+    } as unknown as ReturnType<typeof useModuleWorkspace>);
+
+    renderWithProviders(<AssessProBrowser />);
+
+    expect(screen.getByText("AssessPro module disabled")).toBeInTheDocument();
   });
 });

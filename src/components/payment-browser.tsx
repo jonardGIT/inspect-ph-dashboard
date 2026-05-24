@@ -102,7 +102,7 @@ export default function PaymentBrowser() {
       title: "Reference",
       key: "reference",
       render: (_value, record) => (
-        <Space direction="vertical" size={0}>
+        <Space orientation="vertical" size={0}>
           <Typography.Text strong>{record.referenceNumber}</Typography.Text>
           <Typography.Text type="secondary">
             {record.permit.permitNumber}
@@ -183,7 +183,7 @@ export default function PaymentBrowser() {
         <Alert
           type="warning"
           showIcon
-          message="Payments access is limited to admins."
+          title="Payments access is limited to admins."
         />
       ) : (
         <>
@@ -202,7 +202,7 @@ export default function PaymentBrowser() {
             </DashboardFilterStrip>
           ) : null}
 
-          <Space direction="vertical" size={20} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={20} style={{ width: "100%" }}>
             <Space size={16} style={{ width: "100%" }} wrap>
               <DashboardMetricCard
                 label="Visible payments"
@@ -236,7 +236,7 @@ export default function PaymentBrowser() {
                 }}
                 wrap
               >
-                <Space direction="vertical" size={4}>
+                <Space orientation="vertical" size={4}>
                   <Typography.Text strong>Filters</Typography.Text>
                   <Typography.Text type="secondary">
                     Narrow payment records by provider and status.
@@ -265,7 +265,7 @@ export default function PaymentBrowser() {
                   type="error"
                   showIcon
                   style={{ marginBottom: 20 }}
-                  message={getApiErrorMessage(paymentsQuery.error)}
+                  title={getApiErrorMessage(paymentsQuery.error)}
                 />
               ) : null}
 

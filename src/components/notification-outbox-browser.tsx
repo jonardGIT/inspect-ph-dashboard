@@ -136,7 +136,7 @@ export default function NotificationOutboxBrowser() {
       title: "Message",
       key: "message",
       render: (_value, record) => (
-        <Space direction="vertical" size={0}>
+        <Space orientation="vertical" size={0}>
           <Typography.Text strong>{record.title}</Typography.Text>
           <Typography.Text type="secondary">{record.body}</Typography.Text>
         </Space>
@@ -146,7 +146,7 @@ export default function NotificationOutboxBrowser() {
       title: "Recipient",
       key: "recipient",
       render: (_value, record) => (
-        <Space direction="vertical" size={0}>
+        <Space orientation="vertical" size={0}>
           <Typography.Text>{record.recipient.name}</Typography.Text>
           <Typography.Text type="secondary">
             {record.recipient.email}
@@ -236,7 +236,7 @@ export default function NotificationOutboxBrowser() {
         <Alert
           type="warning"
           showIcon
-          message="Notifications outbox access is limited to admins."
+          title="Notifications outbox access is limited to admins."
         />
       ) : (
         <>
@@ -252,7 +252,7 @@ export default function NotificationOutboxBrowser() {
             </DashboardFilterStrip>
           ) : null}
 
-          <Space direction="vertical" size={20} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={20} style={{ width: "100%" }}>
             <Space size={16} style={{ width: "100%" }} wrap>
               <DashboardMetricCard
                 label="Visible notifications"
@@ -276,7 +276,7 @@ export default function NotificationOutboxBrowser() {
               <Alert
                 type="error"
                 showIcon
-                message={getApiErrorMessage(notificationOutboxQuery.error)}
+                title={getApiErrorMessage(notificationOutboxQuery.error)}
               />
             ) : null}
 
@@ -284,7 +284,7 @@ export default function NotificationOutboxBrowser() {
               <Alert
                 type="error"
                 showIcon
-                message={getApiErrorMessage(
+                title={getApiErrorMessage(
                   updateNotificationStatusMutation.error,
                 )}
               />
@@ -304,7 +304,7 @@ export default function NotificationOutboxBrowser() {
                 }}
                 wrap
               >
-                <Space direction="vertical" size={4}>
+                <Space orientation="vertical" size={4}>
                   <Typography.Text strong>Table search</Typography.Text>
                   <Typography.Text type="secondary">
                     Search title, body, recipient, or entity ID.

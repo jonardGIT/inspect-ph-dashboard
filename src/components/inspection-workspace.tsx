@@ -10,7 +10,6 @@ import {
   Empty,
   Form,
   Image,
-  List,
   Modal,
   Row,
   Select,
@@ -85,6 +84,25 @@ interface AttachmentPreviewState {
 
 function canPreviewAttachment(mimeType: string) {
   return mimeType.startsWith("image/") || mimeType === "application/pdf";
+}
+
+function WorkspaceRecordStack(props: { items: React.ReactNode[] }) {
+  return (
+    <Space orientation="vertical" size={0} style={{ width: "100%" }}>
+      {props.items.map((item, index) => (
+        <div
+          key={index}
+          style={{
+            borderBottom:
+              index < props.items.length - 1 ? "1px solid #f0f0f0" : "none",
+            padding: "12px 0",
+          }}
+        >
+          {item}
+        </div>
+      ))}
+    </Space>
+  );
 }
 
 const historyEventColors: Record<InspectionHistoryEvent["type"], string> = {
@@ -198,10 +216,10 @@ export default function InspectionWorkspace({
       title={`Inspection ${inspectionId}`}
       description="Load an inspection record, review checklist and findings, and upload evidence through the provider-aware attachment flow."
       secondarySidebar={
-        <Space direction="vertical" size={20} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={20} style={{ width: "100%" }}>
           {hasPermission(session, "inspection:assign") ? (
             <Card title="Assignment" className="glass-card dashboard-side-card">
-              <Space direction="vertical" size={12} style={{ width: "100%" }}>
+              <Space orientation="vertical" size={12} style={{ width: "100%" }}>
                 <Typography.Paragraph style={{ margin: 0 }}>
                   Assign or reassign this inspection using the inspector
                   directory.
@@ -233,7 +251,7 @@ export default function InspectionWorkspace({
                   <Alert
                     type="error"
                     showIcon
-                    message={getApiErrorMessage(assignInspectionMutation.error)}
+                    title={getApiErrorMessage(assignInspectionMutation.error)}
                   />
                 ) : null}
               </Space>
@@ -244,7 +262,7 @@ export default function InspectionWorkspace({
             title="Attachment upload"
             className="glass-card dashboard-side-card"
           >
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Typography.Paragraph style={{ margin: 0 }}>
                 This uploads the binary first using the new upload intent, then
                 creates the attachment metadata record against the inspection.
@@ -272,14 +290,14 @@ export default function InspectionWorkspace({
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(uploadAttachmentMutation.error)}
+                  title={getApiErrorMessage(uploadAttachmentMutation.error)}
                 />
               ) : null}
               {createAttachmentDownloadIntentMutation.error ? (
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(
+                  title={getApiErrorMessage(
                     createAttachmentDownloadIntentMutation.error,
                   )}
                 />
@@ -294,7 +312,7 @@ export default function InspectionWorkspace({
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(workspaceError)}
+          title={getApiErrorMessage(workspaceError)}
         />
       ) : null}
 
@@ -305,7 +323,7 @@ export default function InspectionWorkspace({
       ) : null}
 
       {inspection ? (
-        <Space direction="vertical" size={20} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={20} style={{ width: "100%" }}>
           <Row gutter={[16, 16]} className="dashboard-summary-row">
             <Col xs={24} md={8}>
               <Card className="glass-card dashboard-metric-card dashboard-metric-card--accent">
@@ -363,7 +381,7 @@ export default function InspectionWorkspace({
                 />
               </Col>
               <Col xs={24} md={8}>
-                <Space direction="vertical" size={4}>
+                <Space orientation="vertical" size={4}>
                   <Typography.Text type="secondary">Status</Typography.Text>
                   <Tag
                     color={
@@ -393,7 +411,7 @@ export default function InspectionWorkspace({
               </Descriptions.Item>
               <Descriptions.Item label="Inspection location">
                 {inspection.location ? (
-                  <Space direction="vertical" size={0}>
+                  <Space orientation="vertical" size={0}>
                     <Typography.Text>
                       {inspection.location.latitude.toFixed(5)},{" "}
                       {inspection.location.longitude.toFixed(5)}
@@ -428,7 +446,7 @@ export default function InspectionWorkspace({
               <Timeline
                 items={activityItems.map((item) => ({
                   content: (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text>{item.title}</Typography.Text>
                       {item.detail ? (
                         <Typography.Text type="secondary">
@@ -455,17 +473,28 @@ export default function InspectionWorkspace({
                 className="glass-card dashboard-data-card"
               >
                 {checklistQuery.data?.length ? (
-                  <List
-                    dataSource={checklistQuery.data}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <List.Item.Meta
-                          title={`${item.template.code} · ${item.template.title}`}
-                          description={item.remarks || "No remarks"}
-                        />
-                        <Tag>{item.status.replace("_", " ")}</Tag>
-                      </List.Item>
-                    )}
+                  <WorkspaceRecordStack
+                    items={checklistQuery.data.map((item) => (
+                      <Row key={item.id} gutter={[12, 12]} align="middle">
+                        <Col flex="auto">
+                          <Space
+                            orientation="vertical"
+                            size={0}
+                            style={{ width: "100%" }}
+                          >
+                            <Typography.Text strong>
+                              {item.template.code} · {item.template.title}
+                            </Typography.Text>
+                            <Typography.Text type="secondary">
+                              {item.remarks || "No remarks"}
+                            </Typography.Text>
+                          </Space>
+                        </Col>
+                        <Col>
+                          <Tag>{item.status.replace("_", " ")}</Tag>
+                        </Col>
+                      </Row>
+                    ))}
                   />
                 ) : (
                   <Empty description="No checklist results yet" />
@@ -476,29 +505,41 @@ export default function InspectionWorkspace({
             <Col xs={24} lg={12}>
               <Card title="Findings" className="glass-card dashboard-data-card">
                 {findingsQuery.data?.length ? (
-                  <List
-                    dataSource={findingsQuery.data}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <List.Item.Meta
-                          title={item.title}
-                          description={item.description}
-                        />
-                        <Space direction="vertical" align="end" size={0}>
-                          <Tag
-                            color={
-                              findingSeverityColors[item.severity] || "default"
-                            }
+                  <WorkspaceRecordStack
+                    items={findingsQuery.data.map((item) => (
+                      <Row key={item.id} gutter={[12, 12]} align="middle">
+                        <Col flex="auto">
+                          <Space
+                            orientation="vertical"
+                            size={0}
+                            style={{ width: "100%" }}
                           >
-                            {item.severity}
-                          </Tag>
-                          <FindingDisputePanel
-                            findingId={item.id}
-                            findingTitle={item.title}
-                          />
-                        </Space>
-                      </List.Item>
-                    )}
+                            <Typography.Text strong>
+                              {item.title}
+                            </Typography.Text>
+                            <Typography.Text type="secondary">
+                              {item.description}
+                            </Typography.Text>
+                          </Space>
+                        </Col>
+                        <Col>
+                          <Space orientation="vertical" align="end" size={0}>
+                            <Tag
+                              color={
+                                findingSeverityColors[item.severity] ||
+                                "default"
+                              }
+                            >
+                              {item.severity}
+                            </Tag>
+                            <FindingDisputePanel
+                              findingId={item.id}
+                              findingTitle={item.title}
+                            />
+                          </Space>
+                        </Col>
+                      </Row>
+                    ))}
                   />
                 ) : (
                   <Empty description="No findings recorded" />
@@ -509,43 +550,54 @@ export default function InspectionWorkspace({
 
           <Card title="Attachments" className="glass-card dashboard-data-card">
             {attachmentsQuery.data?.length ? (
-              <List
-                dataSource={attachmentsQuery.data}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      title={item.fileName}
-                      description={`${item.mimeType} · ${formatBytes(item.fileSizeBytes)}`}
-                    />
-                    <Space>
-                      <Typography.Text type="secondary">
-                        {formatDate(item.createdAt)}
-                      </Typography.Text>
-                      {canPreviewAttachment(item.mimeType) ? (
+              <WorkspaceRecordStack
+                items={attachmentsQuery.data.map((item) => (
+                  <Row key={item.id} gutter={[12, 12]} align="middle">
+                    <Col flex="auto">
+                      <Space
+                        orientation="vertical"
+                        size={0}
+                        style={{ width: "100%" }}
+                      >
+                        <Typography.Text strong>
+                          {item.fileName}
+                        </Typography.Text>
+                        <Typography.Text type="secondary">
+                          {item.mimeType} · {formatBytes(item.fileSizeBytes)}
+                        </Typography.Text>
+                      </Space>
+                    </Col>
+                    <Col>
+                      <Space wrap>
+                        <Typography.Text type="secondary">
+                          {formatDate(item.createdAt)}
+                        </Typography.Text>
+                        {canPreviewAttachment(item.mimeType) ? (
+                          <Button
+                            onClick={() => void previewAttachment(item.id)}
+                            loading={
+                              createAttachmentDownloadIntentMutation.isPending &&
+                              createAttachmentDownloadIntentMutation.variables ===
+                                item.id
+                            }
+                          >
+                            Preview
+                          </Button>
+                        ) : null}
                         <Button
-                          onClick={() => void previewAttachment(item.id)}
+                          onClick={() => void openAttachment(item.id)}
                           loading={
                             createAttachmentDownloadIntentMutation.isPending &&
                             createAttachmentDownloadIntentMutation.variables ===
                               item.id
                           }
                         >
-                          Preview
+                          Open file
                         </Button>
-                      ) : null}
-                      <Button
-                        onClick={() => void openAttachment(item.id)}
-                        loading={
-                          createAttachmentDownloadIntentMutation.isPending &&
-                          createAttachmentDownloadIntentMutation.variables ===
-                            item.id
-                        }
-                      >
-                        Open file
-                      </Button>
-                    </Space>
-                  </List.Item>
-                )}
+                      </Space>
+                    </Col>
+                  </Row>
+                ))}
               />
             ) : (
               <Empty description="No attachments uploaded" />

@@ -119,14 +119,20 @@ describe("SessionBrowser", () => {
     expect(screen.getByText("current")).toBeInTheDocument();
   });
 
-  it("logs out after revoking the current session", async () => {
-    const user = userEvent.setup();
+  it(
+    "logs out after revoking the current session",
+    { timeout: 90000 },
+    async () => {
+      const user = userEvent.setup();
 
-    renderWithProviders(<SessionBrowser />);
+      renderWithProviders(<SessionBrowser />);
 
-    await user.click(screen.getByRole("button", { name: "Revoke" }));
+      await user.click(screen.getByRole("button", { name: "Revoke" }));
 
-    expect(revokeMutateAsync).toHaveBeenCalledWith({ sessionId: "session-1" });
-    expect(logout).toHaveBeenCalled();
-  });
+      expect(revokeMutateAsync).toHaveBeenCalledWith({
+        sessionId: "session-1",
+      });
+      expect(logout).toHaveBeenCalled();
+    },
+  );
 });

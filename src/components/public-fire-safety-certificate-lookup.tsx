@@ -52,7 +52,7 @@ export default function PublicFireSafetyCertificateLookup() {
 
   return (
     <Card title="Public certificate lookup" className="glass-card">
-      <Space direction="vertical" size={12} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={12} style={{ width: "100%" }}>
         <Typography.Paragraph style={{ margin: 0 }}>
           Owners can verify a FireGuard certificate by certificate number
           without signing in.
@@ -78,11 +78,11 @@ export default function PublicFireSafetyCertificateLookup() {
           </Button>
         </Space.Compact>
 
-        {error ? <Alert type="error" showIcon message={error} /> : null}
+        {error ? <Alert type="error" showIcon title={error} /> : null}
 
         {result ? (
           <Card type="inner" title={result.certificateNumber}>
-            <Space direction="vertical" size={8} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={8} style={{ width: "100%" }}>
               <Space wrap>
                 <Tag color={statusColors[result.status] || "default"}>
                   {result.status}

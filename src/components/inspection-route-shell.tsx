@@ -53,7 +53,7 @@ export default function InspectionRouteShell({
   return (
     <main className="page-shell">
       <section className="hero-panel">
-        <Space direction="vertical" size={16} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={16} style={{ width: "100%" }}>
           <Typography.Text className="eyebrow">{eyebrow}</Typography.Text>
           <Typography.Title style={{ margin: 0 }}>{title}</Typography.Title>
           <Typography.Paragraph style={{ margin: 0, maxWidth: 780 }}>
@@ -74,7 +74,7 @@ export default function InspectionRouteShell({
       <Row gutter={[20, 20]}>
         <Col xs={24} xl={8}>
           <Card title="Dashboard session" className="glass-card">
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               {isHydrated && session ? (
                 <>
                   <Typography.Paragraph style={{ margin: 0 }}>

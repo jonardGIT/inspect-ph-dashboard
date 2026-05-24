@@ -106,7 +106,7 @@ export default function FindingDisputePanel({
         footer={null}
         width={520}
       >
-        <Space direction="vertical" style={{ width: "100%" }} size="middle">
+        <Space orientation="vertical" style={{ width: "100%" }} size="middle">
           {error && !hasDispute && (
             <Typography.Text type="secondary">
               No dispute has been filed for this finding.
@@ -177,7 +177,7 @@ export default function FindingDisputePanel({
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(resolveMutation.error)}
+                  title={getApiErrorMessage(resolveMutation.error)}
                 />
               )}
               <Button
@@ -211,7 +211,7 @@ export default function FindingDisputePanel({
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(submitMutation.error)}
+                  title={getApiErrorMessage(submitMutation.error)}
                 />
               )}
               <Button

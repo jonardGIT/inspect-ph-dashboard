@@ -57,7 +57,7 @@ export default function LguBrowser() {
       description="Manage local government units that will later anchor office boundaries, user assignment, and scope-aware access across the platform."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Input.Search
               allowClear
               placeholder="Search code, name, or locality"
@@ -108,7 +108,7 @@ export default function LguBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(lgusQuery.error)}
+          title={getApiErrorMessage(lgusQuery.error)}
         />
       ) : null}
 
@@ -130,7 +130,7 @@ export default function LguBrowser() {
                   title: "LGU",
                   key: "name",
                   render: (_value, record) => (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text strong>{record.name}</Typography.Text>
                       <Typography.Text type="secondary">
                         {record.code}
@@ -243,7 +243,7 @@ export default function LguBrowser() {
                 </Form.Item>
               </Col>
             </Row>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 htmlType="submit"
                 type="primary"
@@ -255,7 +255,7 @@ export default function LguBrowser() {
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(createLguMutation.error)}
+                  title={getApiErrorMessage(createLguMutation.error)}
                 />
               ) : null}
             </Space>

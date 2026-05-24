@@ -53,7 +53,7 @@ export default function EcoWatchBrowser() {
         <Alert
           type="error"
           showIcon
-          message={getApiErrorMessage(
+          title={getApiErrorMessage(
             moduleQuery.error || officeModulesQuery.error,
           )}
         />
@@ -83,12 +83,14 @@ export default function EcoWatchBrowser() {
         <>
           {assignedOffices.length > 1 && (
             <Select
+              aria-label="Select EcoWatch office assignment"
               value={assignedOffice.id}
               onChange={setSelectedOfficeId}
               options={assignedOffices.map((o) => ({
                 label: `${o.name} · ${o.code}`,
                 value: o.id,
               }))}
+              placeholder="Select office"
               style={{ marginBottom: 16, width: "100%" }}
             />
           )}

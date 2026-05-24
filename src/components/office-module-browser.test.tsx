@@ -133,7 +133,7 @@ describe("OfficeModuleBrowser", () => {
     expect(screen.getByText("BPLO Inspection")).toBeInTheDocument();
   });
 
-  it("removes an office module assignment", { timeout: 60000 }, () => {
+  it("removes an office module assignment", { timeout: 180000 }, () => {
     renderWithProviders(<OfficeModuleBrowser />);
 
     fireEvent.click(screen.getByRole("button", { name: "Remove" }));

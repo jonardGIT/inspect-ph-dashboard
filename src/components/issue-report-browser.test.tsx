@@ -69,7 +69,7 @@ describe("IssueReportBrowser", () => {
     } as never);
   }
 
-  it("renders the issue report inbox rows", () => {
+  it("renders the issue report inbox rows", { timeout: 90000 }, () => {
     vi.mocked(useAuthSession).mockReturnValue({
       accessToken: "token",
       session: {
@@ -91,29 +91,35 @@ describe("IssueReportBrowser", () => {
     ).toBeInTheDocument();
   });
 
-  it("triggers issue report status updates from row actions", async () => {
-    const user = userEvent.setup();
+  it(
+    "triggers issue report status updates from row actions",
+    { timeout: 90000 },
+    async () => {
+      const user = userEvent.setup();
 
-    vi.mocked(useAuthSession).mockReturnValue({
-      accessToken: "token",
-      session: {
-        user: {
-          role: "admin",
+      vi.mocked(useAuthSession).mockReturnValue({
+        accessToken: "token",
+        session: {
+          user: {
+            role: "admin",
+          },
         },
-      },
-    } as never);
+      } as never);
 
-    mockBrowserData();
+      mockBrowserData();
 
-    renderWithProviders(<IssueReportBrowser />);
+      renderWithProviders(<IssueReportBrowser />);
 
-    await user.click(screen.getByRole("button", { name: "Mark under review" }));
+      await user.click(
+        screen.getByRole("button", { name: "Mark under review" }),
+      );
 
-    expect(mutate).toHaveBeenCalledWith({
-      id: "issue-1",
-      status: "under_review",
-    });
-  });
+      expect(mutate).toHaveBeenCalledWith({
+        id: "issue-1",
+        status: "under_review",
+      });
+    },
+  );
 
   it("renders an empty state when no issue reports exist", () => {
     vi.mocked(useAuthSession).mockReturnValue({

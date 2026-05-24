@@ -14,14 +14,14 @@ export default function InspectionsError({
   return (
     <main className="page-shell">
       <Card className="glass-card dashboard-error-card">
-        <Space direction="vertical" size={16}>
+        <Space orientation="vertical" size={16}>
           <Typography.Text className="dashboard-error-eyebrow">
             Queue unavailable
           </Typography.Text>
           <Alert
             type="error"
             showIcon
-            message="Failed to load inspections page"
+            title="Failed to load inspections page"
             description={error.message}
           />
           <Button type="primary" onClick={reset}>

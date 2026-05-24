@@ -60,7 +60,7 @@ export default function PublicPaymentLookup() {
 
   return (
     <Card title="Public payment lookup" className="glass-card">
-      <Space direction="vertical" size={12} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={12} style={{ width: "100%" }}>
         <Typography.Paragraph style={{ margin: 0 }}>
           Check the current payment status for a permit-linked transaction using
           its payment reference number.
@@ -86,11 +86,11 @@ export default function PublicPaymentLookup() {
           </Button>
         </Space.Compact>
 
-        {error ? <Alert type="error" showIcon message={error} /> : null}
+        {error ? <Alert type="error" showIcon title={error} /> : null}
 
         {result ? (
           <Card type="inner" title={result.referenceNumber}>
-            <Space direction="vertical" size={8} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={8} style={{ width: "100%" }}>
               <Space wrap>
                 <Tag color={statusColors[result.status] || "default"}>
                   {result.status.replace("_", " ")}

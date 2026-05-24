@@ -92,7 +92,7 @@ export default function ChecklistTemplateBrowser() {
       description="Manage reusable checklist templates that inspectors use to record structured compliance results during an inspection."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Input.Search
               allowClear
               placeholder="Search code or title"
@@ -167,7 +167,7 @@ export default function ChecklistTemplateBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(templatesQuery.error)}
+          title={getApiErrorMessage(templatesQuery.error)}
         />
       ) : null}
 
@@ -189,7 +189,7 @@ export default function ChecklistTemplateBrowser() {
                   title: "Template",
                   key: "title",
                   render: (_value, record) => (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text strong>{record.title}</Typography.Text>
                       <Typography.Text type="secondary">
                         {record.code}
@@ -411,7 +411,7 @@ export default function ChecklistTemplateBrowser() {
             <Form.Item label="Description" name="description">
               <Input.TextArea rows={3} />
             </Form.Item>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 htmlType="submit"
                 type="primary"
@@ -423,7 +423,7 @@ export default function ChecklistTemplateBrowser() {
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(updateMutation.error)}
+                  title={getApiErrorMessage(updateMutation.error)}
                 />
               ) : null}
             </Space>

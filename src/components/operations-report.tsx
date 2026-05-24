@@ -222,7 +222,7 @@ export default function OperationsReport() {
       title: "Business",
       key: "business",
       render: (_value, record) => (
-        <Space direction="vertical" size={0}>
+        <Space orientation="vertical" size={0}>
           <Typography.Text strong>
             {record.business.businessName}
           </Typography.Text>
@@ -270,7 +270,7 @@ export default function OperationsReport() {
         <Alert
           type="warning"
           showIcon
-          message="Operations reports are limited to admins."
+          title="Operations reports are limited to admins."
         />
       ) : (
         <>
@@ -288,7 +288,7 @@ export default function OperationsReport() {
             </DashboardFilterStrip>
           ) : null}
 
-          <Space direction="vertical" size={20} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={20} style={{ width: "100%" }}>
             <Card className="glass-card dashboard-data-card">
               <Space
                 align="start"
@@ -296,7 +296,7 @@ export default function OperationsReport() {
                 style={{ justifyContent: "space-between", width: "100%" }}
                 wrap
               >
-                <Space direction="vertical" size={4}>
+                <Space orientation="vertical" size={4}>
                   <Typography.Text strong>Reporting window</Typography.Text>
                   <Typography.Text type="secondary">
                     Summary cards respect the selected date range. Queue status
@@ -382,7 +382,7 @@ export default function OperationsReport() {
               <Alert
                 type="error"
                 showIcon
-                message={getApiErrorMessage(summaryQuery.error)}
+                title={getApiErrorMessage(summaryQuery.error)}
               />
             ) : null}
 
@@ -494,7 +494,7 @@ export default function OperationsReport() {
               className="glass-card dashboard-data-card"
             >
               {mapPointsQuery.isLoading ? null : mapPointsQuery.data?.length ? (
-                <Space direction="vertical" size={16} style={{ width: "100%" }}>
+                <Space orientation="vertical" size={16} style={{ width: "100%" }}>
                   <div
                     style={{
                       background:
@@ -537,7 +537,7 @@ export default function OperationsReport() {
                     })}
                   </div>
                   <Space
-                    direction="vertical"
+                    orientation="vertical"
                     size={8}
                     style={{ width: "100%" }}
                   >
@@ -551,7 +551,7 @@ export default function OperationsReport() {
                         }}
                         wrap
                       >
-                        <Space direction="vertical" size={0}>
+                        <Space orientation="vertical" size={0}>
                           <Typography.Text strong>
                             {point.business.businessName}
                           </Typography.Text>
@@ -584,7 +584,7 @@ export default function OperationsReport() {
               <Alert
                 type="error"
                 showIcon
-                message={getApiErrorMessage(inspectionsQuery.error)}
+                title={getApiErrorMessage(inspectionsQuery.error)}
               />
             ) : null}
 

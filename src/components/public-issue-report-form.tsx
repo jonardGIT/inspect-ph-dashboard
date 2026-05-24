@@ -59,7 +59,7 @@ export default function PublicIssueReportForm() {
 
   return (
     <Card title="Public issue reporting" className="glass-card">
-      <Space direction="vertical" size={12} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={12} style={{ width: "100%" }}>
         <Typography.Paragraph style={{ margin: 0 }}>
           Residents and business owners can file a public issue report for the
           operations team to review.
@@ -117,13 +117,13 @@ export default function PublicIssueReportForm() {
           </Button>
         </Form>
 
-        {error ? <Alert type="error" showIcon message={error} /> : null}
+        {error ? <Alert type="error" showIcon title={error} /> : null}
 
         {result ? (
           <Alert
             type="success"
             showIcon
-            message={`Report submitted: ${result.reportNumber}`}
+            title={`Report submitted: ${result.reportNumber}`}
             description={`Status: ${result.status}. Keep this reference number for follow-up.`}
           />
         ) : null}

@@ -145,7 +145,7 @@ export function WebhookEndpointManager() {
   ];
 
   if (error) {
-    return <Alert message={getApiErrorMessage(error)} type="error" showIcon />;
+    return <Alert title={getApiErrorMessage(error)} type="error" showIcon />;
   }
 
   return (
@@ -171,7 +171,7 @@ export function WebhookEndpointManager() {
       </div>
 
       <Alert
-        message="Outbound webhooks"
+        title="Outbound webhooks"
         description="InspectPH will POST signed JSON payloads to your endpoints when the subscribed events occur. Each request includes an X-InspectPH-Signature header for HMAC-SHA256 verification using your secret."
         type="info"
         showIcon
@@ -203,7 +203,7 @@ export function WebhookEndpointManager() {
       >
         {createMutation.isError && (
           <Alert
-            message={getApiErrorMessage(createMutation.error)}
+            title={getApiErrorMessage(createMutation.error)}
             type="error"
             showIcon
             style={{ marginBottom: 12 }}

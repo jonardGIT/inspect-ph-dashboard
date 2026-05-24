@@ -67,7 +67,7 @@ export default function ModuleBrowser() {
       description="Manage reusable module overlays that sit on top of the shared inspection core before office-level enablement is configured."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Input.Search
               allowClear
               placeholder="Search code or module name"
@@ -129,7 +129,7 @@ export default function ModuleBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(modulesQuery.error)}
+          title={getApiErrorMessage(modulesQuery.error)}
         />
       ) : null}
 
@@ -151,7 +151,7 @@ export default function ModuleBrowser() {
                   title: "Module",
                   key: "name",
                   render: (_value, record) => (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text strong>{record.name}</Typography.Text>
                       <Typography.Text type="secondary">
                         {record.code}
@@ -251,7 +251,7 @@ export default function ModuleBrowser() {
                 </Form.Item>
               </Col>
             </Row>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 htmlType="submit"
                 type="primary"
@@ -263,7 +263,7 @@ export default function ModuleBrowser() {
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(createModuleMutation.error)}
+                  title={getApiErrorMessage(createModuleMutation.error)}
                 />
               ) : null}
             </Space>

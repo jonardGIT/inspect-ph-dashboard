@@ -19,7 +19,7 @@ import type { CertificateVerificationResult } from "@shared/types/api";
 
 import { getPublicCertificateVerification } from "@/lib/api/certificate-verify";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 function StatusBadge({ status }: { status: string | undefined }) {
   const map: Record<string, "success" | "warning" | "error" | "default"> = {
@@ -45,21 +45,55 @@ export default function CertificateVerifierPanel({
 }: {
   certificateNumber: string;
 }) {
-  const [result, setResult] = useState<CertificateVerificationResult | null>(
-    null,
-  );
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<{
+    certificateNumber: string;
+    error: string | null;
+    isLoading: boolean;
+    result: CertificateVerificationResult | null;
+  }>({
+    certificateNumber: "",
+    error: null,
+    isLoading: true,
+    result: null,
+  });
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    let cancelled = false;
 
     getPublicCertificateVerification({ certificateNumber })
-      .then(setResult)
-      .catch(() => setError("Certificate not found or could not be verified."))
-      .finally(() => setLoading(false));
+      .then((result) => {
+        if (cancelled) {
+          return;
+        }
+
+        setState({
+          certificateNumber,
+          error: null,
+          isLoading: false,
+          result,
+        });
+      })
+      .catch(() => {
+        if (cancelled) {
+          return;
+        }
+
+        setState({
+          certificateNumber,
+          error: "Certificate not found or could not be verified.",
+          isLoading: false,
+          result: null,
+        });
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [certificateNumber]);
+
+  const loading =
+    state.isLoading || state.certificateNumber !== certificateNumber;
+  const { error, result } = state;
 
   if (loading) {
     return (
@@ -71,7 +105,7 @@ export default function CertificateVerifierPanel({
           minHeight: 200,
         }}
       >
-        <Spin size="large" tip="Verifying certificate…" />
+        <Spin size="large" description="Verifying certificate…" />
       </div>
     );
   }
@@ -104,7 +138,7 @@ export default function CertificateVerifierPanel({
         <Alert
           type="success"
           icon={<CheckCircleFilled />}
-          message="This certificate is valid and authentic"
+          title="This certificate is valid and authentic"
           showIcon
           style={{ marginBottom: 20 }}
         />
@@ -112,7 +146,7 @@ export default function CertificateVerifierPanel({
         <Alert
           type="error"
           icon={<CloseCircleFilled />}
-          message="This certificate is not currently valid"
+          title="This certificate is not currently valid"
           description={`Status: ${result.status ?? "unknown"}`}
           showIcon
           style={{ marginBottom: 20 }}

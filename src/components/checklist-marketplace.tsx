@@ -83,7 +83,7 @@ function TemplateCard({
     <Card
       size="small"
       title={
-        <Space direction="vertical" size={2} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={2} style={{ width: "100%" }}>
           <Space>
             <Tag color={moduleColor}>{template.module}</Tag>
             {template.lguId === null && (
@@ -272,7 +272,7 @@ export function ChecklistMarketplace() {
 
   return (
     <>
-      <Space direction="vertical" style={{ width: "100%" }} size="middle">
+      <Space orientation="vertical" style={{ width: "100%" }} size="middle">
         {/* Filters */}
         <Row gutter={12} align="middle">
           <Col xs={24} sm={12} md={10}>

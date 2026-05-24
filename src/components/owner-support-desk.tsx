@@ -31,7 +31,7 @@ function BusinessDetail({
   const permits = permitsQuery.data?.data ?? [];
 
   return (
-    <Space direction="vertical" size={16} style={{ width: "100%" }}>
+    <Space orientation="vertical" size={16} style={{ width: "100%" }}>
       <Card
         title="Business information"
         size="small"
@@ -98,7 +98,7 @@ function BusinessDetail({
           <Alert
             type="error"
             showIcon
-            message={getApiErrorMessage(permitsQuery.error)}
+            title={getApiErrorMessage(permitsQuery.error)}
           />
         ) : permits.length ? (
           <Table
@@ -180,7 +180,7 @@ export default function OwnerSupportDesk() {
   }
 
   return (
-    <Space direction="vertical" size={20} style={{ width: "100%" }}>
+    <Space orientation="vertical" size={20} style={{ width: "100%" }}>
       <Card title="Owner business lookup" className="glass-card dashboard-data-card">
         <Input.Search
           allowClear
@@ -207,7 +207,7 @@ export default function OwnerSupportDesk() {
         <Alert
           type="error"
           showIcon
-          message={getApiErrorMessage(businessesQuery.error)}
+          title={getApiErrorMessage(businessesQuery.error)}
         />
       ) : null}
 
@@ -223,7 +223,7 @@ export default function OwnerSupportDesk() {
                 title: "Business name",
                 key: "businessName",
                 render: (_value, record) => (
-                  <Space direction="vertical" size={0}>
+                  <Space orientation="vertical" size={0}>
                     <Typography.Text
                       strong
                       style={{ cursor: "pointer", color: "#1677ff" }}

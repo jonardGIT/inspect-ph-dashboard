@@ -141,7 +141,7 @@ export default function PaymentAnomalyBrowser() {
       {isError && (
         <Alert
           type="error"
-          message="Failed to load anomaly flags"
+          title="Failed to load anomaly flags"
           description={getApiErrorMessage(error)}
           style={{ marginBottom: 16 }}
         />

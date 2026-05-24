@@ -106,17 +106,8 @@ const columns: TableProps<PaymentReconciliationByOffice>["columns"] = [
 ];
 
 export default function PaymentReconciliation() {
-  const {
-    data,
-    error,
-    fromDate,
-    isLoading,
-    officeId: _officeId,
-    refetch,
-    setFromDate,
-    setToDate,
-    toDate,
-  } = usePaymentReconciliation();
+  const { data, error, isLoading, refetch, setFromDate, setToDate } =
+    usePaymentReconciliation();
 
   const [dateRange, setDateRange] = useState<[string, string] | null>(null);
 
@@ -137,8 +128,8 @@ export default function PaymentReconciliation() {
 
   return (
     <div style={{ padding: "24px 32px", maxWidth: 1100 }}>
-      <Space direction="vertical" style={{ width: "100%" }} size="large">
-        <Space direction="vertical" size={4}>
+      <Space orientation="vertical" style={{ width: "100%" }} size="large">
+        <Space orientation="vertical" size={4}>
           <Title level={3} style={{ margin: 0 }}>
             Payment Reconciliation
           </Title>
@@ -172,7 +163,7 @@ export default function PaymentReconciliation() {
         {error && (
           <Alert
             type="error"
-            message="Failed to load reconciliation data"
+            title="Failed to load reconciliation data"
             showIcon
           />
         )}
@@ -187,7 +178,7 @@ export default function PaymentReconciliation() {
                   prefix={<DollarOutlined style={{ color: "#52c41a" }} />}
                   suffix="PHP"
                   precision={2}
-                  valueStyle={{ color: "#52c41a" }}
+                  styles={{ content: { color: "#52c41a" } }}
                 />
                 <Text type="secondary">{data.totalPaidCount} transactions</Text>
               </Card>
@@ -210,8 +201,10 @@ export default function PaymentReconciliation() {
                   prefix={<WarningOutlined style={{ color: "#fa8c16" }} />}
                   suffix="PHP"
                   precision={2}
-                  valueStyle={
-                    data.agingUnpaidCount > 0 ? { color: "#fa8c16" } : undefined
+                  styles={
+                    data.agingUnpaidCount > 0
+                      ? { content: { color: "#fa8c16" } }
+                      : undefined
                   }
                 />
                 <Text type="secondary">

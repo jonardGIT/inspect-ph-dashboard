@@ -105,93 +105,132 @@ interface NavigationItem {
   icon: React.ReactNode;
   key: string;
   label: string;
+  roles?: User["role"][];
 }
+
+const WEB_PRIMARY_ROLES: User["role"][] = [
+  "admin",
+  "lgu_admin",
+  "office_supervisor",
+  "office_clerk",
+];
+
+const DASHBOARD_SECONDARY_ROLES: User["role"][] = ["inspector"];
+
+const MOBILE_PRIMARY_ROLES: User["role"][] = [
+  "inspector",
+  "business_owner",
+  "citizen",
+];
 
 const navigationItems: NavigationItem[] = [
   {
     icon: <AppstoreOutlined />,
     key: "/inspections",
     label: "Inspections",
+    roles: [
+      "admin",
+      "lgu_admin",
+      "office_supervisor",
+      "office_clerk",
+      "inspector",
+    ],
   },
   {
     icon: <CalendarOutlined />,
     key: "/inspections/calendar",
     label: "Inspector Calendar",
+    roles: ["admin", "lgu_admin", "office_supervisor", "inspector"],
   },
   {
     icon: <AlertOutlined />,
     key: "/caps",
     label: "CAPs",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <BankOutlined />,
     key: "/buildsure",
     label: "BuildSure",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <BankOutlined />,
     key: "/fireguard",
     label: "FireGuard",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <ShopOutlined />,
     key: "/marketguard",
     label: "MarketGuard",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <BankOutlined />,
     key: "/sanitacheck",
     label: "SanitaCheck",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <EnvironmentOutlined />,
     key: "/ecowatch",
     label: "EcoWatch",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <EnvironmentOutlined />,
     key: "/zoneverify",
     label: "ZoneVerify",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <BankOutlined />,
     key: "/infrainspect",
     label: "InfraInspect",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <ShopOutlined />,
     key: "/agricheck",
     label: "AgriCheck",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <BankOutlined />,
     key: "/tourismsafe",
     label: "TourismSafe",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <BankOutlined />,
     key: "/assesspro",
     label: "AssessPro",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <ShopOutlined />,
     key: "/businesses",
     label: "Businesses",
+    roles: ["admin", "lgu_admin", "office_supervisor", "office_clerk"],
   },
   {
     icon: <FileTextOutlined />,
     key: "/issue-reports",
     label: "Issue reports",
+    roles: ["admin", "lgu_admin", "office_supervisor"],
   },
   {
     icon: <UserOutlined />,
     key: "/sessions",
     label: "Sessions",
+    roles: ["admin"],
   },
   {
     icon: <FileTextOutlined />,
     key: "/support",
     label: "Owner support",
+    roles: ["admin", "lgu_admin", "office_supervisor", "office_clerk"],
   },
   {
     adminOnly: true,
@@ -335,8 +374,55 @@ const navigationItems: NavigationItem[] = [
     icon: <FileTextOutlined />,
     key: "/permits",
     label: "Permits",
+    roles: ["admin", "lgu_admin", "office_supervisor", "office_clerk"],
   },
 ];
+
+function canViewNavigationItem(
+  item: NavigationItem,
+  role: User["role"] | undefined,
+  isAdmin: boolean,
+) {
+  if (!role) {
+    return false;
+  }
+
+  if (item.adminOnly) {
+    return isAdmin;
+  }
+
+  if (item.roles?.length) {
+    return item.roles.includes(role);
+  }
+
+  return true;
+}
+
+function getBlockedDashboardMessage(role: User["role"] | undefined) {
+  if (!role) {
+    return {
+      description: "Sign in to access the dashboard workspace.",
+      title: "Authentication required",
+    };
+  }
+
+  if (
+    MOBILE_PRIMARY_ROLES.includes(role) &&
+    !DASHBOARD_SECONDARY_ROLES.includes(role)
+  ) {
+    return {
+      description:
+        "This account is designed for mobile-first self-service or field work. Use the mobile app for your main workflow.",
+      title: "Use the mobile app",
+    };
+  }
+
+  return {
+    description:
+      "This route is not available for your role in the dashboard workspace.",
+    title: "Dashboard access limited",
+  };
+}
 
 export function isProtectedDashboardPath(pathname: string): boolean {
   return PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
@@ -358,10 +444,14 @@ export default function DashboardAppShell({
   const router = useRouter();
   const { logout, session } = useAuthSession();
   const { closePalette, open: paletteOpen, openPalette } = useCommandPalette();
-  const isAdmin = ADMIN_ROLES.includes(session?.user.role as User["role"]);
+  const role = session?.user.role as User["role"] | undefined;
+  const isAdmin = ADMIN_ROLES.includes(role as User["role"]);
   const visibleNavigationItems = useMemo(
-    () => navigationItems.filter((item) => (item.adminOnly ? isAdmin : true)),
-    [isAdmin],
+    () =>
+      navigationItems.filter((item) =>
+        canViewNavigationItem(item, role, isAdmin),
+      ),
+    [isAdmin, role],
   );
 
   const selectedKey = useMemo(() => {
@@ -387,7 +477,10 @@ export default function DashboardAppShell({
       label: item.label,
     }),
   );
-  const isBlockedAdminPath = !isAdmin && isAdminDashboardPath(pathname);
+  const isBlockedPath =
+    isProtectedDashboardPath(pathname) &&
+    !visibleNavigationItems.some((item) => pathname.startsWith(item.key));
+  const blockedMessage = getBlockedDashboardMessage(role);
 
   const identityLabel = session?.user.email || session?.user.name || "Guest";
   const avatarInitial = identityLabel.charAt(0).toUpperCase() || "G";
@@ -471,22 +564,28 @@ export default function DashboardAppShell({
           </Space>
         </Header>
         <Content className="dashboard-content">
-          {isBlockedAdminPath ? (
+          {isBlockedPath ? (
             <div className="glass-card" style={{ padding: 24 }}>
-              <Space direction="vertical" size={12}>
+              <Space orientation="vertical" size={12}>
                 <Typography.Title level={4} style={{ margin: 0 }}>
-                  Admin access required
+                  {blockedMessage.title}
                 </Typography.Title>
                 <Typography.Text type="secondary">
-                  This route is reserved for administrative operations.
-                  Inspectors can continue using inspections, businesses, and
-                  permits.
+                  {blockedMessage.description}
                 </Typography.Text>
                 <Button
                   type="primary"
-                  onClick={() => router.push("/inspections")}
+                  onClick={() =>
+                    router.push(
+                      WEB_PRIMARY_ROLES.includes(role as User["role"])
+                        ? "/inspections"
+                        : "/",
+                    )
+                  }
                 >
-                  Go to inspections
+                  {WEB_PRIMARY_ROLES.includes(role as User["role"])
+                    ? "Go to inspections"
+                    : "Go to dashboard home"}
                 </Button>
               </Space>
             </div>

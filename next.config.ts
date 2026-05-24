@@ -4,6 +4,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+const workspaceRoot = path.resolve(projectRoot, "..");
 
 // Sentry CDN used for the browser error-reporting SDK
 const SENTRY_CDN = "https://browser.sentry-cdn.com";
@@ -59,9 +60,9 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactCompiler: true,
   output: "standalone",
-  outputFileTracingRoot: projectRoot,
+  outputFileTracingRoot: workspaceRoot,
   turbopack: {
-    root: projectRoot,
+    root: workspaceRoot,
   },
   allowedDevOrigins: ["localhost", "127.0.0.1"],
   async headers() {

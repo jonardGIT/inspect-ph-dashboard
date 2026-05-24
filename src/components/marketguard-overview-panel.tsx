@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Alert, Button, Card, Empty, Space, Spin, Tag, Typography } from "antd";
+import { Alert, Card, Empty, Space, Spin, Tag, Typography } from "antd";
 
 import { useInspectionBrowser } from "@/hooks/use-inspection-browser";
 import { getApiErrorMessage } from "@/lib/api/http";
@@ -45,7 +45,7 @@ export default function MarketGuardOverviewPanel(input: {
       className="glass-card dashboard-data-card"
       style={{ marginBottom: 20 }}
     >
-      <Space direction="vertical" size={16} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={16} style={{ width: "100%" }}>
         <Typography.Paragraph style={{ margin: 0 }}>
           Monitor the current market inspection queue for {input.officeLabel}{" "}
           before dropping into the shared inspection workspace.
@@ -66,7 +66,7 @@ export default function MarketGuardOverviewPanel(input: {
           <Alert
             type="error"
             showIcon
-            message={getApiErrorMessage(
+            title={getApiErrorMessage(
               inspectionsQuery.error || summaryQuery.error,
             )}
           />
@@ -88,7 +88,7 @@ export default function MarketGuardOverviewPanel(input: {
                 type="inner"
                 title={inspection.permit.permitNumber}
               >
-                <Space direction="vertical" size={8} style={{ width: "100%" }}>
+                <Space orientation="vertical" size={8} style={{ width: "100%" }}>
                   <Space wrap>
                     <Tag color={statusColors[inspection.status] || "default"}>
                       {inspection.status.replace("_", " ")}
@@ -106,11 +106,9 @@ export default function MarketGuardOverviewPanel(input: {
                       {inspection.notes}
                     </Typography.Paragraph>
                   ) : null}
-                  <Button type="link" style={{ padding: 0 }}>
-                    <Link href={`/inspections/${inspection.id}`}>
-                      Open inspection workspace
-                    </Link>
-                  </Button>
+                  <Link href={`/inspections/${inspection.id}`}>
+                    Open inspection workspace
+                  </Link>
                 </Space>
               </Card>
             ))

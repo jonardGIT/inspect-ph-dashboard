@@ -161,7 +161,7 @@ export default function TreasurerReport() {
       </div>
 
       {error ? (
-        <Alert message={getApiErrorMessage(error)} showIcon type="error" />
+        <Alert title={getApiErrorMessage(error)} showIcon type="error" />
       ) : null}
 
       {isLoading ? (
@@ -200,7 +200,7 @@ export default function TreasurerReport() {
                   value={data.agingReceivablesAmountInMinor / 100}
                   prefix="₱"
                   precision={2}
-                  valueStyle={{ color: "#cf1322" }}
+                  styles={{ content: { color: "#cf1322" } }}
                 />
                 <Text type="secondary">
                   {data.agingReceivablesCount} overdue

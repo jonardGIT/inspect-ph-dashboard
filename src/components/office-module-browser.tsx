@@ -63,7 +63,7 @@ export default function OfficeModuleBrowser() {
       description="Enable specific module overlays for specific offices so later role and scope rules can operate against concrete office capabilities."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Select
               allowClear
               placeholder="Filter by office"
@@ -107,7 +107,7 @@ export default function OfficeModuleBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(officeModulesQuery.error)}
+          title={getApiErrorMessage(officeModulesQuery.error)}
         />
       ) : null}
 
@@ -116,7 +116,7 @@ export default function OfficeModuleBrowser() {
         className="glass-card dashboard-data-card"
         style={{ marginBottom: 20 }}
       >
-        <Space direction="vertical" size={16} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={16} style={{ width: "100%" }}>
           {hasPermission(session, "module:manage") ? (
             <Space wrap>
               <Select
@@ -175,14 +175,14 @@ export default function OfficeModuleBrowser() {
             <Alert
               type="error"
               showIcon
-              message={getApiErrorMessage(createOfficeModuleMutation.error)}
+              title={getApiErrorMessage(createOfficeModuleMutation.error)}
             />
           ) : null}
           {deleteOfficeModuleMutation.error ? (
             <Alert
               type="error"
               showIcon
-              message={getApiErrorMessage(deleteOfficeModuleMutation.error)}
+              title={getApiErrorMessage(deleteOfficeModuleMutation.error)}
             />
           ) : null}
           {officeModulesQuery.isLoading ? null : assignments.length ? (

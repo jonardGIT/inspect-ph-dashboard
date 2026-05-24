@@ -208,9 +208,9 @@ export default function InspectionBrowser({
       title={title}
       description={description}
       secondarySidebar={
-        <Space direction="vertical" size={20} style={{ width: "100%" }}>
+        <Space orientation="vertical" size={20} style={{ width: "100%" }}>
           <Card title="Open by ID" className="glass-card dashboard-side-card">
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Typography.Paragraph style={{ margin: 0 }}>
                 Use this when an office already provided a concrete inspection
                 ID.
@@ -234,7 +234,7 @@ export default function InspectionBrowser({
             title="Overview filters"
             className="glass-card dashboard-side-card"
           >
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Select
                 allowClear
                 showSearch
@@ -297,7 +297,7 @@ export default function InspectionBrowser({
                 <Alert
                   type="info"
                   showIcon
-                  message={`Office locked to ${activeOfficeLabel}`}
+                  title={`Office locked to ${activeOfficeLabel}`}
                 />
               ) : null}
               {isAdmin ? (
@@ -343,7 +343,7 @@ export default function InspectionBrowser({
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(
+          title={getApiErrorMessage(
             summaryQuery.error || inspectionsQuery.error,
           )}
         />
@@ -491,7 +491,7 @@ export default function InspectionBrowser({
                   key: "location",
                   render: (_value, record) =>
                     record.location ? (
-                      <Space direction="vertical" size={0}>
+                      <Space orientation="vertical" size={0}>
                         <Typography.Text>
                           {record.location.latitude.toFixed(5)},{" "}
                           {record.location.longitude.toFixed(5)}
@@ -668,7 +668,7 @@ export default function InspectionBrowser({
                 </Form.Item>
               </Col>
             </Row>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 type="primary"
                 htmlType="submit"
@@ -680,7 +680,7 @@ export default function InspectionBrowser({
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(createInspectionMutation.error)}
+                  title={getApiErrorMessage(createInspectionMutation.error)}
                 />
               ) : null}
             </Space>

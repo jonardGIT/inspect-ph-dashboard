@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { en } from "@/lib/i18n/en";
 import { tl } from "@/lib/i18n/tl";
@@ -19,12 +19,14 @@ function detectBrowserLocale(): SupportedLocale {
 }
 
 export function useLocale() {
-  const [locale, setLocaleState] = useState<SupportedLocale>("en");
+  const [locale, setLocaleState] = useState<SupportedLocale>(() => {
+    if (typeof window === "undefined") {
+      return "en";
+    }
 
-  useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY) as SupportedLocale | null;
-    setLocaleState(saved ?? detectBrowserLocale());
-  }, []);
+    return saved ?? detectBrowserLocale();
+  });
 
   const setLocale = useCallback((next: SupportedLocale) => {
     localStorage.setItem(STORAGE_KEY, next);

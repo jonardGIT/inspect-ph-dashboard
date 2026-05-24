@@ -67,7 +67,7 @@ export default function OfficeBrowser() {
       description="Manage office records that will later anchor assignment, role scoping, and operational supervision within each participating LGU."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             <Input.Search
               allowClear
               placeholder="Search code, name, or description"
@@ -129,7 +129,7 @@ export default function OfficeBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(officesQuery.error)}
+          title={getApiErrorMessage(officesQuery.error)}
         />
       ) : null}
 
@@ -151,7 +151,7 @@ export default function OfficeBrowser() {
                   title: "Office",
                   key: "name",
                   render: (_value, record) => (
-                    <Space direction="vertical" size={0}>
+                    <Space orientation="vertical" size={0}>
                       <Typography.Text strong>{record.name}</Typography.Text>
                       <Typography.Text type="secondary">
                         {record.code}
@@ -277,7 +277,7 @@ export default function OfficeBrowser() {
                 </Form.Item>
               </Col>
             </Row>
-            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+            <Space orientation="vertical" size={12} style={{ width: "100%" }}>
               <Button
                 htmlType="submit"
                 type="primary"
@@ -289,7 +289,7 @@ export default function OfficeBrowser() {
                 <Alert
                   type="error"
                   showIcon
-                  message={getApiErrorMessage(createOfficeMutation.error)}
+                  title={getApiErrorMessage(createOfficeMutation.error)}
                 />
               ) : null}
             </Space>

@@ -8,9 +8,16 @@ import DashboardAppShell, {
   isProtectedDashboardPath,
 } from "@/components/dashboard-app-shell";
 import { useAuthSession } from "@/hooks/use-auth-session";
+import type { User } from "@shared/types/api";
 
 interface DashboardShellGateProps {
   children: React.ReactNode;
+}
+
+export function shouldRedirectProtectedDashboardRole(
+  role: User["role"] | undefined,
+) {
+  return role === "business_owner" || role === "citizen";
 }
 
 export default function DashboardShellGate({
@@ -26,6 +33,14 @@ export default function DashboardShellGate({
     if (isHydrated && isProtected && !session) {
       router.replace(`/login?next=${encodeURIComponent(pathname)}`);
     }
+    if (
+      isHydrated &&
+      isProtected &&
+      session &&
+      shouldRedirectProtectedDashboardRole(session.user.role)
+    ) {
+      router.replace("/");
+    }
   }, [isHydrated, isProtected, session, router, pathname]);
 
   if (!isProtected) {
@@ -34,7 +49,11 @@ export default function DashboardShellGate({
 
   // Show a loading indicator while the client hydrates or while an auth
   // redirect is in flight — avoids the jarring blank-screen flash.
-  if (!isHydrated || !session) {
+  if (
+    !isHydrated ||
+    !session ||
+    shouldRedirectProtectedDashboardRole(session.user.role)
+  ) {
     return (
       <div
         style={{

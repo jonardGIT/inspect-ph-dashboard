@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Input, type InputRef, Modal, Typography } from "antd";
 import {
   AlertOutlined,
@@ -277,15 +277,6 @@ export default function CommandPalette({
   const inputRef = useRef<InputRef>(null);
   const router = useRouter();
 
-  // Reset on open
-  useEffect(() => {
-    if (open) {
-      setQuery("");
-      setActiveIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 50);
-    }
-  }, [open]);
-
   const results = useMemo(() => {
     const filtered = ALL_COMMAND_ITEMS.filter(
       (item) => isAdmin || !ADMIN_CATEGORIES.has(item.category),
@@ -303,10 +294,10 @@ export default function CommandPalette({
       .map(({ item }) => item);
   }, [query, isAdmin]);
 
-  // Clamp activeIndex when results change
-  useEffect(() => {
-    setActiveIndex((prev) => Math.min(prev, Math.max(0, results.length - 1)));
-  }, [results.length]);
+  const boundedActiveIndex = Math.min(
+    activeIndex,
+    Math.max(0, results.length - 1),
+  );
 
   const navigate = (path: string) => {
     onClose();
@@ -324,8 +315,8 @@ export default function CommandPalette({
           (prev - 1 + Math.max(1, results.length)) %
           Math.max(1, results.length),
       );
-    } else if (event.key === "Enter" && results[activeIndex]) {
-      navigate(results[activeIndex].path);
+    } else if (event.key === "Enter" && results[boundedActiveIndex]) {
+      navigate(results[boundedActiveIndex].path);
     }
   };
 
@@ -346,6 +337,15 @@ export default function CommandPalette({
     <Modal
       open={open}
       onCancel={onClose}
+      afterOpenChange={(nextOpen) => {
+        if (!nextOpen) {
+          return;
+        }
+
+        setQuery("");
+        setActiveIndex(0);
+        setTimeout(() => inputRef.current?.focus(), 50);
+      }}
       footer={null}
       width={580}
       closable={false}
@@ -367,7 +367,7 @@ export default function CommandPalette({
           <Input
             ref={inputRef}
             autoFocus
-            bordered={false}
+            variant="borderless"
             placeholder="Search pages, actions…"
             size="large"
             style={{ flex: 1, fontSize: 16, padding: 0 }}
@@ -414,7 +414,7 @@ export default function CommandPalette({
                 </Typography.Text>
                 {items.map((item) => {
                   const flatIndex = flatResults.indexOf(item);
-                  const isActive = flatIndex === activeIndex;
+                  const isActive = flatIndex === boundedActiveIndex;
                   return (
                     <div
                       key={item.id}

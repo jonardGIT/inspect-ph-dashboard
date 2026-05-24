@@ -55,7 +55,7 @@ export default function SessionBrowser() {
       description="Review active authenticated sessions and revoke access when a device should no longer keep a valid session."
       secondarySidebar={
         <Card title="Filters" className="glass-card dashboard-side-card">
-          <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Space orientation="vertical" size={12} style={{ width: "100%" }}>
             {isAdmin ? (
               <Select
                 allowClear
@@ -118,7 +118,7 @@ export default function SessionBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(sessionsQuery.error)}
+          title={getApiErrorMessage(sessionsQuery.error)}
         />
       ) : null}
       {revokeSessionMutation.error ? (
@@ -126,7 +126,7 @@ export default function SessionBrowser() {
           type="error"
           showIcon
           style={{ marginBottom: 20 }}
-          message={getApiErrorMessage(revokeSessionMutation.error)}
+          title={getApiErrorMessage(revokeSessionMutation.error)}
         />
       ) : null}
 
@@ -161,7 +161,7 @@ export default function SessionBrowser() {
                   _value: unknown,
                   record: (typeof sessions)[number],
                 ) => (
-                  <Space direction="vertical" size={0}>
+                  <Space orientation="vertical" size={0}>
                     <Typography.Text strong>{record.id}</Typography.Text>
                     <Typography.Text type="secondary">
                       {record.userAgent || "Unknown device"}

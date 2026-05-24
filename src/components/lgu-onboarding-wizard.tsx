@@ -118,7 +118,7 @@ export default function LguOnboardingWizard() {
         ]}
         status="success"
         subTitle={
-          <Space direction="vertical">
+          <Space orientation="vertical">
             <Text>
               LGU ID: <Text code>{result.lguId}</Text>
             </Text>
@@ -134,7 +134,7 @@ export default function LguOnboardingWizard() {
   }
 
   return (
-    <Space direction="vertical" size="large" style={{ width: "100%" }}>
+    <Space orientation="vertical" size="large" style={{ width: "100%" }}>
       <Steps current={current} items={STEPS} />
 
       <Divider />
@@ -204,7 +204,7 @@ export default function LguOnboardingWizard() {
             <Title level={4}>Enable modules</Title>
             <Form.Item label="Select modules to enable" name="moduleIds">
               <Checkbox.Group>
-                <Space direction="vertical">
+                <Space orientation="vertical">
                   {loadingModules && (
                     <Text type="secondary">Loading modules…</Text>
                   )}
@@ -267,7 +267,7 @@ export default function LguOnboardingWizard() {
         {current === 4 && (
           <>
             <Title level={4}>Review</Title>
-            <Space direction="vertical" style={{ width: "100%" }}>
+            <Space orientation="vertical" style={{ width: "100%" }}>
               <Text>
                 <strong>LGU:</strong> {values.lguName} ({values.lguCode})
               </Text>

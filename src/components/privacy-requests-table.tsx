@@ -7,7 +7,6 @@ import {
   Drawer,
   Form,
   Input,
-  Modal,
   Select,
   Space,
   Table,
@@ -28,7 +27,7 @@ import type {
   DataSubjectRequestType,
 } from "@shared/types/api";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 const STATUS_COLORS: Record<DataSubjectRequestStatus, string> = {
   COMPLETED: "success",
