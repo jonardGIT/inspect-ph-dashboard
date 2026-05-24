@@ -41,17 +41,17 @@ function StatusBadge({ status }: { status: string | undefined }) {
 }
 
 export default function CertificateVerifierPanel({
-  certificateNumber,
+  verificationToken,
 }: {
-  certificateNumber: string;
+  verificationToken: string;
 }) {
   const [state, setState] = useState<{
-    certificateNumber: string;
+    verificationToken: string;
     error: string | null;
     isLoading: boolean;
     result: CertificateVerificationResult | null;
   }>({
-    certificateNumber: "",
+    verificationToken: "",
     error: null,
     isLoading: true,
     result: null,
@@ -60,14 +60,14 @@ export default function CertificateVerifierPanel({
   useEffect(() => {
     let cancelled = false;
 
-    getPublicCertificateVerification({ certificateNumber })
+    getPublicCertificateVerification({ verificationToken })
       .then((result) => {
         if (cancelled) {
           return;
         }
 
         setState({
-          certificateNumber,
+          verificationToken,
           error: null,
           isLoading: false,
           result,
@@ -79,7 +79,7 @@ export default function CertificateVerifierPanel({
         }
 
         setState({
-          certificateNumber,
+          verificationToken,
           error: "Certificate not found or could not be verified.",
           isLoading: false,
           result: null,
@@ -89,10 +89,10 @@ export default function CertificateVerifierPanel({
     return () => {
       cancelled = true;
     };
-  }, [certificateNumber]);
+  }, [verificationToken]);
 
   const loading =
-    state.isLoading || state.certificateNumber !== certificateNumber;
+    state.isLoading || state.verificationToken !== verificationToken;
   const { error, result } = state;
 
   if (loading) {
@@ -153,6 +153,16 @@ export default function CertificateVerifierPanel({
         />
       )}
 
+      {result.signatureVerified ? (
+        <Alert
+          type="info"
+          title="Signed QR token verified"
+          description="The QR payload signature matches the Inspect PH verifier secret, so the verification link itself has not been tampered with."
+          showIcon
+          style={{ marginBottom: 20 }}
+        />
+      ) : null}
+
       <Descriptions column={1} bordered size="small">
         <Descriptions.Item label="Certificate number">
           <Text code>{result.certificateNumber}</Text>
@@ -187,8 +197,8 @@ export default function CertificateVerifierPanel({
         type="secondary"
         style={{ display: "block", fontSize: 12, marginTop: 16 }}
       >
-        Verified against the InspectPH certificate registry. This page is
-        publicly accessible and does not require an account.
+        Verified against the InspectPH certificate registry. Signed QR links
+        also confirm that the verification token itself has not been altered.
       </Text>
     </Card>
   );

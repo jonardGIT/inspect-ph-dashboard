@@ -288,6 +288,12 @@ const navigationItems: NavigationItem[] = [
   },
   {
     adminOnly: true,
+    icon: <BarChartOutlined />,
+    key: "/reports/inspection-twin",
+    label: "Inspection twin",
+  },
+  {
+    adminOnly: true,
     icon: <HeartOutlined />,
     key: "/reports/wellness",
     label: "Inspector wellness",

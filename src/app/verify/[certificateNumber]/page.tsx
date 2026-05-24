@@ -5,7 +5,7 @@ export default async function CertificateVerifierPage({
 }: {
   params: Promise<{ certificateNumber: string }>;
 }) {
-  const { certificateNumber } = await params;
+  const { certificateNumber: verificationToken } = await params;
 
   return (
     <div
@@ -27,7 +27,7 @@ export default async function CertificateVerifierPage({
           Scan a QR code on any InspectPH certificate to verify its authenticity
         </p>
       </div>
-      <CertificateVerifierPanel certificateNumber={certificateNumber} />
+      <CertificateVerifierPanel verificationToken={verificationToken} />
     </div>
   );
 }

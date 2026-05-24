@@ -9,10 +9,10 @@ import { createApiClient, getApiOrigin } from "./http";
 const API_V1 = "/api/v1";
 
 export async function getPublicCertificateVerification(input: {
-  certificateNumber: string;
+  verificationToken: string;
 }): Promise<CertificateVerificationResult> {
   const response = await axios.get<ApiResponse<CertificateVerificationResult>>(
-    `${getApiOrigin()}${API_V1}/fire-safety-certificates/public/${encodeURIComponent(input.certificateNumber)}/verify`,
+    `${getApiOrigin()}${API_V1}/fire-safety-certificates/public/verify/${encodeURIComponent(input.verificationToken)}`,
   );
 
   return response.data.data;

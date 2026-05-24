@@ -1,11 +1,24 @@
 "use client";
 
-import { Alert, Card, Col, Empty, Input, Row, Space, Table, Tag, Typography } from "antd";
-import { useState } from "react";
+import { useQueries } from "@tanstack/react-query";
+import {
+  Alert,
+  Card,
+  Col,
+  Empty,
+  Input,
+  Row,
+  Space,
+  Table,
+  Tag,
+  Typography,
+} from "antd";
+import { useMemo, useState } from "react";
 
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { useBusinessBrowser } from "@/hooks/use-business-browser";
 import { usePermitBrowser } from "@/hooks/use-permit-browser";
+import { listPayments } from "@/lib/api/payments";
 import { getApiErrorMessage } from "@/lib/api/http";
 import type { BusinessEstablishment } from "@shared/types/api";
 
@@ -29,6 +42,89 @@ function BusinessDetail({
   });
 
   const permits = permitsQuery.data?.data ?? [];
+  const paymentQueries = useQueries({
+    queries: permits.map((permit) => ({
+      enabled: Boolean(accessToken),
+      queryFn: () =>
+        listPayments({
+          accessToken,
+          limit: 10,
+          page: 1,
+          permitId: permit.id,
+        }),
+      queryKey: ["owner-support-payments", business.id, permit.id],
+      staleTime: 60_000,
+    })),
+  });
+
+  const paymentsLoading = paymentQueries.some((query) => query.isLoading);
+  const paymentsError = paymentQueries.find((query) => query.error)?.error;
+
+  const paymentHistoryRows = useMemo(() => {
+    return permits.map((permit, index) => {
+      const records = paymentQueries[index]?.data?.data ?? [];
+      const latestPayment = records[0];
+
+      return {
+        amountInMinor: latestPayment?.amountInMinor,
+        latestPayment,
+        permitId: permit.id,
+        permitNumber: permit.permitNumber,
+        status: permit.status,
+      };
+    });
+  }, [paymentQueries, permits]);
+
+  const ownerActivityRows = useMemo(() => {
+    const items = [
+      {
+        date: business.createdAt,
+        detail: business.contactNumber
+          ? `Owner contact: ${business.contactNumber}`
+          : "Owner contact number not yet recorded.",
+        event: "Business registered",
+        id: `business-${business.id}`,
+      },
+      ...permits.flatMap((permit, index) => {
+        const records = paymentQueries[index]?.data?.data ?? [];
+
+        return [
+          {
+            date: permit.applicationDate ?? permit.createdAt,
+            detail: `${permit.permitNumber} · ${permit.lineOfBusiness}`,
+            event: "Permit application tracked",
+            id: `permit-${permit.id}`,
+          },
+          ...records.flatMap((payment) => {
+            const entries = [
+              {
+                date: payment.createdAt,
+                detail: `${payment.referenceNumber} · ${payment.status} · ${formatCurrency(payment.amountInMinor)}`,
+                event: "Payment record created",
+                id: `payment-created-${payment.id}`,
+              },
+            ];
+
+            if (payment.paidAt) {
+              entries.push({
+                date: payment.paidAt,
+                detail: `${payment.referenceNumber} · Receipt ${payment.receiptNumber ?? "pending"}`,
+                event: "Payment settled",
+                id: `payment-paid-${payment.id}`,
+              });
+            }
+
+            return entries;
+          }),
+        ];
+      }),
+    ];
+
+    return items.sort(
+      (left, right) =>
+        new Date(right.date).getTime() - new Date(left.date).getTime(),
+    );
+  }, [business, paymentQueries, permits]);
 
   return (
     <Space orientation="vertical" size={16} style={{ width: "100%" }}>
@@ -141,13 +237,17 @@ function BusinessDetail({
                 title: "Application date",
                 key: "applicationDate",
                 render: (_value, record) =>
-                  record.applicationDate ? formatDate(record.applicationDate) : "—",
+                  record.applicationDate
+                    ? formatDate(record.applicationDate)
+                    : "—",
               },
               {
                 title: "Expiry",
                 key: "expirationDate",
                 render: (_value, record) =>
-                  record.expirationDate ? formatDate(record.expirationDate) : "—",
+                  record.expirationDate
+                    ? formatDate(record.expirationDate)
+                    : "—",
               },
             ]}
           />
@@ -155,8 +255,140 @@ function BusinessDetail({
           <Empty description="No permits on file" />
         )}
       </Card>
+
+      <Card
+        title="Fee and payment history"
+        size="small"
+        className="glass-card dashboard-data-card"
+      >
+        {paymentsLoading ? (
+          <Typography.Text type="secondary">
+            Loading payment history…
+          </Typography.Text>
+        ) : paymentsError ? (
+          <Alert
+            type="error"
+            showIcon
+            title={getApiErrorMessage(paymentsError)}
+          />
+        ) : paymentHistoryRows.length ? (
+          <Table
+            className="dashboard-table"
+            dataSource={paymentHistoryRows}
+            pagination={false}
+            rowKey="permitId"
+            size="small"
+            columns={[
+              {
+                title: "Permit",
+                key: "permit",
+                render: (_value, record) => (
+                  <Space direction="vertical" size={0}>
+                    <Typography.Text strong>
+                      {record.permitNumber}
+                    </Typography.Text>
+                    <Typography.Text type="secondary">
+                      {record.latestPayment?.referenceNumber ??
+                        "No payment yet"}
+                    </Typography.Text>
+                  </Space>
+                ),
+              },
+              {
+                title: "Latest amount",
+                key: "amount",
+                render: (_value, record) =>
+                  typeof record.amountInMinor === "number"
+                    ? formatCurrency(record.amountInMinor)
+                    : "—",
+              },
+              {
+                title: "Payment status",
+                key: "paymentStatus",
+                render: (_value, record) =>
+                  record.latestPayment ? (
+                    <Tag
+                      color={getPaymentStatusColor(record.latestPayment.status)}
+                    >
+                      {record.latestPayment.status}
+                    </Tag>
+                  ) : (
+                    <Typography.Text type="secondary">
+                      Awaiting payment
+                    </Typography.Text>
+                  ),
+              },
+              {
+                title: "Updated",
+                key: "updatedAt",
+                render: (_value, record) =>
+                  record.latestPayment?.updatedAt
+                    ? formatDate(record.latestPayment.updatedAt)
+                    : "—",
+              },
+            ]}
+          />
+        ) : (
+          <Empty description="No fee or payment history recorded yet" />
+        )}
+      </Card>
+
+      <Card
+        title="Owner contact and activity log"
+        size="small"
+        className="glass-card dashboard-data-card"
+      >
+        {ownerActivityRows.length ? (
+          <Table
+            className="dashboard-table"
+            dataSource={ownerActivityRows}
+            pagination={false}
+            rowKey="id"
+            size="small"
+            columns={[
+              {
+                title: "Event",
+                dataIndex: "event",
+                key: "event",
+              },
+              {
+                title: "Date",
+                dataIndex: "date",
+                key: "date",
+                render: (value: string) => formatDate(value),
+              },
+              {
+                title: "Detail",
+                dataIndex: "detail",
+                key: "detail",
+              },
+            ]}
+          />
+        ) : (
+          <Empty description="No owner activity logged yet" />
+        )}
+      </Card>
     </Space>
   );
+}
+
+function formatCurrency(amountInMinor: number) {
+  return new Intl.NumberFormat("en-PH", {
+    currency: "PHP",
+    style: "currency",
+  }).format(amountInMinor / 100);
+}
+
+function getPaymentStatusColor(status: string) {
+  const color: Record<string, string> = {
+    failed: "red",
+    paid: "green",
+    pending: "gold",
+    processing: "blue",
+    refunded: "purple",
+  };
+
+  return color[status] ?? "default";
 }
 
 export default function OwnerSupportDesk() {
@@ -181,7 +413,10 @@ export default function OwnerSupportDesk() {
 
   return (
     <Space orientation="vertical" size={20} style={{ width: "100%" }}>
-      <Card title="Owner business lookup" className="glass-card dashboard-data-card">
+      <Card
+        title="Owner business lookup"
+        className="glass-card dashboard-data-card"
+      >
         <Input.Search
           allowClear
           enterButton="Search"
@@ -264,10 +499,7 @@ export default function OwnerSupportDesk() {
       ) : null}
 
       {selectedBusiness ? (
-        <BusinessDetail
-          accessToken={accessToken}
-          business={selectedBusiness}
-        />
+        <BusinessDetail accessToken={accessToken} business={selectedBusiness} />
       ) : null}
     </Space>
   );

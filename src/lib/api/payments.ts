@@ -14,6 +14,7 @@ export async function listPayments(input: {
   accessToken: string;
   limit?: number;
   page?: number;
+  permitId?: string;
   provider?: PaymentRecord["provider"];
   status?: PaymentRecord["status"];
 }) {
@@ -24,6 +25,7 @@ export async function listPayments(input: {
       params: {
         ...(input.limit ? { limit: input.limit } : {}),
         ...(input.page ? { page: input.page } : {}),
+        ...(input.permitId ? { permitId: input.permitId } : {}),
         ...(input.provider ? { provider: input.provider } : {}),
         ...(input.status ? { status: input.status } : {}),
       },
@@ -31,6 +33,24 @@ export async function listPayments(input: {
   );
 
   return response.data;
+}
+
+export async function reconcilePayment(input: {
+  accessToken: string;
+  note?: string;
+  paymentId: string;
+  status: "paid" | "failed" | "refunded";
+}) {
+  const client = createApiClient(input.accessToken);
+  const response = await client.patch<ApiResponse<PaymentRecord>>(
+    `${API_V1}/payments/${input.paymentId}/reconcile`,
+    {
+      ...(input.note ? { note: input.note } : {}),
+      status: input.status,
+    },
+  );
+
+  return response.data.data;
 }
 
 export async function getPublicPaymentByReferenceNumber(input: {

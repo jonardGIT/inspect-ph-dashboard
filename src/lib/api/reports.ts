@@ -1,6 +1,7 @@
 import type {
   ApiListResponse,
   ApiResponse,
+  InspectionTwinSimulationReport,
   InspectorWellnessReport,
   KpiReport,
   PaymentAnomalyFlag,
@@ -77,6 +78,46 @@ export async function getKpiReport(input: {
       },
     },
   );
+
+  return response.data.data;
+}
+
+export async function getInspectionTwinReport(input: {
+  accessToken: string;
+  failOnCriticalSeverity?: boolean;
+  failOnHighSeverity?: boolean;
+  fromDate?: string;
+  lguId?: string;
+  maxFailedChecklistItems?: number;
+  minChecklistPassRatePct?: number;
+  moduleCode?: string;
+  officeId?: string;
+  toDate?: string;
+}): Promise<InspectionTwinSimulationReport> {
+  const client = createApiClient(input.accessToken);
+  const response = await client.get<
+    ApiResponse<InspectionTwinSimulationReport>
+  >(`${API_V1}/reports/inspection-twin`, {
+    params: {
+      ...(typeof input.failOnCriticalSeverity === "boolean"
+        ? { failOnCriticalSeverity: String(input.failOnCriticalSeverity) }
+        : {}),
+      ...(typeof input.failOnHighSeverity === "boolean"
+        ? { failOnHighSeverity: String(input.failOnHighSeverity) }
+        : {}),
+      ...(input.fromDate ? { fromDate: input.fromDate } : {}),
+      ...(input.lguId ? { lguId: input.lguId } : {}),
+      ...(typeof input.maxFailedChecklistItems === "number"
+        ? { maxFailedChecklistItems: input.maxFailedChecklistItems }
+        : {}),
+      ...(typeof input.minChecklistPassRatePct === "number"
+        ? { minChecklistPassRatePct: input.minChecklistPassRatePct }
+        : {}),
+      ...(input.moduleCode ? { moduleCode: input.moduleCode } : {}),
+      ...(input.officeId ? { officeId: input.officeId } : {}),
+      ...(input.toDate ? { toDate: input.toDate } : {}),
+    },
+  });
 
   return response.data.data;
 }

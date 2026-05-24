@@ -28,7 +28,7 @@ describe("CertificateVerifierPanel", () => {
     );
 
     renderWithProviders(
-      <CertificateVerifierPanel certificateNumber="FSIC-001" />,
+      <CertificateVerifierPanel verificationToken="signed-token-001" />,
     );
     expect(screen.getByText(/verifying certificate/i)).toBeDefined();
   });
@@ -44,7 +44,7 @@ describe("CertificateVerifierPanel", () => {
     });
 
     renderWithProviders(
-      <CertificateVerifierPanel certificateNumber="FSIC-001" />,
+      <CertificateVerifierPanel verificationToken="signed-token-001" />,
     );
 
     await waitFor(() => {
@@ -60,7 +60,7 @@ describe("CertificateVerifierPanel", () => {
     );
 
     renderWithProviders(
-      <CertificateVerifierPanel certificateNumber="FSIC-INVALID" />,
+      <CertificateVerifierPanel verificationToken="signed-token-invalid" />,
     );
 
     await waitFor(() => {
@@ -84,7 +84,7 @@ describe("CertificateVerifierPanel", () => {
     });
 
     renderWithProviders(
-      <CertificateVerifierPanel certificateNumber="FSIC-002" />,
+      <CertificateVerifierPanel verificationToken="signed-token-002" />,
     );
 
     await waitFor(() => {

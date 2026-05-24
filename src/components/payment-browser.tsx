@@ -5,6 +5,9 @@ import {
   Button,
   Card,
   Empty,
+  Form,
+  Input,
+  Modal,
   Pagination,
   Select,
   Space,
@@ -14,6 +17,7 @@ import {
 } from "antd";
 import type { TableProps } from "antd";
 import Link from "next/link";
+import { useState } from "react";
 import type { PaymentRecord } from "@shared/types/api";
 
 import { getPaymentReceiptUrl } from "@/lib/api/payments";
@@ -78,6 +82,14 @@ function formatOptionLabel(
 }
 
 export default function PaymentBrowser() {
+  const [reconcileOpen, setReconcileOpen] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<PaymentRecord | null>(
+    null,
+  );
+  const [reconcileForm] = Form.useForm<{
+    note?: string;
+    status: "paid" | "failed" | "refunded";
+  }>();
   const { activeCount, clearValues, page, setPage, setValue, values } =
     useBrowserQueryParams({
       defaults: { provider: "all", status: "all" },
@@ -87,13 +99,49 @@ export default function PaymentBrowser() {
   const isAdmin = hasPermission(session, "payment:read");
   const provider = values.provider as PaymentRecord["provider"] | "all";
   const status = values.status as PaymentRecord["status"] | "all";
-  const { paymentsQuery } = usePaymentsBrowser({
+  const { paymentsQuery, reconcileMutation } = usePaymentsBrowser({
     accessToken,
     enabled: Boolean(accessToken) && isAdmin,
     page,
     provider: provider === "all" ? undefined : provider,
     status: status === "all" ? undefined : status,
   });
+
+  function openReconcileModal(payment: PaymentRecord) {
+    setSelectedPayment(payment);
+    reconcileForm.setFieldsValue({
+      note: payment.status === "failed" ? payment.failureReason : undefined,
+      status:
+        payment.status === "paid"
+          ? "refunded"
+          : payment.status === "failed"
+            ? "failed"
+            : "paid",
+    });
+    setReconcileOpen(true);
+  }
+
+  async function handleSubmitReconcile() {
+    if (!selectedPayment) {
+      return;
+    }
+
+    const values = await reconcileForm.validateFields();
+    await reconcileMutation.mutateAsync({
+      note: values.note,
+      paymentId: selectedPayment.id,
+      status: values.status,
+    });
+    setReconcileOpen(false);
+    setSelectedPayment(null);
+    reconcileForm.resetFields();
+  }
+
+  function closeReconcileModal() {
+    setReconcileOpen(false);
+    setSelectedPayment(null);
+    reconcileForm.resetFields();
+  }
 
   const payments = paymentsQuery.data?.data ?? [];
   const meta = paymentsQuery.data?.meta;
@@ -160,6 +208,22 @@ export default function PaymentBrowser() {
       render: (_value, record) => formatDate(record.updatedAt),
     },
     {
+      title: "Reconcile",
+      key: "reconcile",
+      render: (_value, record) =>
+        record.status === "refunded" ? (
+          <Typography.Text type="secondary">Settled</Typography.Text>
+        ) : (
+          <Button
+            size="small"
+            onClick={() => openReconcileModal(record)}
+            type="default"
+          >
+            Reconcile
+          </Button>
+        ),
+    },
+    {
       title: "Checkout",
       key: "checkoutUrl",
       render: (_value, record) =>
@@ -221,6 +285,51 @@ export default function PaymentBrowser() {
                 description="Current status filter"
               />
             </Space>
+
+            <Modal
+              confirmLoading={reconcileMutation.isPending}
+              open={reconcileOpen}
+              title={
+                selectedPayment
+                  ? `Reconcile ${selectedPayment.referenceNumber}`
+                  : "Reconcile payment"
+              }
+              onCancel={closeReconcileModal}
+              onOk={() => {
+                void handleSubmitReconcile();
+              }}
+            >
+              <Form form={reconcileForm} layout="vertical">
+                <Form.Item
+                  label="Target status"
+                  name="status"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Select a reconciliation status",
+                    },
+                  ]}
+                >
+                  <Select
+                    options={[
+                      { label: "Paid", value: "paid" },
+                      { label: "Failed", value: "failed" },
+                      { label: "Refunded", value: "refunded" },
+                    ]}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="Reconciliation note"
+                  name="note"
+                  extra="Optional operational note for the audit trail."
+                >
+                  <Input.TextArea
+                    rows={3}
+                    placeholder="Matched with bank transfer advice / cashier confirmation / refund memo"
+                  />
+                </Form.Item>
+              </Form>
+            </Modal>
 
             <Card
               className="glass-card dashboard-data-card"
