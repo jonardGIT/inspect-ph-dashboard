@@ -15,6 +15,8 @@ export function useInspectionBrowser(input: {
   accessToken: string;
   businessId?: string;
   from?: string;
+  includeByOffice?: boolean;
+  includeMapPoints?: boolean;
   inspectorId?: string;
   lguId?: string;
   officeId?: string;
@@ -24,6 +26,8 @@ export function useInspectionBrowser(input: {
 }) {
   const queryClient = useQueryClient();
   const enabled = Boolean(input.accessToken);
+  const includeByOffice = Boolean(input.includeByOffice);
+  const includeMapPoints = Boolean(input.includeMapPoints);
 
   const inspectionsQuery = useQuery({
     queryKey: [
@@ -124,7 +128,7 @@ export function useInspectionBrowser(input: {
         status: input.status,
         to: input.to,
       }),
-    enabled,
+    enabled: enabled && includeMapPoints,
   });
 
   const byOfficeQuery = useQuery({
@@ -136,7 +140,7 @@ export function useInspectionBrowser(input: {
         lguId: input.lguId,
         to: input.to,
       }),
-    enabled,
+    enabled: enabled && includeByOffice,
   });
 
   return {

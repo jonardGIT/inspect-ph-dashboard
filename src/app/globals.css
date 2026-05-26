@@ -216,13 +216,52 @@ body::before {
 
 .dashboard-menu {
   background: transparent !important;
-  color: rgba(245, 255, 248, 0.86) !important;
+  color: #f2fbf5 !important;
   border-inline-end: 0 !important;
   padding: 8px 12px;
 }
 
+.dashboard-menu .ant-menu-item,
+.dashboard-menu .ant-menu-submenu-title {
+  color: rgba(242, 251, 245, 0.92) !important;
+  margin-block: 6px;
+  min-height: 46px;
+}
+
+.dashboard-menu .ant-menu-item .ant-menu-item-icon,
+.dashboard-menu .ant-menu-submenu-title .ant-menu-item-icon,
+.dashboard-menu .ant-menu-item .anticon,
+.dashboard-menu .ant-menu-submenu-title .anticon,
+.dashboard-menu .ant-menu-item .ant-menu-title-content,
+.dashboard-menu .ant-menu-submenu-title .ant-menu-title-content {
+  color: inherit !important;
+}
+
+.dashboard-menu .ant-menu-item:hover,
+.dashboard-menu .ant-menu-item-active,
+.dashboard-menu .ant-menu-submenu-title:hover,
+.dashboard-menu .ant-menu-submenu-active > .ant-menu-submenu-title {
+  color: #ffffff !important;
+  background: rgba(144, 205, 173, 0.18) !important;
+}
+
 .dashboard-menu .ant-menu-item-selected {
-  background: rgba(93, 168, 129, 0.2) !important;
+  color: #ffffff !important;
+  background: linear-gradient(
+    135deg,
+    rgba(93, 168, 129, 0.34),
+    rgba(45, 93, 79, 0.52)
+  ) !important;
+  box-shadow: inset 0 0 0 1px rgba(208, 238, 220, 0.16);
+}
+
+.dashboard-menu .ant-menu-item-selected::after {
+  border-inline-end-color: #cbe9d7 !important;
+}
+
+.dashboard-menu.ant-menu-inline-collapsed .ant-menu-item,
+.dashboard-menu.ant-menu-inline-collapsed .ant-menu-submenu-title {
+  padding-inline: calc(50% - 18px) !important;
 }
 
 .dashboard-sider-footer {

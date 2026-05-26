@@ -103,9 +103,9 @@ const impactedColumns: TableProps<InspectionTwinSimulationRecord>["columns"] = [
     ),
   },
   {
-    dataIndex: "scheduledAt",
-    key: "scheduledAt",
-    title: "Inspected",
+    dataIndex: "completedAt",
+    key: "completedAt",
+    title: "Completed",
     render: (value: string) => formatDateTime(value),
   },
   {
@@ -149,7 +149,7 @@ export default function InspectionTwinSimulator() {
 
   return (
     <div style={{ padding: 24 }}>
-      <Space direction="vertical" size={20} style={{ width: "100%" }}>
+      <Space orientation="vertical" size={20} style={{ width: "100%" }}>
         <div>
           <Typography.Title level={3} style={{ marginBottom: 8 }}>
             Inspection Twin Simulator
@@ -166,7 +166,7 @@ export default function InspectionTwinSimulator() {
         >
           <Row gutter={[16, 16]}>
             <Col xs={24} md={12} xl={8}>
-              <Space direction="vertical" size={8} style={{ width: "100%" }}>
+              <Space orientation="vertical" size={8} style={{ width: "100%" }}>
                 <Typography.Text strong>Inspection window</Typography.Text>
                 <RangePicker
                   allowClear
@@ -182,7 +182,7 @@ export default function InspectionTwinSimulator() {
               </Space>
             </Col>
             <Col xs={24} md={12} xl={8}>
-              <Space direction="vertical" size={8} style={{ width: "100%" }}>
+              <Space orientation="vertical" size={8} style={{ width: "100%" }}>
                 <Typography.Text strong>Module scope</Typography.Text>
                 <Select
                   allowClear
@@ -200,7 +200,7 @@ export default function InspectionTwinSimulator() {
               </Space>
             </Col>
             <Col xs={24} md={12} xl={4}>
-              <Space direction="vertical" size={8} style={{ width: "100%" }}>
+              <Space orientation="vertical" size={8} style={{ width: "100%" }}>
                 <Typography.Text strong>Min checklist pass %</Typography.Text>
                 <InputNumber
                   max={100}
@@ -214,7 +214,7 @@ export default function InspectionTwinSimulator() {
               </Space>
             </Col>
             <Col xs={24} md={12} xl={4}>
-              <Space direction="vertical" size={8} style={{ width: "100%" }}>
+              <Space orientation="vertical" size={8} style={{ width: "100%" }}>
                 <Typography.Text strong>Max failed items</Typography.Text>
                 <InputNumber
                   max={100}
@@ -228,7 +228,7 @@ export default function InspectionTwinSimulator() {
               </Space>
             </Col>
             <Col xs={24}>
-              <Space direction="vertical" size={8}>
+              <Space orientation="vertical" size={8}>
                 <Checkbox
                   checked={failOnCriticalSeverity}
                   onChange={(event) => {
@@ -281,7 +281,7 @@ export default function InspectionTwinSimulator() {
                   <Statistic
                     title="Would fail"
                     value={reportQuery.data.simulatedFailedCount}
-                    valueStyle={{ color: "#cf1322" }}
+                    styles={{ content: { color: "#cf1322" } }}
                   />
                 </Card>
               </Col>
@@ -299,13 +299,15 @@ export default function InspectionTwinSimulator() {
                     suffix="%"
                     title="Failure rate"
                     value={reportQuery.data.failureRatePct}
-                    valueStyle={{
-                      color:
-                        reportQuery.data.failureRatePct >= 50
-                          ? "#cf1322"
-                          : reportQuery.data.failureRatePct >= 25
-                            ? "#d48806"
-                            : "#389e0d",
+                    styles={{
+                      content: {
+                        color:
+                          reportQuery.data.failureRatePct >= 50
+                            ? "#cf1322"
+                            : reportQuery.data.failureRatePct >= 25
+                              ? "#d48806"
+                              : "#389e0d",
+                      },
                     }}
                   />
                 </Card>

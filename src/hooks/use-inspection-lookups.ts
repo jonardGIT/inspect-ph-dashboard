@@ -22,6 +22,7 @@ export function useInspectionLookups(input: {
   selectedLguId?: string;
   selectedOfficeId?: string;
 }) {
+  const lookupStaleTime = 60_000;
   const deferredBusinessSearch = useDeferredValue(
     input.businessSearch?.trim() || input.selectedBusinessId?.trim() || "",
   );
@@ -46,6 +47,8 @@ export function useInspectionLookups(input: {
         search: deferredBusinessSearch || undefined,
       }),
     enabled,
+    staleTime: lookupStaleTime,
+    refetchOnWindowFocus: false,
   });
 
   const inspectorsQuery = useQuery({
@@ -59,6 +62,8 @@ export function useInspectionLookups(input: {
         search: deferredInspectorSearch || undefined,
       }),
     enabled: enabled && Boolean(input.canListInspectors),
+    staleTime: lookupStaleTime,
+    refetchOnWindowFocus: false,
   });
 
   const permitsQuery = useQuery({
@@ -71,6 +76,8 @@ export function useInspectionLookups(input: {
         page: 1,
       }),
     enabled: enabled && Boolean(input.permitBusinessId),
+    staleTime: lookupStaleTime,
+    refetchOnWindowFocus: false,
   });
 
   const lgusQuery = useQuery({
@@ -83,6 +90,8 @@ export function useInspectionLookups(input: {
         search: deferredLguSearch || undefined,
       }),
     enabled,
+    staleTime: lookupStaleTime,
+    refetchOnWindowFocus: false,
   });
 
   const officesQuery = useQuery({
@@ -95,6 +104,8 @@ export function useInspectionLookups(input: {
         search: deferredOfficeSearch || undefined,
       }),
     enabled,
+    staleTime: lookupStaleTime,
+    refetchOnWindowFocus: false,
   });
 
   return {

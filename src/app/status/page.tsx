@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-
-import PublicStatusPage from "@/components/public-status-page";
+import StatusPageClient from "./status-page-client";
 
 export const metadata: Metadata = {
   title: "Inspect PH Status",
@@ -8,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function StatusPage() {
-  return <PublicStatusPage />;
+  return <StatusPageClient />;
 }

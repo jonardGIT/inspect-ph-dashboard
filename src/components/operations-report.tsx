@@ -180,6 +180,8 @@ export default function OperationsReport() {
     useInspectionBrowser({
       accessToken,
       from: from ? new Date(`${from}T00:00:00.000Z`).toISOString() : undefined,
+      includeByOffice: true,
+      includeMapPoints: true,
       lguId: lguId || undefined,
       officeId: officeId || undefined,
       page,
@@ -494,7 +496,11 @@ export default function OperationsReport() {
               className="glass-card dashboard-data-card"
             >
               {mapPointsQuery.isLoading ? null : mapPointsQuery.data?.length ? (
-                <Space orientation="vertical" size={16} style={{ width: "100%" }}>
+                <Space
+                  orientation="vertical"
+                  size={16}
+                  style={{ width: "100%" }}
+                >
                   <div
                     style={{
                       background:

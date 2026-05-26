@@ -30,6 +30,8 @@ export function useModuleWorkspace(input: {
       );
     },
     enabled,
+    staleTime: 5 * 60_000,
+    refetchOnWindowFocus: false,
   });
 
   const officeModulesQuery = useQuery({
@@ -42,6 +44,8 @@ export function useModuleWorkspace(input: {
         page: 1,
       }),
     enabled: enabled && Boolean(moduleQuery.data?.id),
+    staleTime: 5 * 60_000,
+    refetchOnWindowFocus: false,
   });
 
   return {

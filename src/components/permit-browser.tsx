@@ -49,6 +49,14 @@ const statusColors: Record<string, string> = {
   rejected: "volcano",
 };
 
+const paymentStatusColors: Record<string, string> = {
+  failed: "red",
+  paid: "green",
+  pending: "gold",
+  processing: "blue",
+  refunded: "purple",
+};
+
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("en-PH", {
     dateStyle: "medium",
@@ -68,7 +76,12 @@ export default function PermitBrowser() {
   const { accessToken, session } = useAuthSession();
   const businessId = values.businessId;
   const status = values.status as (typeof statusOptions)[number]["value"];
-  const { createPermitMutation, archivePermitMutation, permitsQuery, updatePermitMutation } = usePermitBrowser({
+  const {
+    createPermitMutation,
+    archivePermitMutation,
+    permitsQuery,
+    updatePermitMutation,
+  } = usePermitBrowser({
     accessToken,
     businessId: businessId || undefined,
     page,
@@ -200,6 +213,30 @@ export default function PermitBrowser() {
                       {record.status.replace("_", " ")}
                     </Tag>
                   ),
+                },
+                {
+                  title: "Payment status",
+                  key: "latestPayment",
+                  render: (_value, record) =>
+                    record.latestPayment ? (
+                      <Space orientation="vertical" size={0}>
+                        <Tag
+                          color={
+                            paymentStatusColors[record.latestPayment.status] ||
+                            "default"
+                          }
+                        >
+                          {record.latestPayment.status.replace("_", " ")}
+                        </Tag>
+                        <Typography.Text type="secondary">
+                          {record.latestPayment.referenceNumber}
+                        </Typography.Text>
+                      </Space>
+                    ) : (
+                      <Typography.Text type="secondary">
+                        No payment
+                      </Typography.Text>
+                    ),
                 },
                 {
                   title: "Actions",
@@ -369,16 +406,32 @@ export default function PermitBrowser() {
               editForm.resetFields();
             }}
           >
-            <Form.Item label="Permit number" name="permitNumber" rules={[{ required: true }]}>
+            <Form.Item
+              label="Permit number"
+              name="permitNumber"
+              rules={[{ required: true }]}
+            >
               <Input />
             </Form.Item>
-            <Form.Item label="Line of business" name="lineOfBusiness" rules={[{ required: true }]}>
+            <Form.Item
+              label="Line of business"
+              name="lineOfBusiness"
+              rules={[{ required: true }]}
+            >
               <Input />
             </Form.Item>
-            <Form.Item label="Application date (ISO)" name="applicationDate" rules={[{ required: true }]}>
+            <Form.Item
+              label="Application date (ISO)"
+              name="applicationDate"
+              rules={[{ required: true }]}
+            >
               <Input placeholder="2025-01-15T00:00:00.000Z" />
             </Form.Item>
-            <Form.Item label="Expiration date (ISO)" name="expirationDate" rules={[{ required: true }]}>
+            <Form.Item
+              label="Expiration date (ISO)"
+              name="expirationDate"
+              rules={[{ required: true }]}
+            >
               <Input placeholder="2027-01-14T00:00:00.000Z" />
             </Form.Item>
             <Space orientation="vertical" size={12} style={{ width: "100%" }}>

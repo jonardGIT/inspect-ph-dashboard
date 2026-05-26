@@ -1,6 +1,7 @@
 .vscode/
 node_modules/
 .next/
+.xypes-mirror/
 out/
 build/
 coverage/

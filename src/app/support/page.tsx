@@ -7,23 +7,23 @@ import PublicIssueReportLookup from "@/components/public-issue-report-lookup";
 import PublicPaymentLookup from "@/components/public-payment-lookup";
 import PublicPermitLookup from "@/components/public-permit-lookup";
 
+const { Paragraph, Text, Title } = Typography;
+
 export default function SupportPage() {
   return (
     <Providers>
       <main className="page-shell">
-        <Space orientation="vertical" size={16} style={{ width: "100%" }}>
+        <Space direction="vertical" size={16} style={{ width: "100%" }}>
           <div>
-            <Typography.Text type="secondary">
-              Owner support desk
-            </Typography.Text>
-            <Typography.Title level={2} style={{ margin: 0 }}>
+            <Text type="secondary">Owner support desk</Text>
+            <Title level={2} style={{ margin: 0 }}>
               Support lookups
-            </Typography.Title>
-            <Typography.Paragraph style={{ marginBottom: 0 }}>
+            </Title>
+            <Paragraph style={{ marginBottom: 0 }}>
               Help business owners and citizens check permit status, inspection
               findings, certificates, payments, fee history, and recent owner
               activity from one protected workspace.
-            </Typography.Paragraph>
+            </Paragraph>
           </div>
 
           <OwnerSupportDesk />
